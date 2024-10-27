@@ -31,6 +31,47 @@ The `backend-server` folder contains a Node.js application that serves as the ba
    ```
 4. The server will run on http://localhost:3000
 
+#### HTTP Endpoints
+
+- Hello World: Simple endpoint to verify the server is running.
+  - Request:
+    ```http
+    GET http://localhost:3000/
+    ```
+  - Response:
+    ```json
+    {
+      "message": "Hello, World!"
+    }
+    ```
+- Get Random Data: Returns a random value with a timestamp.
+  - Request:
+    ```http
+    GET http://localhost:3000/api/random
+    ```
+  - Response:
+    ```json
+    {
+      "timestamp": "2024-01-01T12:00:00Z",
+      "value": 0.123456
+    }
+    ```
+- Accept Price: Create an order for a selected product (replace guid with the actual GUID):
+  - Request:
+    ```http
+    POST http://localhost:3000/api/accept-price
+    Content-Type: application/json
+    {
+       "guid": "your-guid-here"
+    }
+    ```
+- Get Orders: Retrieve the updated list of orders:
+
+  - Request:
+    ```http
+    GET http://localhost:3000/api/get-orders
+    ```
+
 #### Web Socket Endpoints
 
 To test the WebSocket connection:
