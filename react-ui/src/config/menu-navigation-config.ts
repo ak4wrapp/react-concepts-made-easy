@@ -1,5 +1,6 @@
 import Home from "../components/home";
 import NetworkStatusCheck from "../components/network-status-check/network-status-check";
+import Todos from "../components/todos/todos";
 import { NavItem } from "./types";
 
 export const menuLinks: NavItem[] = [
@@ -12,9 +13,14 @@ export const menuLinks: NavItem[] = [
     label: "Learning",
     submenu: [
       {
-        label: "Network Check",
+        label: "Custom Callback (Network Check)",
         path: "/learning/network-check",
         component: NetworkStatusCheck, // Replace with the actual component for Network Check
+      },
+      {
+        label: "Create a Todos",
+        path: "/learning/todos",
+        component: Todos,
       },
       {
         label: "Additional Resources",
