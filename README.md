@@ -56,21 +56,15 @@ The `backend-server` folder contains a Node.js application that serves as the ba
       "value": 0.123456
     }
     ```
-- Accept Price: Create an order for a selected product (replace guid with the actual GUID):
-  - Request:
-    ```http
-    POST http://localhost:3000/api/accept-price
-    Content-Type: application/json
-    {
-       "guid": "your-guid-here"
-    }
-    ```
-- Get Orders: Retrieve the updated list of orders:
 
-  - Request:
-    ```http
-    GET http://localhost:3000/api/get-orders
-    ```
+##### To make a request from UI code:
+
+- Get random data:
+  ```javascript
+  fetch("http://localhost:3000/api/random")
+    .then((response) => response.json())
+    .then((data) => console.log(data));
+  ```
 
 #### Web Socket Endpoints
 
@@ -101,6 +95,20 @@ To test the WebSocket connection:
    ```bash
    socket.send(JSON.stringify({ type: 'GetOrders' }));
    ```
+
+##### To make a request from UI code:
+
+- Get random data:
+
+  ```javascript
+  const socket = new WebSocket("ws://localhost:3000");
+  socket.onopen = () => {
+    socket.send(JSON.stringify({ type: "GetPrice" }));
+  };
+  socket.onmessage = (event) => {
+    console.log("Message from server", event.data);
+  };
+  ```
 
 ### React UI
 
