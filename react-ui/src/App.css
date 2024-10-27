@@ -1,38 +1,11 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.content {
+  padding: 2rem; /* Existing padding */
+  padding-left: 32px; /* Add specific left padding */
+  padding-right: 32px; /* Optional: add specific right padding */
+  margin-top: 60px; /* Adjust this based on your navbar height */
+  max-width: 1200px; /* Optional: limit max width for better readability */
+  margin-left: auto; /* Center the content */
+  margin-right: auto; /* Center the content */
+  background-color: #f9f9f9; /* Optional: background color for contrast */
+  border-radius: 8px; /* Optional: rounded corners */
 }

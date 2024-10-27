@@ -1,0 +1,144 @@
+/* Header.css */
+
+.header-container {
+  position: relative;
+  width: 100%;
+  background-color: #212121; /* Slightly lighter dark background */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); /* Softer shadow for the header */
+  z-index: 1000; /* Ensure header is above other content */
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between; /* Space between hamburger and menu */
+  align-items: center;
+  padding: 15px 30px; /* Increased padding for a more spacious feel */
+}
+
+.hamburger {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 30px; /* Width of the hamburger icon */
+  height: 20px; /* Height of the hamburger icon */
+}
+
+.hamburger span {
+  display: block;
+  height: 4px; /* Slightly thicker hamburger lines */
+  background-color: #fff; /* White color for hamburger lines */
+  margin: 3px 0; /* Space between lines */
+  transition: all 0.3s; /* Smooth transition */
+}
+
+.hamburger.open span:nth-child(1) {
+  transform: translateY(10px) rotate(45deg); /* First line transforms to X */
+}
+
+.hamburger.open span:nth-child(2) {
+  opacity: 0; /* Second line fades out */
+}
+
+.hamburger.open span:nth-child(3) {
+  transform: translateY(-10px) rotate(-45deg); /* Third line transforms to X */
+}
+
+.menu {
+  display: none; /* Hide by default */
+  position: absolute; /* Position the menu below the header */
+  top: 65px; /* Adjust based on header height */
+  left: 0;
+  width: 100%; /* Full width */
+  background-color: #212121; /* Dark background for menu */
+  border-radius: 8px; /* Rounded corners for the menu */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Softer shadow for the dropdown */
+  transition: max-height 0.3s ease-in-out; /* Smooth transition */
+  overflow: hidden; /* Prevent overflow */
+}
+
+.menu.show {
+  display: block; /* Show when toggled */
+  max-height: 500px; /* Set a max-height to allow transition */
+}
+
+ul {
+  list-style: none; /* Remove bullet points */
+  margin: 0; /* Reset margin */
+  padding: 0; /* Reset padding */
+}
+
+ul > li {
+  position: relative; /* Position relative for submenus */
+}
+
+.menu > ul > li {
+  padding: 12px 20px; /* Increased padding for menu items */
+  color: #fff; /* White text for menu items */
+  transition: background-color 0.3s; /* Smooth background transition */
+}
+
+.menu > ul > li:hover {
+  background-color: #3a3a3a; /* Darker gray on hover */
+  border-radius: 8px; /* Rounded corners on hover */
+}
+
+.indicator {
+  margin-left: 5px; /* Space between label and indicator */
+  color: #fff; /* White color for indicator */
+}
+
+.submenu {
+  display: none; /* Hide by default */
+  max-height: 0; /* Start collapsed */
+  overflow: hidden; /* Prevent overflow */
+  transition: max-height 0.3s ease-in-out; /* Smooth transition */
+}
+
+.submenu li {
+  padding: 8px 30px; /* Indent submenu items */
+  color: #fff; /* White text for submenu items */
+}
+
+.submenu li:hover {
+  background-color: #3a3a3a; /* Darker gray on hover for submenu */
+  border-radius: 8px; /* Rounded corners on hover */
+}
+
+ul > li:hover > .submenu {
+  display: block; /* Show submenu on hover */
+  max-height: 200px; /* Adjust based on expected content height */
+}
+
+.right-menu {
+  display: flex; /* Use flex for right-side menu */
+}
+
+.right-menu li {
+  margin-left: 20px; /* Space between items */
+  padding: 10px 0; /* Padding for right menu items */
+  color: #fff; /* White text for right menu items */
+  transition: color 0.3s; /* Smooth color transition */
+}
+
+.right-menu li:hover {
+  text-decoration: underline; /* Underline on hover */
+  color: #ddd; /* Lighter color on hover for right menu */
+}
+
+/* Ensure links appear as text */
+a {
+  color: #fff; /* White color for links */
+  text-decoration: none; /* Remove underline */
+  transition: color 0.3s; /* Smooth color transition */
+}
+
+a:hover {
+  color: #ddd; /* Lighter color on hover */
+}
+
+@media (max-width: 768px) {
+  .right-menu {
+    display: none; /* Hide right menu on smaller screens */
+  }
+}
