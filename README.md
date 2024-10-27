@@ -30,3 +30,65 @@ The `backend-server` folder contains a Node.js application that serves as the ba
    npm run start
    ```
 4. The server will run on http://localhost:3000
+
+#### Web Socket Endpoints
+
+To test the WebSocket connection:
+
+1. Use a WebSocket client (like the browser console or a tool like Postman).
+
+2. Connect to the WebSocket server:
+   ```bash
+   const socket = new WebSocket('ws://localhost:3000');
+   ```
+3. Listen for messages:
+   ```bash
+   socket.onmessage = function(event) {
+        console.log('Message from server ', event.data);
+    };
+   ```
+4. Send messages to the server:
+   - To request the current price:
+   ```bash
+   socket.send(JSON.stringify({ type: 'GetPrice' }));
+   ```
+   - To accept a price (replace guid with the actual GUID):
+   ```bash
+   socket.send(JSON.stringify({ type: 'AcceptPrice', guid: 'your-guid-here' }));
+   ```
+   - To get the updated list of orders:
+   ```bash
+   socket.send(JSON.stringify({ type: 'GetOrders' }));
+   ```
+
+### React UI
+
+The react-ui folder contains the React frontend application that interacts with the backend server. It provides a user interface for displaying prices, accepting orders, and receiving real-time updates.
+
+#### Features
+
+Responsive Design: The UI adapts to different screen sizes.
+Real-Time Updates: Receive updates for prices and orders as they occur.
+User-Friendly Interface: Simple navigation and intuitive layout for ease of use.
+
+Getting Started
+
+Navigate to the react-ui directory:
+
+```bash
+cd react-ui
+```
+
+Install dependencies:
+
+```bash
+npm i
+```
+
+Start the React application:
+
+```bash
+npm start
+```
+
+The application will typically run on http://localhost:3000 if the backend is not running on that port. If the backend server is on port 3000, the React app will run on http://localhost:3001 automatically to avoid conflicts.
