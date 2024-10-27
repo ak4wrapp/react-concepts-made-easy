@@ -4,7 +4,8 @@ Welcome to the **React Concepts Made Easy** project! This repository is designed
 
 ## Project Structure
 
-### Backend Server
+<details>
+<summary><strong>Backend Server</strong></summary>
 
 The `backend-server` folder contains a Node.js application that serves as the backend for the project. It provides a WebSocket server for real-time updates and an HTTP API for fetching data.
 
@@ -110,7 +111,9 @@ To test the WebSocket connection:
   };
   ```
 
-### React UI
+  </details>
+  <details> 
+  <summary><strong>React UI</strong></summary>
 
 The react-ui folder contains the React frontend application that interacts with the backend server. It provides a user interface for displaying prices, accepting orders, and receiving real-time updates.
 
@@ -141,3 +144,5 @@ npm start
 ```
 
 The application will typically run on http://localhost:3000 if the backend is not running on that port. If the backend server is on port 3000, the React app will run on http://localhost:3001 automatically to avoid conflicts.
+
+</details>
