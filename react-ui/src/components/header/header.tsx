@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import "./Header.css";
+import "./header.css";
 import { navLinks } from "../../config/top-navigation-config"; // Navbar items
 import { menuLinks } from "../../config/menu-navigation-config"; // Menu items
 import { NavItem } from "../../config/types"; // Import NavItem type
@@ -15,7 +15,10 @@ const Header: React.FC = () => {
   };
 
   const handleClickOutside = (event: MouseEvent) => {
-    if (headerRef.current && !headerRef.current.contains(event.target as Node)) {
+    if (
+      headerRef.current &&
+      !headerRef.current.contains(event.target as Node)
+    ) {
       setIsOpen(false);
       setActiveSubmenu(null);
     }
@@ -47,7 +50,7 @@ const Header: React.FC = () => {
           <ul>
             {menuLinks.map((link: NavItem, index: number) => (
               <li key={index}>
-                <div onClick={() => handleSubmenuToggle(index)}>
+                <div onMouseOver={() => handleSubmenuToggle(index)}>
                   {link.path ? (
                     <Link to={link.path} onClick={toggleSidebar}>
                       {link.label}

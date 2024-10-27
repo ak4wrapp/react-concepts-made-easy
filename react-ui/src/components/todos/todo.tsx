@@ -31,7 +31,11 @@ export const Todo: React.FC<ITodoProps> = ({
       >
         {item.label}
       </span>
-      <span>{item.state === TodoState.Complete ? "Complete" : "Pending"}</span>
+      <span
+        className={item.state === TodoState.Complete ? "complete" : "pending"}
+      >
+        {item.state === TodoState.Complete ? "Complete" : "Pending"}
+      </span>{" "}
       <div>
         <button onClick={() => toggleToStatus(item)}>
           {item.state === TodoState.Complete ? "Undone" : "Done"}

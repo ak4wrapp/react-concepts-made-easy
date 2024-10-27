@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { ITodo, Todo, TodoState } from "./todo";
-import './todos.css';
+import "./todos.css";
 
 const Todos = () => {
   const [todos, setTodos] = useState<ITodo[]>([]);
@@ -35,11 +35,12 @@ const Todos = () => {
     }
   };
 
-  const onClickedAddTodo = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  const onClickedAddTodo = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
     addTodo();
   };
+
   const addTodo = () => {
     const newTodoText = newTodoRef.current?.value;
 
@@ -61,9 +62,7 @@ const Todos = () => {
     <div>
       <div>
         <input type="text" ref={newTodoRef} onKeyDown={onKeyDown}></input>
-        <a href="#" onClick={onClickedAddTodo}>
-          Add new Todo
-        </a>
+        <button onClick={onClickedAddTodo}>Add new Todo</button>
       </div>
       <div>
         <ul>

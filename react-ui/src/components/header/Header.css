@@ -1,5 +1,3 @@
-/* Header.css */
-
 .header-container {
   position: relative;
   width: 100%;
@@ -75,12 +73,17 @@ ul > li {
 .menu > ul > li {
   padding: 12px 20px; /* Increased padding for menu items */
   color: #fff; /* White text for menu items */
-  transition: background-color 0.3s; /* Smooth background transition */
+  transition: background-color 0.3s, font-weight 0.3s; /* Smooth background and font weight transition */
 }
 
 .menu > ul > li:hover {
   background-color: #3a3a3a; /* Darker gray on hover */
   border-radius: 8px; /* Rounded corners on hover */
+}
+
+/* Apply bold effect only to top-level menu items on hover */
+.menu > ul > li:hover {
+  font-weight: bold; /* Make text bold on hover */
 }
 
 .indicator {
@@ -98,11 +101,14 @@ ul > li {
 .submenu li {
   padding: 8px 30px; /* Indent submenu items */
   color: #fff; /* White text for submenu items */
+  font-weight: normal; /* Normal weight for submenu items by default */
+  transition: font-weight 0.3s; /* Smooth font weight transition */
 }
 
 .submenu li:hover {
   background-color: #3a3a3a; /* Darker gray on hover for submenu */
   border-radius: 8px; /* Rounded corners on hover */
+  font-weight: bold; /* Make submenu items bold on hover */
 }
 
 ul > li:hover > .submenu {
@@ -118,12 +124,13 @@ ul > li:hover > .submenu {
   margin-left: 20px; /* Space between items */
   padding: 10px 0; /* Padding for right menu items */
   color: #fff; /* White text for right menu items */
-  transition: color 0.3s; /* Smooth color transition */
+  transition: color 0.3s, font-weight 0.3s; /* Smooth color and font weight transition */
 }
 
 .right-menu li:hover {
   text-decoration: underline; /* Underline on hover */
   color: #ddd; /* Lighter color on hover for right menu */
+  font-weight: bold; /* Make text bold on hover */
 }
 
 /* Ensure links appear as text */
