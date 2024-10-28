@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import "./header.css";
-import { navLinks } from "../../config/top-navigation-config"; // Navbar items
-import { menuLinks } from "../../config/menu-navigation-config"; // Menu items
-import { NavItem } from "../../config/types"; // Import NavItem type
+import { menuLinks } from "../../../config/menu-navigation-config";
+import { navLinks } from "../../../config/top-navigation-config";
+import { NavItem } from "../../../types/nav-item";
 
 const Header: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);

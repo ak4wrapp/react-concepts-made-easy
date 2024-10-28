@@ -1,8 +1,8 @@
 // src/navConfig.ts
 
-import About from "../components/about";
-import Contact from "../components/contact";
-import { NavItem } from "./types";
+import About from "../components/generic/about";
+import Contact from "../components/generic/contact";
+import { NavItem } from "../types/nav-item";
 
 export const navLinks: NavItem[] = [
   {
@@ -16,5 +16,3 @@ export const navLinks: NavItem[] = [
     component: Contact, // Contact component
   },
 ];
-
-// You can still define routes separately if needed, but this structure keeps it organized.

@@ -1,9 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { navLinks } from "./config/top-navigation-config"; // Navigation links
 import { menuLinks } from "./config/menu-navigation-config"; // Menu links
-import Header from "./components/header/header";
-import Home from "./components/home"; // Import Home component
+import Home from "./components/generic/home"; // Import Home component
 import "./App.css";
+import Header from "./components/generic/header/header";
 
 // Function to recursively get routes from navLinks and menuLinks
 const renderRoutes = (links) => {

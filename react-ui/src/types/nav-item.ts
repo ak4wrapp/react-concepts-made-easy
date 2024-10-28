@@ -1,4 +1,3 @@
-
 export interface NavItem {
   label: string;
   path?: string; // Optional, as some items may not have a path
