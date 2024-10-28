@@ -1,0 +1,27 @@
+/* styles.css */
+
+.parent {
+  background-color: #e0f7fa;
+  border: 1px solid black;
+  padding: 20px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.child-container {
+  background-color: #ffffe0;
+  margin: 10px;
+  border-radius: 5px;
+}
+
+.child {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid black;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.child-button {
+  margin-top: 8px;
+}

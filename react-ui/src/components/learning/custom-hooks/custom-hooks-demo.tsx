@@ -12,7 +12,7 @@ function CustomHooksDemo() {
     margin: "20px",
     border: "1px solid #ccc",
     borderRadius: "8px",
-    backgroundColor: "#f9f9f9",
+    /* backgroundColor: "#f9f9f9", /* Background color */
     boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
     textAlign: "center",
   };

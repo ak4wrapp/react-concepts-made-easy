@@ -1,5 +1,7 @@
-import ParentWithUseCallback from "./with-use-callback";
-import ParentWithoutUseCallback from "./without-use-callback";
+import {
+  ParentWithUseCallback,
+  ParentWithoutUseCallback,
+} from "./use-callback";
 
 const UseCallbackDemo = () => {
   return (
