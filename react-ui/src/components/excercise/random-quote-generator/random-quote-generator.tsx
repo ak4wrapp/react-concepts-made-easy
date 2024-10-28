@@ -10,7 +10,7 @@ interface Quote {
 }
 
 const RandomQuoteGenerator: React.FC = () => {
-  const [quote, setQuote] = useState<Quote | null>(null); // Specify the type
+  const [quote, setQuote] = useState<Quote | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -49,21 +49,24 @@ const RandomQuoteGenerator: React.FC = () => {
     fetchQuote(); // Call fetchQuote to get a new quote
   };
 
-  if (loading) return <div>Loading...</div>; // Show loading state
-
   return (
     <div className="container">
       <div className="quote-box">
-        <span className="material-icons refresh-icon" onClick={fetchNewQuote}>
-          refresh
-        </span>
+        {loading && <div>Loading...</div>}
+        {!loading && (
+          <span className="material-icons refresh-icon" onClick={fetchNewQuote}>
+            refresh
+          </span>
+        )}
         {!!error ? (
           <div className="error">Error fetching quote: {error}</div>
         ) : (
-          <>
-            <p>{quote?.content}</p>
-            <p>- {quote?.originator.name}</p>
-          </>
+          !loading && (
+            <>
+              <p>{quote?.content}</p>
+              <p>- {quote?.originator.name}</p>
+            </>
+          )
         )}
       </div>
     </div>
