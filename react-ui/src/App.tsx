@@ -3,32 +3,24 @@ import { navLinks } from "./config/top-navigation-config"; // Navigation links
 import { menuLinks } from "./config/menu-navigation-config"; // Menu links
 import Header from "./components/header/header";
 import Home from "./components/home"; // Import Home component
-import './App.css';
+import "./App.css";
 
-// Function to get routes from navLinks and menuLinks
-const renderRoutes = () => {
-  const routes = [...navLinks, ...menuLinks]; // Combine navLinks and menuLinks
+// Function to recursively get routes from navLinks and menuLinks
+const renderRoutes = (links) => {
+  return links.map((link) => {
+    if (link.path && link.component) {
+      return (
+        <Route key={link.path} path={link.path} element={<link.component />} />
+      );
+    }
 
-  return (
-    <>
-      {routes.map((link) => {
-        if (link.path && link.component) {
-          return <Route key={link.path} path={link.path} element={<link.component />} />;
-        }
+    // Handle submenu recursively
+    if (link.submenu) {
+      return renderRoutes(link.submenu);
+    }
 
-        // Handle submenu
-        if (link.submenu) {
-          return link.submenu.map((subLink) => (
-            subLink.path && subLink.component ? (
-              <Route key={subLink.path} path={subLink.path} element={<subLink.component />} />
-            ) : null
-          ));
-        }
-
-        return null;
-      })}
-    </>
-  );
+    return null;
+  });
 };
 
 function App() {
@@ -39,7 +31,8 @@ function App() {
         <div className="content">
           <Routes>
             <Route path="/" element={<Home />} /> {/* Default route to Home */}
-            {renderRoutes()} {/* Dynamic route rendering from navLinks and menuLinks */}
+            {renderRoutes([...navLinks, ...menuLinks])}{" "}
+            {/* Dynamic route rendering from navLinks and menuLinks */}
           </Routes>
         </div>
       </div>

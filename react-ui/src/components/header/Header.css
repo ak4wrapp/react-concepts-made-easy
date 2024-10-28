@@ -47,17 +47,14 @@
   position: absolute; /* Position the menu below the header */
   top: 65px; /* Adjust based on header height */
   left: 0;
-  width: 100%; /* Full width */
   background-color: #212121; /* Dark background for menu */
   border-radius: 8px; /* Rounded corners for the menu */
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Softer shadow for the dropdown */
-  transition: max-height 0.3s ease-in-out; /* Smooth transition */
-  overflow: hidden; /* Prevent overflow */
+  min-width: 150px; /* Minimum width for the menu */
 }
 
 .menu.show {
   display: block; /* Show when toggled */
-  max-height: 500px; /* Set a max-height to allow transition */
 }
 
 ul {
@@ -74,15 +71,12 @@ ul > li {
   padding: 12px 20px; /* Increased padding for menu items */
   color: #fff; /* White text for menu items */
   transition: background-color 0.3s, font-weight 0.3s; /* Smooth background and font weight transition */
+  white-space: nowrap; /* Prevent text wrapping */
 }
 
 .menu > ul > li:hover {
   background-color: #3a3a3a; /* Darker gray on hover */
   border-radius: 8px; /* Rounded corners on hover */
-}
-
-/* Apply bold effect only to top-level menu items on hover */
-.menu > ul > li:hover {
   font-weight: bold; /* Make text bold on hover */
 }
 
@@ -93,9 +87,16 @@ ul > li {
 
 .submenu {
   display: none; /* Hide by default */
-  max-height: 0; /* Start collapsed */
-  overflow: hidden; /* Prevent overflow */
-  transition: max-height 0.3s ease-in-out; /* Smooth transition */
+  position: absolute; /* Position relative to parent li */
+  top: 0; /* Align submenu with the top of the parent item */
+  left: 100%; /* Position to the right of the parent item */
+  background-color: #212121; /* Same background for submenu */
+  border-radius: 8px; /* Rounded corners for submenu */
+  z-index: 1001; /* Ensure submenu is above other content */
+}
+
+ul > li:hover > .submenu {
+  display: block; /* Show submenu on hover */
 }
 
 .submenu li {
@@ -103,17 +104,13 @@ ul > li {
   color: #fff; /* White text for submenu items */
   font-weight: normal; /* Normal weight for submenu items by default */
   transition: font-weight 0.3s; /* Smooth font weight transition */
+  white-space: nowrap; /* Prevent text wrapping for submenu items */
 }
 
 .submenu li:hover {
   background-color: #3a3a3a; /* Darker gray on hover for submenu */
   border-radius: 8px; /* Rounded corners on hover */
   font-weight: bold; /* Make submenu items bold on hover */
-}
-
-ul > li:hover > .submenu {
-  display: block; /* Show submenu on hover */
-  max-height: 200px; /* Adjust based on expected content height */
 }
 
 .right-menu {

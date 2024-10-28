@@ -1,7 +1,9 @@
 import Home from "../components/home";
 import NetworkStatusCheck from "../components/network-status-check/network-status-check";
-import Todos from "../components/todos/todos";
+import Todos from "../components/excercise/todos/todos";
 import { NavItem } from "./types";
+import SimpleCounter from "../components/excercise/simple-counter/simple-counter";
+import RandomQuoteGenerator from "../components/excercise/random-quote-generator/random-quote-generator";
 
 export const menuLinks: NavItem[] = [
   {
@@ -18,9 +20,24 @@ export const menuLinks: NavItem[] = [
         component: NetworkStatusCheck, // Replace with the actual component for Network Check
       },
       {
-        label: "Create a Todos",
-        path: "/learning/todos",
-        component: Todos,
+        label: "Coding Excercises",
+        submenu: [
+          {
+            label: "Create a Todos",
+            path: "/learning/excercise/todos",
+            component: Todos,
+          },
+          {
+            label: "A Simple Counter",
+            path: "/learning/excercise/simple-counter",
+            component: SimpleCounter,
+          },
+          {
+            label: "Random Quote Generator",
+            path: "/learning/excercise/random-quote-generator",
+            component: RandomQuoteGenerator,
+          },
+        ],
       },
       {
         label: "Additional Resources",

@@ -1,0 +1,13 @@
+.container {
+  display: flex;
+  flex-direction: row;
+
+  > button {
+    margin: 0 10px;
+  }
+
+  > button:disabled {
+    opacity: 0.5; /* Makes the button look faded */
+    cursor: not-allowed; /* Changes the cursor to indicate it's not clickable */
+  }
+}

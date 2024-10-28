@@ -24,8 +24,13 @@ const Header: React.FC = () => {
     }
   };
 
-  const handleSubmenuToggle = (index: number) => {
-    setActiveSubmenu((prev) => (prev === index ? null : index));
+  const handleSubmenuMouseEnter = (index: number) => {
+    setActiveSubmenu(index);
+  };
+
+  const handleMenuItemClick = () => {
+    setIsOpen(false); // Close the menu when an item is clicked
+    setActiveSubmenu(null); // Reset active submenu
   };
 
   useEffect(() => {
@@ -49,10 +54,13 @@ const Header: React.FC = () => {
         <div className={`menu ${isOpen ? "show" : ""}`}>
           <ul>
             {menuLinks.map((link: NavItem, index: number) => (
-              <li key={index}>
-                <div onMouseOver={() => handleSubmenuToggle(index)}>
+              <li
+                key={index}
+                onMouseEnter={() => handleSubmenuMouseEnter(index)}
+              >
+                <div>
                   {link.path ? (
-                    <Link to={link.path} onClick={toggleSidebar}>
+                    <Link to={link.path} onClick={handleMenuItemClick}>
                       {link.label}
                       {link.submenu && <span className="indicator"> ➤ </span>}
                     </Link>
@@ -67,12 +75,45 @@ const Header: React.FC = () => {
                   <ul className="submenu">
                     {link.submenu.map((subLink: NavItem, subIndex: number) => (
                       <li key={subIndex}>
-                        {subLink.path ? (
-                          <Link to={subLink.path} onClick={toggleSidebar}>
-                            {subLink.label}
-                          </Link>
-                        ) : (
-                          <span>{subLink.label}</span>
+                        <div>
+                          {subLink.path ? (
+                            <Link
+                              to={subLink.path}
+                              onClick={handleMenuItemClick}
+                            >
+                              {subLink.label}
+                              {subLink.submenu && (
+                                <span className="indicator"> ➤ </span>
+                              )}
+                            </Link>
+                          ) : (
+                            <span>
+                              {subLink.label}
+                              {subLink.submenu && (
+                                <span className="indicator"> ➤ </span>
+                              )}
+                            </span>
+                          )}
+                        </div>
+                        {subLink.submenu && (
+                          <ul className="submenu">
+                            {subLink.submenu.map(
+                              (childLink: NavItem, childIndex: number) => (
+                                <li key={childIndex}>
+                                  {childLink.path ? (
+                                    <Link
+                                      to={childLink.path}
+                                      onClick={handleMenuItemClick}
+                                    >
+                                      {childLink.label}
+                                    </Link>
+                                  ) : (
+                                    <span>{childLink.label}</span>
+                                  )}
+                                </li>
+                              )
+                            )}
+                          </ul>
                         )}
                       </li>
                     ))}
@@ -86,7 +127,9 @@ const Header: React.FC = () => {
           {navLinks.map((link: NavItem, index: number) => (
             <li key={index}>
               {link.path ? (
-                <Link to={link.path}>{link.label}</Link>
+                <Link to={link.path} onClick={handleMenuItemClick}>
+                  {link.label}
+                </Link>
               ) : (
                 <span>{link.label}</span>
               )}
