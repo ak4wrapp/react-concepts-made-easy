@@ -18,8 +18,8 @@ export function useNetworkStatus() {
 
     // Clean up/UnSubscribing
     return () => {
-      window.addEventListener("online", handleConnected);
-      window.addEventListener("offline", handleDisconected);
+      window.removeEventListener("online", handleConnected);
+      window.removeEventListener("offline", handleDisconected);
     };
   }, []);
 
