@@ -22,11 +22,17 @@
   cursor: pointer; /* Pointer cursor on hover */
   color: #4a90e2; /* Color for the icon */
   font-size: 24px; /* Size of the icon */
-  transition: color 0.3s; /* Smooth transition for hover effect */
+  transition: color 0.3s, opacity 0.3s; /* Smooth transition for hover and disabled effects */
 }
 
 .refresh-icon:hover {
   color: #357ab8; /* Darker shade on hover */
+}
+
+.refresh-icon.disabled {
+  color: #b0c4de; /* Light color to indicate disabled state */
+  cursor: not-allowed; /* Not-allowed cursor when disabled */
+  opacity: 0.5; /* Slightly faded appearance */
 }
 
 .quote-text {
