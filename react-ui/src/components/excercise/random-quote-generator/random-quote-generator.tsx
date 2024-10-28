@@ -14,7 +14,7 @@ const RandomQuoteGenerator: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchQuote = async () => {
+  const fetchQuote = () => {
     const url =
       "https://quotes15.p.rapidapi.com/quotes/random/?language_code=en";
     const options = {
@@ -25,19 +25,25 @@ const RandomQuoteGenerator: React.FC = () => {
       },
     };
 
-    try {
-      const response = await fetch(url, options);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const result = await response.json();
-      setQuote(result); // Set the fetched quote
-      setError(null);
-    } catch (error: any) {
-      setError(error.toString()); // Set error state
-    } finally {
-      setLoading(false); // Set loading to false after fetching
-    }
+    setLoading(true); // Set loading to true while fetching
+
+    fetch(url, options)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((result) => {
+        setQuote(result); // Set the fetched quote
+        setError(null);
+      })
+      .catch((error) => {
+        setError(error.toString()); // Set error state
+      })
+      .finally(() => {
+        setLoading(false); // Set loading to false after fetching
+      });
   };
 
   useEffect(() => {
@@ -45,7 +51,6 @@ const RandomQuoteGenerator: React.FC = () => {
   }, []); // Run only once when the component mounts
 
   const fetchNewQuote = () => {
-    setLoading(true); // Set loading to true while fetching a new quote
     fetchQuote(); // Call fetchQuote to get a new quote
   };
 
