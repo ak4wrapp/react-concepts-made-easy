@@ -1,7 +1,9 @@
 import { NavItem } from "../../types/nav-item";
 import CustomHooksDemo from "./custom-hooks/custom-hooks-demo";
 import HOCUsageDemo from "./hight-order-components/hoc-usage-demo";
+import Hooks from "./hooks/hooks";
 import UseCallbackDemo from "./use-callback/use-callback-demo";
+import UseContextDemo from "./use-context/use-context-demo";
 
 const learningMenuLinks: NavItem[] = [
   {
@@ -18,9 +20,19 @@ const learningMenuLinks: NavItem[] = [
         component: HOCUsageDemo,
       },
       {
+        label: "Hooks",
+        path: "/learning/excercise/hooks",
+        component: Hooks,
+      },
+      {
         label: "Use Callback",
         path: "/learning/use-callback-demo",
         component: UseCallbackDemo,
+      },
+      {
+        label: "Use Context",
+        path: "/learning/excercise/use-context",
+        component: UseContextDemo,
       },
     ],
   },
