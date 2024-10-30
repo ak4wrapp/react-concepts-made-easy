@@ -2,7 +2,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import "./OrderTable.css"; // Import the OrderTable styles
 import Order from "./Order"; // Import the Order component
-import useWebSocket from "./useWebSocket"; // Import the custom hook
+import useWebSocket from "../custom-hooks/useWebSocket"; // Import the custom hook
 
 interface OrderData {
   timestamp: string;

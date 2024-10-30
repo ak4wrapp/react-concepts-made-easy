@@ -1,7 +1,7 @@
 // ProductList.tsx
 import React, { useEffect, useState, useCallback } from "react";
 import "./ProductList.css"; // Import the ProductList styles
-import useWebSocket from "./useWebSocket"; // Import the custom hook
+import useWebSocket from "../custom-hooks/useWebSocket"; // Import the custom hook
 
 interface Product {
   productId: string;

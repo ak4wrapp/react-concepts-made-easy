@@ -1,8 +1,8 @@
 // WebSocketComponent.tsx
 import React from "react";
 import "./WebSocketComponent.css"; // Import the main styles
-import ProductList from "./ProductList";
-import OrderTable from "./OrderTable";
+import ProductList from "./components/ProductList";
+import OrderTable from "./components/OrderTable";
 
 const WebSocketComponent: React.FC = () => {
   return (
