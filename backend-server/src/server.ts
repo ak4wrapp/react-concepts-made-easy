@@ -1,6 +1,6 @@
 import * as http from "http";
 import { requestHandler } from "./endpoints";
-import { setupWebSocketServer } from "./websocket/wsServer";
+import { setupWebSocketServer } from "./websocket";
 
 const server = http.createServer(requestHandler);
 

@@ -14,6 +14,7 @@ interface Order {
   productId: string;
   price: number;
   guid: string; // Added GUID to the Order interface
+  timestamp: string; // Added property for timestamp
 }
 
 interface Product {
@@ -25,31 +26,30 @@ interface Product {
 const orders: Order[] = [];
 const products: Record<string, Product> = {
   product1: { price: 100, changeFrequency: 2000 },
-  product2: { price: 200, changeFrequency: 5000 },
+  product2: { price: 200, changeFrequency: 1000 },
+  product3: { price: 310, changeFrequency: 500 },
+  product4: { price: 854, changeFrequency: 700 },
 };
 
 // Store the last known prices to detect changes
 const lastKnownPrices: Record<string, number> = {
   product1: products["product1"].price,
   product2: products["product2"].price,
+  product3: products["product3"].price,
+  product4: products["product4"].price,
 };
 
 export const setupWebSocketServer = (server: HttpServer) => {
   const wss = new WebSocketServer({ server });
 
-  // Function to update price for each product
   const updatePriceForProduct = (productId: string) => {
     const product = products[productId];
-
-    // Randomly change price for demonstration
     const newPrice =
       product.price +
       (Math.random() > 0.5 ? 1 : -1) * Math.floor(Math.random() * 10);
-    product.price = Math.max(newPrice, 0); // Ensure price doesn't go negative
+    product.price = Math.max(newPrice, 0);
 
-    // Check if the price has changed
     if (product.price !== lastKnownPrices[productId]) {
-      // Generate a new GUID for the price change
       const newGUID = generateGUID();
       product.currentGUID = newGUID;
 
@@ -57,10 +57,9 @@ export const setupWebSocketServer = (server: HttpServer) => {
         type: "PriceUpdate",
         productId,
         price: product.price,
-        guid: newGUID, // Include GUID in the price update
+        guid: newGUID,
       };
 
-      // Notify all clients about the price change
       wss.clients.forEach((client) => {
         if (
           client instanceof WebSocket &&
@@ -70,15 +69,12 @@ export const setupWebSocketServer = (server: HttpServer) => {
         }
       });
 
-      // Update the last known price
       lastKnownPrices[productId] = product.price;
     }
 
-    // Schedule the next update based on frequency
     setTimeout(() => updatePriceForProduct(productId), product.changeFrequency);
   };
 
-  // Start updating prices for each product
   for (const productId in products) {
     updatePriceForProduct(productId);
   }
@@ -91,27 +87,37 @@ export const setupWebSocketServer = (server: HttpServer) => {
 
       switch (data.type) {
         case "GetPrice":
-          // Handle GetPrice request
           const priceResponse = {
             type: "PriceResponse",
             productId: data.productId,
             price: products[data.productId]?.price || null,
-            guid: products[data.productId]?.currentGUID || null, // Send the current GUID
+            guid: products[data.productId]?.currentGUID || null,
           };
           ws.send(JSON.stringify(priceResponse));
           break;
 
+        case "GetProducts":
+          const productsResponse = {
+            type: "ProductsResponse",
+            products: Object.keys(products).map((productId) => ({
+              productId,
+              price: products[productId].price,
+              guid: products[productId].currentGUID || generateGUID(),
+            })),
+          };
+          ws.send(JSON.stringify(productsResponse));
+          break;
+
         case "AcceptPrice":
-          // Handle AcceptPrice request (create an order)
           const newOrder: Order = {
             productId: data.productId,
             price: products[data.productId]?.price || 0,
-            guid: data.guid, // Accept the GUID from the request
+            guid: data.guid,
+            timestamp: new Date().toISOString(), // Capture the current time
           };
           orders.push(newOrder);
           console.log("New order created:", newOrder);
 
-          // Notify all clients about the new order
           const orderUpdate = {
             type: "OrderUpdate",
             orders,
@@ -127,10 +133,16 @@ export const setupWebSocketServer = (server: HttpServer) => {
           break;
 
         case "GetOrders":
-          // Handle GetOrders request
+          // Sort orders in descending order by timestamp
+          const sortedOrders = orders.sort((a, b) => {
+            return (
+              new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+            );
+          });
+
           const ordersResponse = {
             type: "OrdersResponse",
-            orders,
+            orders: sortedOrders,
           };
           ws.send(JSON.stringify(ordersResponse));
           break;
