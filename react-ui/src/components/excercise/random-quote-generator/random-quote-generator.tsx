@@ -37,7 +37,7 @@ const RandomQuoteGenerator: React.FC = () => {
   };
 
   const fetchQuote = () => {
-    const { url, options } = getURLAndOptionsToMakeCall(false);
+    const { url, options } = getURLAndOptionsToMakeCall(true);
 
     setLoading(true); // Set loading to true while fetching
 
