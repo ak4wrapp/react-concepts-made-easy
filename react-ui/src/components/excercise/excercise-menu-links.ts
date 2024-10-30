@@ -2,7 +2,7 @@ import { NavItem } from "../../types/nav-item";
 import RandomQuoteGenerator from "./random-quote-generator/random-quote-generator";
 import SimpleCounter from "./simple-counter/simple-counter";
 import Todos from "./todos/todos";
-import WebSocketDemo from "./web-sockets/web-sockets";
+import WebSocketComponent from "./web-sockets/WebSocketComponent";
 
 export const excerciseMenuLinks: NavItem[] = [
   {
@@ -26,7 +26,7 @@ export const excerciseMenuLinks: NavItem[] = [
       {
         label: "Web Sockets",
         path: "/learning/excercise/web-sockets",
-        component: WebSocketDemo,
+        component: WebSocketComponent,
       },
     ],
   },

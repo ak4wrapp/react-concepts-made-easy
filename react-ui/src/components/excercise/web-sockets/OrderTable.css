@@ -1,0 +1,56 @@
+/* OrderTable.css */
+#orders {
+  margin-top: 30px;
+  width: 100%;
+  border: 2px solid #4a90e2;
+  border-collapse: collapse;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+#orders thead {
+  background-color: #4a90e2;
+  color: white;
+  font-size: 0.9em;
+}
+
+#orders th,
+#orders td {
+  padding: 8px 12px;
+  text-align: left;
+  border: 1px solid #e0e0e0;
+  font-size: 0.9em;
+}
+
+#orders td {
+  font-weight: 400;
+}
+
+#ordersBody {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+#orders tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+#orders tr:hover {
+  background-color: #e7f3ff;
+}
+
+.new-order {
+  animation: newOrderEffect 1s forwards;
+}
+
+@keyframes newOrderEffect {
+  0% {
+    background-color: #ffeb3b;
+  }
+  50% {
+    background-color: #ffe57f;
+  }
+  100% {
+    background-color: transparent;
+  }
+}
