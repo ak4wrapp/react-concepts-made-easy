@@ -20,7 +20,7 @@
         color: #4a90e2;
       }
       #loader {
-        display: none; /* Hidden by default */
+        display: none;
         text-align: center;
         font-size: 1.5em;
         color: #4a90e2;
@@ -46,15 +46,15 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        cursor: pointer; /* Hand cursor for entire product div */
-        user-select: none; /* Prevent text selection */
+        cursor: pointer;
+        user-select: none;
       }
       .product:hover {
         background-color: #e7f3ff;
         transform: translateY(-3px);
       }
       .product.flash {
-        animation: flashEffect 0.5s forwards;
+        animation: flashEffect 1s forwards;
       }
       @keyframes flashEffect {
         0% {
@@ -86,10 +86,10 @@
       #orders {
         margin-top: 30px;
         width: 100%;
-        border: 2px solid #4a90e2; /* Outer border */
+        border: 2px solid #4a90e2;
         border-collapse: collapse;
         border-radius: 10px;
-        overflow: hidden; /* Clip the border-radius */
+        overflow: hidden;
       }
       #orders thead {
         background-color: #4a90e2;
@@ -98,10 +98,10 @@
       #orders th,
       #orders td {
         padding: 10px;
-        text-align: left; /* Left align text */
-        border: 1px solid #e0e0e0; /* Inner border */
-        width: 25%; /* Fixed width for equal columns */
-        box-sizing: border-box; /* Include padding in width */
+        text-align: left;
+        border: 1px solid #e0e0e0;
+        width: 25%;
+        box-sizing: border-box;
       }
       #orders th {
         font-weight: 500;
@@ -111,13 +111,13 @@
         font-weight: 400;
       }
       #ordersBody {
-        max-height: 300px; /* Increased height for scrolling */
-        overflow-y: scroll; /* Always show vertical scrollbar */
-        display: block; /* Make tbody scrollable */
+        max-height: 300px;
+        overflow-y: scroll;
+        display: block;
       }
       #orders tr {
-        display: table; /* Reset table display for rows */
-        width: 100%; /* Ensure rows fill the width */
+        display: table;
+        width: 100%;
       }
       #orders tr:nth-child(even) {
         background-color: #f2f2f2;
@@ -130,15 +130,17 @@
       }
       #orders th:first-child,
       #orders td:first-child {
-        border-left: 2px solid #4a90e2; /* Left border for first column */
+        border-left: 2px solid #4a90e2;
       }
       #orders th:last-child,
       #orders td:last-child {
-        border-right: 2px solid #4a90e2; /* Right border for last column */
+        border-right: 2px solid #4a90e2;
       }
-      /* Hide horizontal scrollbar */
       #ordersBody::-webkit-scrollbar {
-        display: none; /* Hide scrollbar */
+        display: none;
+      }
+      .flash {
+        animation: flashEffect 0.5s forwards;
       }
     </style>
   </head>
@@ -155,30 +157,39 @@
           <th>Price</th>
           <th>GUID</th>
           <th>Order Created Datetime</th>
-          <!-- New header -->
         </tr>
       </thead>
       <tbody id="ordersBody"></tbody>
     </table>
 
     <script>
-      const ws = new WebSocket("ws://localhost:3000"); // Update with your server address
+      const productWs = new WebSocket("ws://localhost:3000/products");
+      const orderWs = new WebSocket("ws://localhost:3000/orders");
 
-      ws.onopen = () => {
-        console.log("Connected to WebSocket server");
+      productWs.onopen = () => {
+        console.log("Connected to Product WebSocket server");
         document.getElementById("loader").style.display = "block";
-        ws.send(JSON.stringify({ type: "GetProducts" }));
-        ws.send(JSON.stringify({ type: "GetOrders" }));
+        productWs.send(JSON.stringify({ type: "GetProducts" }));
       };
 
-      ws.onmessage = (event) => {
+      orderWs.onopen = () => {
+        console.log("Connected to Order WebSocket server");
+        orderWs.send(JSON.stringify({ type: "GetOrders" }));
+      };
+
+      productWs.onmessage = (event) => {
         const data = JSON.parse(event.data);
         if (data.type === "ProductsResponse") {
           displayProducts(data.products);
         } else if (data.type === "PriceUpdate") {
           updateProductPrice(data.productId, data.price, data.guid);
-        } else if (data.type === "OrderUpdate") {
-          updateOrderTable(data.orders);
+        }
+      };
+
+      orderWs.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        if (data.type === "OrderAdded") {
+          appendNewOrders(data.orders);
         } else if (data.type === "OrdersResponse") {
           updateOrderTable(data.orders);
         }
@@ -195,7 +206,7 @@
                     <div class="guid">${product.guid}</div>
                 `;
           productDiv.ondblclick = (event) => {
-            event.preventDefault(); // Prevent any default action
+            event.preventDefault();
             productDiv.classList.add("flash");
             setTimeout(() => productDiv.classList.remove("flash"), 500);
             acceptPrice(product.productId, product.price, product.guid);
@@ -216,7 +227,7 @@
       }
 
       function acceptPrice(productId, price, guid) {
-        ws.send(
+        productWs.send(
           JSON.stringify({
             type: "AcceptPrice",
             productId,
@@ -235,25 +246,43 @@
 
         // Sort orders in descending order by timestamp
         const sortedOrders = orders.sort((a, b) => {
-          return (
-            new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
-          );
+          return new Date(b.timestamp) - new Date(a.timestamp);
         });
 
         sortedOrders.forEach((order) => {
           const row = document.createElement("tr");
           row.innerHTML = `
-            <td>${order.productId}</td>
-            <td>$${order.price}</td>
-            <td>${order.guid}</td>
-            <td>${order.timestamp}</td> <!-- Display the timestamp -->
-        `;
-          ordersBody.appendChild(row); // Append the new row
+                    <td>${order.productId}</td>
+                    <td>$${order.price}</td>
+                    <td>${order.guid}</td>
+                    <td>${order.timestamp}</td>
+                `;
+          ordersBody.appendChild(row);
         });
       }
 
-      ws.onclose = () => {
-        console.log("Disconnected from WebSocket server");
+      function appendNewOrders(orders) {
+        const ordersBody = document.getElementById("ordersBody");
+
+        orders.forEach((order) => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+                    <td>${order.productId}</td>
+                    <td>$${order.price}</td>
+                    <td>${order.guid}</td>
+                    <td>${order.timestamp}</td>
+                `;
+          ordersBody.insertBefore(row, ordersBody.firstChild); // Insert new row at the top
+          row.classList.add("flash"); // Add flash effect to new row
+        });
+      }
+
+      productWs.onclose = () => {
+        console.log("Disconnected from Product WebSocket server");
+      };
+
+      orderWs.onclose = () => {
+        console.log("Disconnected from Order WebSocket server");
       };
     </script>
   </body>

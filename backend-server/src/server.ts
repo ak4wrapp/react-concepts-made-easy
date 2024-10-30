@@ -1,10 +1,10 @@
 import * as http from "http";
-import { requestHandler } from "./endpoints";
-import { setupWebSocketServer } from "./websocket";
+import { setupWebSocketServer } from "./web-sockets/webSocketServer"; // New module for handling WebSocket connections
+import { requestHandler } from "./http/http-endpoints";
 
 const server = http.createServer(requestHandler);
 
-// Set up WebSocket server
+// Set up a single WebSocket server for both products and orders
 setupWebSocketServer(server);
 
 // Start the server
