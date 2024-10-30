@@ -70,18 +70,13 @@
       .product .name {
         font-size: 1.2em;
         font-weight: bold;
-        margin-bottom: 10px;
+        margin-bottom: 5px;
       }
       .product .price {
-        font-size: 2em;
+        font-size: 1.5em;
         font-weight: bold;
         color: #4caf50;
-        margin: 10px 0;
-      }
-      .product .guid {
-        font-size: 0.7em;
-        color: #888;
-        margin-top: auto;
+        margin: 5px 0;
       }
       #orders {
         margin-top: 30px;
@@ -94,39 +89,27 @@
       #orders thead {
         background-color: #4a90e2;
         color: white;
+        font-size: 0.9em;
       }
       #orders th,
       #orders td {
-        padding: 10px;
+        padding: 8px 12px;
         text-align: left;
         border: 1px solid #e0e0e0;
-        width: 25%;
-        box-sizing: border-box;
-      }
-      #orders th {
-        font-weight: 500;
-        font-size: 1em;
+        font-size: 0.9em;
       }
       #orders td {
         font-weight: 400;
       }
       #ordersBody {
         max-height: 300px;
-        overflow-y: scroll;
-        display: block;
-      }
-      #orders tr {
-        display: table;
-        width: 100%;
+        overflow-y: auto;
       }
       #orders tr:nth-child(even) {
         background-color: #f2f2f2;
       }
       #orders tr:hover {
         background-color: #e7f3ff;
-      }
-      #orders {
-        border-spacing: 0;
       }
       #orders th:first-child,
       #orders td:first-child {
@@ -136,16 +119,36 @@
       #orders td:last-child {
         border-right: 2px solid #4a90e2;
       }
-      #ordersBody::-webkit-scrollbar {
-        display: none;
-      }
       .flash {
-        animation: flashEffect 0.5s forwards;
+        animation: flashEffect 1s forwards;
+      }
+      @keyframes flashEffect {
+        0% {
+          background-color: #ffeb3b;
+        }
+        100% {
+          background-color: transparent;
+        }
+      }
+      /* Add this class to highlight new rows */
+      .new-order {
+        animation: newOrderEffect 1s forwards;
+      }
+      @keyframes newOrderEffect {
+        0% {
+          background-color: #ffeb3b;
+        }
+        50% {
+          background-color: #ffe57f;
+        }
+        100% {
+          background-color: transparent;
+        }
       }
     </style>
   </head>
   <body>
-    <h1>Product Prices</h1>
+    <h1>Product</h1>
     <div id="loader">Loading products...</div>
     <div id="products" style="display: none"></div>
 
@@ -153,10 +156,9 @@
     <table id="orders">
       <thead>
         <tr>
-          <th>Product ID</th>
+          <th>Order Created</th>
+          <th>Product</th>
           <th>Price</th>
-          <th>GUID</th>
-          <th>Order Created Datetime</th>
         </tr>
       </thead>
       <tbody id="ordersBody"></tbody>
@@ -201,10 +203,9 @@
           productDiv.id = product.productId;
           productDiv.className = "product";
           productDiv.innerHTML = `
-                    <div class="name">${product.productId}</div>
-                    <div class="price">$${product.price}</div>
-                    <div class="guid">${product.guid}</div>
-                `;
+                  <div class="name">${product.productId}</div>
+                  <div class="price">$${product.price}</div>
+              `;
           productDiv.ondblclick = (event) => {
             event.preventDefault();
             productDiv.classList.add("flash");
@@ -252,11 +253,10 @@
         sortedOrders.forEach((order) => {
           const row = document.createElement("tr");
           row.innerHTML = `
-                    <td>${order.productId}</td>
-                    <td>$${order.price}</td>
-                    <td>${order.guid}</td>
-                    <td>${order.timestamp}</td>
-                `;
+                  <td>${order.timestamp}</td>
+                  <td>${order.productId}</td>
+                  <td>$${order.price}</td>
+              `;
           ordersBody.appendChild(row);
         });
       }
@@ -267,13 +267,18 @@
         orders.forEach((order) => {
           const row = document.createElement("tr");
           row.innerHTML = `
-                    <td>${order.productId}</td>
-                    <td>$${order.price}</td>
-                    <td>${order.guid}</td>
-                    <td>${order.timestamp}</td>
-                `;
+                  <td>${order.timestamp}</td>
+                  <td>${order.productId}</td>
+                  <td>$${order.price}</td>
+              `;
           ordersBody.insertBefore(row, ordersBody.firstChild); // Insert new row at the top
-          row.classList.add("flash"); // Add flash effect to new row
+
+          // Add the new order flash effect
+          row.classList.add("new-order");
+          // Trigger the flash effect on the new row
+          setTimeout(() => {
+            row.classList.add("flash");
+          }, 0); // Ensure this runs after the row is added
         });
       }
 
