@@ -10,7 +10,7 @@ const WebSocketComponent: React.FC = () => {
       <h1>Products</h1>
       <ProductList />
       <h2>Orders</h2>
-      <OrderTable onOrdersUpdate={(orders) => console.log(orders)} />
+      <OrderTable />
     </div>
   );
 };

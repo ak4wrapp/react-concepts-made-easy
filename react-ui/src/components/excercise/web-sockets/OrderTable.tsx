@@ -1,20 +1,15 @@
-// OrderTable.tsx
 import React, { useEffect, useState } from "react";
 import "./OrderTable.css"; // Import the OrderTable styles
-import Order from "./Order";
+import Order from "./Order"; // Import the Order component
 
-interface Order {
+interface OrderData {
   timestamp: string;
   productId: string;
   price: number;
 }
 
-interface OrderTableProps {
-  onOrdersUpdate: (orders: Order[]) => void;
-}
-
-const OrderTable: React.FC<OrderTableProps> = ({ onOrdersUpdate }) => {
-  const [orders, setOrders] = useState<Order[]>([]);
+const OrderTable: React.FC = () => {
+  const [orders, setOrders] = useState<OrderData[]>([]);
 
   useEffect(() => {
     const orderWs = new WebSocket("ws://localhost:3000/orders");
@@ -38,16 +33,15 @@ const OrderTable: React.FC<OrderTableProps> = ({ onOrdersUpdate }) => {
     };
   }, []);
 
-  const updateOrderTable = (orders: Order[]) => {
+  const updateOrderTable = (orders: OrderData[]) => {
     const sortedOrders = orders.sort(
       (a, b) =>
         new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
     );
     setOrders(sortedOrders);
-    onOrdersUpdate(sortedOrders);
   };
 
-  const appendNewOrders = (newOrders: Order[]) => {
+  const appendNewOrders = (newOrders: OrderData[]) => {
     setOrders((prevOrders) => [...newOrders, ...prevOrders]);
 
     setTimeout(() => {
