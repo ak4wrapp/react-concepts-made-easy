@@ -1,23 +1,34 @@
-import React, { createContext, useContext, useState } from "react";
-import "./styles.css"; // Make sure to create this CSS file
+import React, { createContext, useContext, useState, useEffect } from "react";
+import "./styles.css"; // Ensure this CSS file is created
+import "prismjs/themes/prism-tomorrow.css"; // Dark theme
+import Prism from "prismjs";
 
 const UserContext = createContext("");
 
 const UseContextDemo = () => {
   const [user, setUser] = useState("Kirar");
 
-  const defineContextCode = `const UserContext = createContext("")`;
+  const defineContextCode = `const UserContext = createContext("");`;
   const setContextCode = `const [user, setUser] = useState("Kirar");
-  <UserContext.Provider value={user}>`;
+<UserContext.Provider value={user}>`;
+
+  useEffect(() => {
+    Prism.highlightAll(); // Highlight code after rendering
+  }, []);
+
   return (
     <>
-      <b>First Define UserContex On Global Scope</b>
-      <pre>{defineContextCode}</pre>
+      <b>First Define UserContext On Global Scope</b>
+      <pre>
+        <code className="language-javascript">{defineContextCode}</code>
+      </pre>
       <UserContext.Provider value={user}>
         <div className="parent-container">
           <h1>Parent Component</h1>
           <h2>Setting User Here</h2>
-          <pre>{setContextCode}</pre>
+          <pre>
+            <code className="language-javascript">{setContextCode}</code>
+          </pre>
           <ChildComponent />
         </div>
       </UserContext.Provider>
@@ -46,11 +57,17 @@ const GrandChildComponent = () => {
 const GreatGrandChildComponent = () => {
   const user = useContext(UserContext);
   const readingContextCode = `const user = useContext(UserContext);`;
+  const displayingUserFromContext = `<span>Hello, {user}!</span>`;
+
   return (
     <div className="great-grandchild-container">
       <h4>Great Grand Child Component</h4>
       <h5>Reading User Here</h5>
-      <pre>{readingContextCode}</pre>
+      <pre>
+        <code className="language-javascript">{readingContextCode}</code>
+        <br />
+        <code className="language-javascript">{displayingUserFromContext}</code>
+      </pre>
       <span>Hello, {user}!</span>
     </div>
   );
