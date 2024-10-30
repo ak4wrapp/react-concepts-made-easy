@@ -1,6 +1,7 @@
 // ProductList.tsx
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import "./ProductList.css"; // Import the ProductList styles
+import useWebSocket from "./useWebSocket"; // Import the custom hook
 
 interface Product {
   productId: string;
@@ -11,31 +12,29 @@ interface Product {
 const ProductList: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
-  const productWs = React.useRef<WebSocket | null>(null);
+
+  const handleMessage = useCallback((data) => {
+    console.log("Handling message:", data); // Log to verify message handling
+    if (data.type === "ProductsResponse") {
+      setProducts(data.products);
+      setLoading(false);
+    } else if (data.type === "PriceUpdate") {
+      updateProductPrice(data.productId, data.price);
+    }
+  }, []);
+
+  const { connected, sendMessage } = useWebSocket(
+    "ws://localhost:3000/products",
+    handleMessage
+  );
 
   useEffect(() => {
-    productWs.current = new WebSocket("ws://localhost:3000/products");
-
-    productWs.current.onopen = () => {
-      console.log("Connected to Product WebSocket server");
-      setLoading(true);
-      productWs.current!.send(JSON.stringify({ type: "GetProducts" }));
-    };
-
-    productWs.current.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      if (data.type === "ProductsResponse") {
-        setProducts(data.products);
-        setLoading(false);
-      } else if (data.type === "PriceUpdate") {
-        updateProductPrice(data.productId, data.price);
-      }
-    };
-
-    return () => {
-      productWs.current?.close();
-    };
-  }, []);
+    if (connected) {
+      // Ensure WebSocket is connected
+      console.log("Sending GetProducts message");
+      sendMessage({ type: "GetProducts" });
+    }
+  }, [connected, sendMessage]); // Run when loading changes
 
   const updateProductPrice = (productId: string, price: number) => {
     setProducts((prevProducts) =>
@@ -46,17 +45,13 @@ const ProductList: React.FC = () => {
   };
 
   const acceptPrice = (productId: string, price: number, guid: string) => {
-    if (productWs.current) {
-      productWs.current.send(
-        JSON.stringify({
-          type: "AcceptPrice",
-          productId,
-          price,
-          guid,
-        })
-      );
-      console.log(`Accepted price for ${productId}: $${price} (GUID: ${guid})`);
-    }
+    sendMessage({
+      type: "AcceptPrice",
+      productId,
+      price,
+      guid,
+    });
+    console.log(`Accepted price for ${productId}: $${price} (GUID: ${guid})`);
   };
 
   return (

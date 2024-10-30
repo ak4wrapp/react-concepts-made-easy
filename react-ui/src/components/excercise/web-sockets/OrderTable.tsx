@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from "react";
+// OrderTable.tsx
+import React, { useEffect, useState, useCallback } from "react";
 import "./OrderTable.css"; // Import the OrderTable styles
 import Order from "./Order"; // Import the Order component
+import useWebSocket from "./useWebSocket"; // Import the custom hook
 
 interface OrderData {
   timestamp: string;
@@ -11,27 +13,26 @@ interface OrderData {
 const OrderTable: React.FC = () => {
   const [orders, setOrders] = useState<OrderData[]>([]);
 
-  useEffect(() => {
-    const orderWs = new WebSocket("ws://localhost:3000/orders");
-
-    orderWs.onopen = () => {
-      console.log("Connected to Order WebSocket server");
-      orderWs.send(JSON.stringify({ type: "GetOrders" }));
-    };
-
-    orderWs.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      if (data.type === "OrderAdded") {
-        appendNewOrders(data.orders);
-      } else if (data.type === "OrdersResponse") {
-        updateOrderTable(data.orders);
-      }
-    };
-
-    return () => {
-      orderWs.close();
-    };
+  const handleMessage = useCallback((data) => {
+    console.log("Handling order message:", data);
+    if (data.type === "OrderAdded") {
+      appendNewOrders(data.orders);
+    } else if (data.type === "OrdersResponse") {
+      updateOrderTable(data.orders);
+    }
   }, []);
+
+  const { connected, sendMessage } = useWebSocket(
+    "ws://localhost:3000/orders",
+    handleMessage
+  );
+
+  useEffect(() => {
+    if (connected) {
+      console.log("Sending GetOrders message");
+      sendMessage({ type: "GetOrders" });
+    }
+  }, [connected, sendMessage]);
 
   const updateOrderTable = (orders: OrderData[]) => {
     const sortedOrders = orders.sort(
