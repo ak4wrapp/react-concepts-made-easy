@@ -1,58 +1,10 @@
 // ProductList.tsx
-import React, { useEffect, useState, useCallback } from "react";
+import React from "react";
 import "./ProductList.css"; // Import the ProductList styles
-import useWebSocket from "../custom-hooks/useWebSocket"; // Import the custom hook
-
-interface Product {
-  productId: string;
-  price: number;
-  guid: string;
-}
+import useProducts from "./useProducts"; // Import the new custom hook
 
 const ProductList: React.FC = () => {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  const handleMessage = useCallback((data) => {
-    console.log("Handling message:", data); // Log to verify message handling
-    if (data.type === "ProductsResponse") {
-      setProducts(data.products);
-      setLoading(false);
-    } else if (data.type === "PriceUpdate") {
-      updateProductPrice(data.productId, data.price);
-    }
-  }, []);
-
-  const { connected, sendMessage } = useWebSocket(
-    "ws://localhost:3000/products",
-    handleMessage
-  );
-
-  useEffect(() => {
-    if (connected) {
-      // Ensure WebSocket is connected
-      console.log("Sending GetProducts message");
-      sendMessage({ type: "GetProducts" });
-    }
-  }, [connected, sendMessage]); // Run when loading changes
-
-  const updateProductPrice = (productId: string, price: number) => {
-    setProducts((prevProducts) =>
-      prevProducts.map((product) =>
-        product.productId === productId ? { ...product, price } : product
-      )
-    );
-  };
-
-  const acceptPrice = (productId: string, price: number, guid: string) => {
-    sendMessage({
-      type: "AcceptPrice",
-      productId,
-      price,
-      guid,
-    });
-    console.log(`Accepted price for ${productId}: $${price} (GUID: ${guid})`);
-  };
+  const { products, loading, acceptPrice } = useProducts();
 
   return (
     <div id="products">

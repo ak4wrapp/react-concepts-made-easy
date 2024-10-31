@@ -8,6 +8,11 @@
   overflow: hidden;
 }
 
+.table-container {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
 #orders thead {
   background-color: #4a90e2;
   color: white;

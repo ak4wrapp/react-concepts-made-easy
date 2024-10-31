@@ -1,46 +1,31 @@
 /* Order.css */
+
+/* Styling for the order table */
 #orders {
   margin-top: 30px;
   width: 100%;
-  border: 2px solid #4a90e2;
-  border-collapse: collapse;
-  border-radius: 10px;
-  overflow: hidden;
+  border: 2px solid #4a90e2; /* Border color */
+  border-collapse: collapse; /* Collapse borders */
+  border-radius: 10px; /* Rounded corners */
+  overflow: hidden; /* Prevent overflow for rounded corners */
 }
 
 #orders thead {
-  background-color: #4a90e2;
-  color: white;
-  font-size: 0.9em;
+  background-color: #4a90e2; /* Header background color */
+  color: white; /* Header text color */
+  font-size: 0.9em; /* Header font size */
 }
 
 #orders th,
 #orders td {
-  padding: 8px 12px;
-  text-align: left;
-  border: 1px solid #e0e0e0;
-  font-size: 0.9em;
+  border: 1px solid #ddd; /* Cell borders */
+  padding: 8px; /* Cell padding */
+  text-align: left; /* Text alignment */
 }
 
-#orders td {
-  font-weight: 400;
-}
-
-#ordersBody {
-  max-height: 300px;
-  overflow-y: auto;
-}
-
-#orders tr:nth-child(even) {
-  background-color: #f2f2f2;
-}
-
-#orders tr:hover {
-  background-color: #e7f3ff;
-}
-
+/* Flashing effect for new orders */
 .new-order {
-  animation: newOrderEffect 1s forwards;
+  animation: newOrderEffect 1s forwards; /* Keep the effect for 1 second */
 }
 
 @keyframes newOrderEffect {
@@ -51,6 +36,6 @@
     background-color: #ffe57f;
   }
   100% {
-    background-color: transparent;
+    background-color: transparent; /* Revert back to transparent */
   }
 }

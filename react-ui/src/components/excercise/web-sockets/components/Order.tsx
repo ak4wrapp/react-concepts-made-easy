@@ -1,4 +1,3 @@
-// Order.tsx
 import React from "react";
 import "./Order.css"; // Import the Order styles
 
@@ -7,16 +6,17 @@ interface OrderProps {
   productId: string;
   price: number;
   index: number;
+  isNew: boolean; // Ensure this is included
 }
 
 const Order: React.FC<OrderProps> = ({
   timestamp,
   productId,
   price,
-  index,
+  isNew,
 }) => {
   return (
-    <tr style={{ backgroundColor: index % 2 === 0 ? "#f2f2f2" : "white" }}>
+    <tr className={isNew ? "new-order" : ""}>
       <td>{timestamp}</td>
       <td>{productId}</td>
       <td>${price}</td>
