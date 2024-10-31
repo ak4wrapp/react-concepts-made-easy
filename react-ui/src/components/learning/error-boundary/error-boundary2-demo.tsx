@@ -1,4 +1,5 @@
-import ErrorBoundary from "./error-boundary";
+import React, { useEffect } from "react";
+import ErrorBoundary2 from "./error-boundary2";
 
 const BuggyComponent: React.FC<{ raiseError: boolean }> = ({ raiseError }) => {
   if (raiseError) {
@@ -7,13 +8,13 @@ const BuggyComponent: React.FC<{ raiseError: boolean }> = ({ raiseError }) => {
   return <b>Some Child Component Here</b>;
 };
 
-const ErrorBoundaryDemo = () => {
+const ErrorBoundary2Demo = () => {
   return (
-    <ErrorBoundary>
+    <ErrorBoundary2>
       <BuggyComponent raiseError={false} />
       <BuggyComponent raiseError={true} />
-    </ErrorBoundary>
+    </ErrorBoundary2>
   );
 };
 
-export default ErrorBoundaryDemo;
+export default ErrorBoundary2Demo;
