@@ -1,5 +1,6 @@
 import { NavItem } from "../../types/nav-item";
 import CustomHooksDemo from "./custom-hooks/custom-hooks-demo";
+import ErrorBoundaryDemo from "./error-boundary/error-boundary-demo";
 import HOCUsageDemo from "./hight-order-components/hoc-usage-demo";
 import Hooks from "./hooks/hooks";
 import UseCallbackDemo from "./use-callback/use-callback-demo";
@@ -33,6 +34,11 @@ const learningMenuLinks: NavItem[] = [
         label: "Use Context",
         path: "/learning/excercise/use-context",
         component: UseContextDemo,
+      },
+      {
+        label: "Error Boundary",
+        path: "/learning/excercise/error-boundary",
+        component: ErrorBoundaryDemo,
       },
     ],
   },

@@ -9,12 +9,10 @@ import Header from "./components/generic/header/header";
 const renderRoutes = (links) => {
   return links.map((link) => {
     if (link.path && link.component) {
-      return (
-        <Route key={link.path} path={link.path} element={<link.component />} />
-      );
+      const Component = link.component;
+      return <Route key={link.path} path={link.path} element={<Component />} />;
     }
 
-    // Handle submenu recursively
     if (link.submenu) {
       return renderRoutes(link.submenu);
     }
@@ -22,7 +20,6 @@ const renderRoutes = (links) => {
     return null;
   });
 };
-
 function App() {
   return (
     <Router>

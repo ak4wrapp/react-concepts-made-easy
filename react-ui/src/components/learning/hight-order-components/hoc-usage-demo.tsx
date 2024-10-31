@@ -8,11 +8,11 @@ const HelloComponent: React.FC<{ name: string }> = ({ name }) => {
 const WrappedHelloComponent = withLoader(HelloComponent);
 
 const HOCUsageDemo: React.FC = () => {
-  const name = "Ryan";
+  const name = "User";
 
   return (
     <>
-      <WrappedHelloComponent name="Ryan" />
+      <WrappedHelloComponent name={name} />
     </>
   );
 };
