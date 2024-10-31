@@ -1,6 +1,6 @@
 // useProducts.ts
 import { useEffect, useState, useCallback } from "react";
-import useWebSocket from "../custom-hooks/useWebSocket"; // Adjust the path as necessary
+import useWebSocket from "./useWebSocket"; // Adjust the path as necessary
 
 interface Product {
   productId: string;

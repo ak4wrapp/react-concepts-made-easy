@@ -1,7 +1,7 @@
 // ProductList.tsx
 import React from "react";
 import "./ProductList.css"; // Import the ProductList styles
-import useProducts from "./useProducts"; // Import the new custom hook
+import useProducts from "../custom-hooks/useProducts"; // Import the new custom hook
 
 const ProductList: React.FC = () => {
   const { products, loading, acceptPrice } = useProducts();

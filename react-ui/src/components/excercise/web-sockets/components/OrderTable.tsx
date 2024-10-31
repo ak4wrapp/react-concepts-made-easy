@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Order from "./Order"; // Import the Order component
-import useOrders from "./useOrders"; // Import the custom hook
+import useOrders from "../custom-hooks/useOrders"; // Import the custom hook
 import "./OrderTable.css"; // Import the CSS file
 
 const OrderTable: React.FC = () => {
