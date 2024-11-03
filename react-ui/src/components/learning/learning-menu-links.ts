@@ -1,9 +1,11 @@
 import { NavItem } from "../../types/nav-item";
 import CustomHooksDemo from "./custom-hooks/custom-hooks-demo";
 import ErrorBoundaryDemo from "./error-boundary/error-boundary-demo";
+import ErrorBoundaryUsingNpmDemo from "./error-boundary/error-boundary-use-npm";
 import ErrorBoundary2Demo from "./error-boundary/error-boundary2-demo";
 import HOCUsageDemo from "./hight-order-components/hoc-usage-demo";
 import Hooks from "./hooks/hooks";
+import SuspenseDemo from "./suspense/suspense";
 import UseCallbackDemo from "./use-callback/use-callback-demo";
 import UseContextDemo from "./use-context/use-context-demo";
 
@@ -23,28 +25,38 @@ const learningMenuLinks: NavItem[] = [
       },
       {
         label: "Hooks",
-        path: "/learning/excercise/hooks",
+        path: "/learning/hooks",
         component: Hooks,
       },
       {
         label: "Use Callback",
-        path: "/learning/use-callback-demo",
+        path: "/learning/use-callback",
         component: UseCallbackDemo,
       },
       {
         label: "Use Context",
-        path: "/learning/excercise/use-context",
+        path: "/learning/use-context",
         component: UseContextDemo,
       },
       {
         label: "Error Boundar (Class Component)",
-        path: "/learning/excercise/error-boundary",
+        path: "/learning/error-boundary",
         component: ErrorBoundaryDemo,
       },
       {
         label: "Error Boundary (Functional Component)",
-        path: "/learning/excercise/error-boundary-2",
+        path: "/learning/error-boundary-2",
         component: ErrorBoundary2Demo,
+      },
+      {
+        label: "Error Boundary (useErrorBoundary)",
+        path: "/learning/error-boundary-using-npm",
+        component: ErrorBoundaryUsingNpmDemo,
+      },
+      {
+        label: "Suspense",
+        path: "/learning/suspense",
+        component: SuspenseDemo,
       },
     ],
   },

@@ -5,12 +5,10 @@ const ErrorBoundary2 = ({ children }) => {
 
   useEffect(() => {
     const errorHandler = (event) => {
-      console.error("Caught error:", event.error);
       setHasError(true);
     };
 
     const unhandledRejectionHandler = (event) => {
-      console.error("Unhandled rejection:", event.reason);
       setHasError(true);
     };
 
