@@ -6,7 +6,7 @@ import ErrorBoundary2Demo from "./error-boundary/error-boundary2-demo";
 import HOCUsageDemo from "./hight-order-components/hoc-usage-demo";
 import Hooks from "./hooks/hooks";
 import useMemoDemo from "./hooks/use-memo";
-import MobXDemoComponent from "./mob-x/mobx-counter";
+import MobXDemoComponent from "./mob-x/mobx-demo";
 import SuspenseDemo from "./suspense/suspense";
 import UseCallbackDemo from "./use-callback/use-callback-demo";
 import UseCallBackDetailedComponent from "./use-callback/use-callback-self";
