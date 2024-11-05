@@ -2,7 +2,6 @@
   padding: 2rem; /* Existing padding */
   padding-left: 32px; /* Add specific left padding */
   padding-right: 32px; /* Optional: add specific right padding */
-  margin-top: 60px; /* Adjust this based on your navbar height */
   max-width: 1200px; /* Optional: limit max width for better readability */
   margin-left: auto; /* Center the content */
   margin-right: auto; /* Center the content */

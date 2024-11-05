@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { slowMultiplication } from "../../../utils/slowMultiplication";
 import CodeBlock from "../../common/CodeBlock";
-import "./useMemoDemo.css"; // Import the CSS file for styles
+import "./use-memo.css"; // Import the CSS file for styles
 
 const useMemoDemo: React.FC = () => {
   const [number, setNumber] = useState(0);
