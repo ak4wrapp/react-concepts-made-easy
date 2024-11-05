@@ -5,6 +5,7 @@ import ErrorBoundaryUsingNpmDemo from "./error-boundary/error-boundary-use-npm";
 import ErrorBoundary2Demo from "./error-boundary/error-boundary2-demo";
 import HOCUsageDemo from "./hight-order-components/hoc-usage-demo";
 import Hooks from "./hooks/hooks";
+import useMemoDemo from "./hooks/use-memo";
 import SuspenseDemo from "./suspense/suspense";
 import UseCallbackDemo from "./use-callback/use-callback-demo";
 import UseCallBackDetailedComponent from "./use-callback/use-callback-self";
@@ -27,14 +28,25 @@ const learningMenuLinks: NavItem[] = [
       {
         label: "Hooks",
         path: "/learning/hooks",
-        component: Hooks,
+        submenu: [
+          {
+            label: "All Hooks",
+            path: "/learning/all-hooks",
+            component: Hooks,
+          },
+          {
+            label: "Use Memo Demo",
+            path: "/learning/use-memo/demo", // Child route
+            component: useMemoDemo,
+          },
+        ],
       },
       {
         label: "Use Callback",
         path: "/learning/use-callback", // Parent route
         submenu: [
           {
-            label: "Use Callback Demo", 
+            label: "Use Callback Demo",
             path: "/learning/use-callback/demo", // Child route
             component: UseCallbackDemo,
           },

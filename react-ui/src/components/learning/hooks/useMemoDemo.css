@@ -1,0 +1,65 @@
+/* Styles for the component */
+.useMemoDemo__container {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.useMemoDemo__header {
+  margin-bottom: 20px;
+}
+
+.useMemoDemo__input {
+  padding: 10px;
+  font-size: 16px;
+  width: 200px;
+  margin-bottom: 20px;
+  text-align: center;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  outline: none;
+}
+
+.useMemoDemo__toggleButton {
+  padding: 5px 15px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+  align-self: center;
+}
+
+.useMemoDemo__result {
+  padding: 20px;
+  margin-top: 20px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.useMemoDemo__result__dark {
+  border: 2px solid #444;
+  background-color: #333;
+  color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.useMemoDemo__result__light {
+  border: 2px solid #ddd;
+  background-color: #f9f9f9;
+  color: black;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.useMemoDemo__codeBlockContainer {
+  margin-bottom: 30px;
+  text-align: center;
+}
