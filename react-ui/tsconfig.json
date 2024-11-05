@@ -15,7 +15,8 @@
     "isolatedModules": true,
     "noEmit": true, // keep this if using a bundler
     "jsx": "react-jsx", // or "react" based on your React version,
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "experimentalDecorators": true // Enables decorators
   },
   "include": ["src"]
 }
