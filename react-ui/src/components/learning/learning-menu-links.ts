@@ -7,6 +7,7 @@ import HOCUsageDemo from "./hight-order-components/hoc-usage-demo";
 import Hooks from "./hooks/hooks";
 import SuspenseDemo from "./suspense/suspense";
 import UseCallbackDemo from "./use-callback/use-callback-demo";
+import UseCallBackDetailedComponent from "./use-callback/use-callback-self";
 import UseContextDemo from "./use-context/use-context-demo";
 
 const learningMenuLinks: NavItem[] = [
@@ -30,8 +31,19 @@ const learningMenuLinks: NavItem[] = [
       },
       {
         label: "Use Callback",
-        path: "/learning/use-callback",
-        component: UseCallbackDemo,
+        path: "/learning/use-callback", // Parent route
+        submenu: [
+          {
+            label: "Use Callback Demo", 
+            path: "/learning/use-callback/demo", // Child route
+            component: UseCallbackDemo,
+          },
+          {
+            label: "Use Callback + Memo Detailed",
+            path: "/learning/use-callback/detailed", // Child route
+            component: UseCallBackDetailedComponent,
+          },
+        ],
       },
       {
         label: "Use Context",

@@ -1,0 +1,73 @@
+/* General Layout */
+.content-wrapper {
+    margin: 20px;
+  }
+  
+  .collapsible-section summary {
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: #f1f1f1;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+  }
+  
+  .collapsible-section {
+    margin-bottom: 20px;
+    background-color: #fafafa;
+    border-radius: 8px;
+  }
+  
+  .collapsible-section div {
+    padding: 15px;
+    background-color: #ffffff;
+    border-radius: 8px;
+  }
+  
+  /* Description text inside each section */
+  .description p {
+    font-size: 14px;
+    color: #555;
+  }
+  
+  /* Layout for buttons */
+  .button-container {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  /* Button style */
+  button {
+    background-color: #007bff;
+    color: white;
+    border: 1px solid #0056b3;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Styling for note-like component */
+  .note {
+    display: inline-block;
+    padding: 15px 25px;
+    background-color: #fef9c3; /* Light yellow */
+    border: 1px solid #dcd800;
+    border-radius: 8px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    font-size: 14px;
+    color: #333;
+    font-weight: bold;
+    text-align: center;
+    margin: 5px;
+    max-width: 350px;
+  }
+  
