@@ -1,18 +1,37 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import ErrorBoundary2 from "./error-boundary2";
 
-const BuggyComponent: React.FC<{ raiseError: boolean }> = ({ raiseError }) => {
-  if (raiseError) {
-    throw new Error("This is a test error from SomeChildComponent!");
+const BuggyComponent: React.FC = () => {
+  const [hasError, setHasError] = useState(false);
+
+  useEffect(() => {
+    // Simulate an error after component mounts
+    setTimeout(() => {
+      setHasError(true);
+    }, 1000);
+  }, []);
+
+  if (hasError) {
+    throw new Error("This is a test error from BuggyComponent!");
   }
-  return <b>Some Child Component Here</b>;
+
+  const handleReset = () => {
+    setHasError(false); // Reset the error state
+  };
+
+  return (
+    <div>
+      <b>Some Child Component Here</b>
+      <br />
+      {hasError && <button onClick={handleReset}>Try Again</button>}
+    </div>
+  );
 };
 
 const ErrorBoundary2Demo = () => {
   return (
     <ErrorBoundary2>
-      <BuggyComponent raiseError={false} />
-      <BuggyComponent raiseError={true} />
+      <BuggyComponent />
     </ErrorBoundary2>
   );
 };

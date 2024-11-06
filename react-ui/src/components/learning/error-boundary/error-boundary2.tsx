@@ -1,34 +1,52 @@
-import React, { useEffect, useState } from "react";
+import React, { Component, ReactNode } from "react";
 
-const ErrorBoundary2 = ({ children }) => {
-  const [hasError, setHasError] = useState(false);
+interface ErrorBoundary2Props {
+  children: ReactNode; // Type the 'children' prop as ReactNode
+}
 
-  useEffect(() => {
-    const errorHandler = (event) => {
-      setHasError(true);
+interface ErrorBoundary2State {
+  hasError: boolean;
+  errorMessage: string;
+}
+
+class ErrorBoundary2 extends Component<
+  ErrorBoundary2Props,
+  ErrorBoundary2State
+> {
+  state: ErrorBoundary2State = {
+    hasError: false,
+    errorMessage: "",
+  };
+
+  static getDerivedStateFromError(error: Error) {
+    // Update state to show the fallback UI
+    return {
+      hasError: true,
+      errorMessage: error.message,
     };
-
-    const unhandledRejectionHandler = (event) => {
-      setHasError(true);
-    };
-
-    window.addEventListener("error", errorHandler);
-    window.addEventListener("unhandledrejection", unhandledRejectionHandler);
-
-    return () => {
-      window.removeEventListener("error", errorHandler);
-      window.removeEventListener(
-        "unhandledrejection",
-        unhandledRejectionHandler
-      );
-    };
-  }, []);
-
-  if (hasError) {
-    return <h2>Something went wrong.</h2>;
   }
 
-  return children;
-};
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    // Log the error or send it to a service
+    console.log(error, errorInfo);
+  }
+
+  handleReset = () => {
+    this.setState({ hasError: false, errorMessage: "" });
+  };
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div>
+          <h2>Something went wrong: {this.state.errorMessage}</h2>
+          <button onClick={this.handleReset}>Reset</button>
+        </div>
+      );
+    }
+
+    return this.props.children; // Render the children if no error occurred
+  }
+}
 
 export default ErrorBoundary2;
