@@ -10,6 +10,7 @@ class MobXCounterStore {
       count: observable, // Mark 'count' as an observable
       increment: action, // Mark 'increment' as an action
       decrement: action, // Mark 'decrement' as an action
+      reset: action, // Mark 'reset' as an action
     });
   }
 
@@ -19,6 +20,10 @@ class MobXCounterStore {
 
   decrement() {
     this.count--;
+  }
+
+  reset() {
+    this.count = 0;
   }
 }
 

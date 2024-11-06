@@ -1,52 +1,53 @@
-/* Layout for the demo container */
 .demo-container {
   display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 20px;
+  flex-direction: column;
+  gap: 40px; /* Adding space between sections */
+  padding: 20px;
 }
 
-/* Each component container will take equal space */
-.component-container {
-  flex: 1;
-  min-width: 300px; /* Ensures that each component has a minimum width */
-  box-sizing: border-box;
-  padding: 20px;
-  border: 1px solid #ddd;
+.side-by-side-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.left-section,
+.right-section {
+  width: 45%; /* Each section takes up 48% of the container width */
+  padding: 15px;
+  border: 1px solid #ccc;
   border-radius: 8px;
   background-color: #f9f9f9;
 }
 
-.component-container h3 {
+.left-section h3,
+.right-section h3 {
   margin-top: 0;
-  font-size: 1.25rem;
+  font-size: 18px;
+  color: #333;
 }
 
-.component-container p {
-  font-size: 1rem;
-  line-height: 1.5;
+.left-section p,
+.right-section p {
+  font-size: 14px;
+  color: #555;
 }
 
-.component-container code {
-  background-color: #f0f0f0;
-  padding: 2px 6px;
-  font-size: 1rem;
-  border-radius: 4px;
+button {
+  margin-right: 10px;
 }
 
-/* Ensure CodeBlocks are properly displayed */
-.CodeBlock {
-  margin: 10px 0;
-  background-color: #f4f4f4;
-  padding: 15px;
-  border-radius: 5px;
-  border: 1px solid #ddd;
-  overflow-x: auto;
-  font-family: "Courier New", Courier, monospace;
+button:hover {
+  background-color: #eee;
 }
 
 @media (max-width: 768px) {
-  .demo-container {
+  .side-by-side-container {
     flex-direction: column;
+  }
+
+  .left-section,
+  .right-section {
+    width: 100%; /* Full width on smaller screens */
   }
 }
