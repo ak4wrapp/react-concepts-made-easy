@@ -7,8 +7,8 @@ const server = http.createServer(requestHandler);
 // Set up a single WebSocket server for both products and orders
 setupWebSocketServer(server);
 
-// Start the server
-const PORT = 3000;
+// Use the dynamic port provided by Render or fallback to 3000 for local testing
+const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
