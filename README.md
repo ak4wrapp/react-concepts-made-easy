@@ -146,3 +146,11 @@ npm start
 The application will typically run on http://localhost:3000 if the backend is not running on that port. If the backend server is on port 3000, the React app will run on http://localhost:3001 automatically to avoid conflicts.
 
 </details>
+
+## Deployments
+
+### React frontend
+https://react-concepts-made-easy.vercel.app/
+
+### Node.js backend
+https://react-concepts-made-easy.onrender.com/api/random-quote

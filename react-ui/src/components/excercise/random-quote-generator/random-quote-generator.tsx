@@ -21,7 +21,11 @@ const RandomQuoteGenerator: React.FC = () => {
     let options;
 
     if (connectToLocal) {
-      url = "http://localhost:3000/api/random-quote";
+      url = "https://react-concepts-made-easy.onrender.com/api/random-quote";
+      /* URLs
+      Localhost: http://localhost:3000/api/random-quote
+      My Backend App https://react-concepts-made-easy.onrender.com/api/random-quote
+      */
     } else {
       url = "https://quotes15.p.rapidapi.com/quotes/random/?language_code=en";
       options = {
