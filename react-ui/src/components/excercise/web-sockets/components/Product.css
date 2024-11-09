@@ -98,3 +98,38 @@
   font-weight: bold;
   z-index: 10; /* Ensure it stays on top of other content */
 }
+/* Red theme for error */
+/* Red theme for error */
+.product.red-theme {
+  background-color: #e74c3c; /* Red background */
+  color: #ffffff; /* White text */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Enhanced shadow */
+}
+
+/* Styling for error message */
+.error-message {
+  color: #ffffff;
+  font-weight: bold;
+  background-color: rgba(231, 76, 60, 0.8);
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.product.red-theme {
+  background-color: #e74c3c; /* Red background */
+  color: #ffffff; /* White text */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Enhanced shadow */
+}
+
+/* Styling for error message */
+.error-message {
+  color: #ffffff;
+  font-weight: bold;
+  background-color: rgba(231, 76, 60, 0.8);
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: 10px;
+  text-align: center;
+}

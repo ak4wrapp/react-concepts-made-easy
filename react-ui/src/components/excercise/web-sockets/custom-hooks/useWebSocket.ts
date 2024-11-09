@@ -59,16 +59,21 @@ const useWebSocket = (
     }, reconnectInterval);
   }, [connectWebSocket, reconnectInterval]);
 
+  // Modified sendMessage to return a Promise
   const sendMessage = useCallback((message: WebSocketMessage) => {
-    if (ws.current && ws.current.readyState === WebSocket.OPEN) {
-      ws.current.send(JSON.stringify(message));
-      console.log("Message sent:", message);
-    } else {
-      console.error(
-        "WebSocket is not open. Current state:",
-        ws.current?.readyState
-      );
-    }
+    return new Promise<void>((resolve, reject) => {
+      if (ws.current && ws.current.readyState === WebSocket.OPEN) {
+        ws.current.send(JSON.stringify(message));
+        console.log("Message sent:", message);
+        resolve(); // Resolve the promise when the message is sent
+      } else {
+        console.error(
+          "WebSocket is not open. Current state:",
+          ws.current?.readyState
+        );
+        reject(new Error("WebSocket is not open"));
+      }
+    });
   }, []);
 
   // Effect to connect WebSocket only when online

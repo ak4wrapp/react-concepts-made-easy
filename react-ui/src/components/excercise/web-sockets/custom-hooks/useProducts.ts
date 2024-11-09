@@ -5,6 +5,7 @@ interface Product {
   productId: string;
   price: number;
   guid: string;
+  error?: string; // Optional error property to store error message
 }
 
 const useProducts = () => {
@@ -44,7 +45,6 @@ const useProducts = () => {
     } else if (wsReconnecting) {
       setReconnecting(true); // WebSocket is reconnecting
     } else {
-      // setNetworkError("Connection lost. Trying to reconnect...");
       setReconnecting(false);
     }
   }, [connected, sendMessage, wsReconnecting]);
@@ -68,22 +68,78 @@ const useProducts = () => {
     setAcceptingPrice(true); // Set acceptingPrice to true to block further price acceptance
 
     try {
+      if (productId === "product4") {
+        throw new Error("product4 is disabled from accepting price");
+      }
       // Send the message to accept the price
-      sendMessage({
+      await sendMessage({
         type: "AcceptPrice",
         productId,
         price,
         guid,
       });
       console.log(`Accepted price for ${productId}: $${price} (GUID: ${guid})`);
-    } catch (error) {
+
+      // Successfully accepted price, clear the error
+      setProducts((prevProducts) =>
+        prevProducts.map((product) =>
+          product.productId === productId
+            ? { ...product, error: undefined } // Clear any error for this product
+            : product
+        )
+      );
+    } catch (error: any) {
       console.error("Error accepting price:", error);
+
+      // Set error on the specific product
+      setProducts((prevProducts) =>
+        prevProducts.map((product) =>
+          product.productId === productId
+            ? { ...product, error: error.message } // Attach the error to the product
+            : product
+        )
+      );
+
+      // Set product theme to red on error
+      setTimeout(() => {
+        setProducts((prevProducts) =>
+          prevProducts.map((product) =>
+            product.productId === productId
+              ? { ...product, error: undefined } // Reset error after 500ms
+              : product
+          )
+        );
+      }, 500); // Reset error after 500ms
+
+      setNetworkError(error.message); // Set the global network error if applicable
+
+      throw error; // Rethrow the error to propagate it up
     } finally {
       setAcceptingPrice(false); // Reset acceptingPrice once done
     }
   };
 
-  return { products, loading, acceptPrice, networkError, reconnecting };
+  const retryAcceptPrice = async (
+    productId: string,
+    price: number,
+    guid: string
+  ) => {
+    // Retry logic: Simply call acceptPrice again if the WebSocket is connected
+    if (connected) {
+      await acceptPrice(productId, price, guid);
+    } else {
+      setNetworkError("Unable to retry, WebSocket is disconnected.");
+    }
+  };
+
+  return {
+    products,
+    loading,
+    acceptPrice,
+    retryAcceptPrice,
+    networkError,
+    reconnecting,
+  };
 };
 
 export default useProducts;

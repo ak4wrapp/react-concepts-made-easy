@@ -1,74 +1,69 @@
-#products {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 15px;
-}
+/* ProductList.css */
 
-.product {
-  width: 250px;
-  height: 100px;
-  padding: 10px;
-  border: 2px solid #4a90e2;
-  border-radius: 10px;
-  background-color: #ffffff;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.3s, transform 0.2s;
-  text-align: center;
+/* Container for the entire list */
+#product-list-container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  cursor: pointer;
-  user-select: none;
+  width: 100%;
+  padding: 20px; /* Add padding around the entire container */
+  box-sizing: border-box; /* Include padding in the total width */
+}
+
+/* Error message that will appear above the product list */
+.error-message {
+  color: #d9534f; /* Red color for the error message */
+  background-color: #f2dede; /* Light red background */
+  border: 1px solid #ebccd1; /* Red border */
+  padding: 15px;
+  margin-bottom: 20px; /* Space between error message and product list */
+  border-radius: 5px;
+  width: 100%;
+  max-width: 800px;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* Loader styling */
+#loader {
+  font-size: 18px;
+  color: #007bff;
+  margin: 20px;
+  text-align: center; /* Center the loader text */
+}
+
+/* Message when no products are available */
+#no-products {
+  font-size: 18px;
+  color: #6c757d;
+  margin: 20px;
+  text-align: center; /* Center the no-products message */
+}
+
+/* Container for the products */
+#products {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(250px, 1fr)
+  ); /* Use larger min-width for grid items */
+  gap: 20px;
+  padding: 20px;
+  max-width: 1000px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Optional styling for individual product */
+.product {
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
 }
 
 .product:hover {
-  background-color: #e7f3ff;
-  transform: translateY(-3px);
-}
-
-.product .name {
-  font-size: 1.2em;
-  font-weight: bold;
-  margin-bottom: 5px;
-}
-
-.product .price {
-  font-size: 1.5em;
-  font-weight: bold;
-  color: #4caf50;
-  margin: 5px 0;
-}
-
-#loader {
-  text-align: center;
-  font-size: 1.5em;
-  color: #4a90e2;
-  margin: 20px 0;
-}
-/* Styling for loading indicator in ProductList */
-#error-message {
-  color: red;
-  font-size: 18px;
-  font-weight: bold;
-  text-align: center;
-}
-
-#loader {
-  font-size: 20px;
-  color: #666;
-  text-align: center;
-}
-
-#no-products {
-  font-size: 18px;
-  color: #888;
-  text-align: center;
-}
-
-/* Optional: Add styles for loading and reconnecting states */
-.loading-indicator {
-  font-size: 18px;
-  color: #fff;
-  text-align: center;
+  background-color: #f8f9fa; /* Light hover effect */
 }

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { throttle } from "lodash";
+import { throttle } from "lodash/throttle";
 import "./random-quote-generator.css";
 
 // Define the structure of the quote data
@@ -80,7 +80,7 @@ const RandomQuoteGenerator: React.FC = () => {
       if (canFetch) {
         fetchQuote();
       }
-    }, 1000), // Throttle to allow fetching every 1 second
+    }, 500), // Throttle to allow fetching every 0.5 second
     [canFetch]
   );
 

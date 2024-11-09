@@ -1,9 +1,11 @@
+// src/App.tsx
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { navLinks } from "./config/top-navigation-config"; // Navigation links
 import { menuLinks } from "./config/menu-navigation-config"; // Menu links
 import Home from "./components/generic/home"; // Import Home component
+import Header from "./components/generic/header/header"; // Header component
 import "./App.css";
-import Header from "./components/generic/header/header";
+import { SnackbarProvider } from "./context/ SnackbarContext";
 
 // Function to recursively get routes from navLinks and menuLinks
 const renderRoutes = (links) => {
@@ -20,20 +22,26 @@ const renderRoutes = (links) => {
     return null;
   });
 };
+
 function App() {
   return (
-    <Router>
-      <div>
-        <Header />
-        <div className="content">
-          <Routes>
-            <Route path="/" element={<Home />} /> {/* Default route to Home */}
-            {renderRoutes([...navLinks, ...menuLinks])}{" "}
-            {/* Dynamic route rendering from navLinks and menuLinks */}
-          </Routes>
+    <SnackbarProvider>
+      {" "}
+      {/* Wrap the app with the SnackbarProvider */}
+      <Router>
+        <div>
+          <Header />
+          <div className="content">
+            <Routes>
+              <Route path="/" element={<Home />} />{" "}
+              {/* Default route to Home */}
+              {renderRoutes([...navLinks, ...menuLinks])}{" "}
+              {/* Dynamic route rendering from navLinks and menuLinks */}
+            </Routes>
+          </div>
         </div>
-      </div>
-    </Router>
+      </Router>
+    </SnackbarProvider>
   );
 }
 
