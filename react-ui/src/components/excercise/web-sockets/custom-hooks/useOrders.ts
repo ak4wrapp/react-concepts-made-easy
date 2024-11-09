@@ -21,7 +21,7 @@ const useOrders = () => {
   }, []);
 
   const webSocketURL =
-    window.location.hostname === "localhost"
+    window.location.hostname === "localhost1"
       ? "ws://localhost:3000" // Local development URL
       : "wss://react-concepts-made-easy.onrender.com"; // Production URL
 

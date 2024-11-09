@@ -1,4 +1,3 @@
-// useProducts.ts
 import { useEffect, useState, useCallback } from "react";
 import useWebSocket from "./useWebSocket"; // Adjust the path as necessary
 
@@ -11,6 +10,8 @@ interface Product {
 const useProducts = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const [networkError, setNetworkError] = useState<string | null>(null); // Track network errors
+  const [reconnecting, setReconnecting] = useState<boolean>(false); // Track reconnection state
 
   const handleMessage = useCallback((data) => {
     console.log("Handling message:", data);
@@ -23,21 +24,29 @@ const useProducts = () => {
   }, []);
 
   const webSocketURL =
-    window.location.hostname === "localhost"
+    window.location.hostname === "localhost1"
       ? "ws://localhost:3000" // Local development URL
       : "wss://react-concepts-made-easy.onrender.com"; // Production URL
 
-  const { connected, sendMessage } = useWebSocket(
-    webSocketURL + "/products",
-    handleMessage
-  );
+  const {
+    connected,
+    sendMessage,
+    reconnecting: wsReconnecting,
+  } = useWebSocket(webSocketURL + "/products", handleMessage);
 
   useEffect(() => {
     if (connected) {
+      setNetworkError(null); // Reset network error on successful connection
+      setLoading(true);
       console.log("Sending GetProducts message");
       sendMessage({ type: "GetProducts" });
+    } else if (wsReconnecting) {
+      setReconnecting(true); // WebSocket is reconnecting
+    } else {
+      // setNetworkError("Connection lost. Trying to reconnect...");
+      setReconnecting(false);
     }
-  }, [connected, sendMessage]);
+  }, [connected, sendMessage, wsReconnecting]);
 
   const updateProductPrice = (productId: string, price: number) => {
     setProducts((prevProducts) =>
@@ -57,7 +66,7 @@ const useProducts = () => {
     console.log(`Accepted price for ${productId}: $${price} (GUID: ${guid})`);
   };
 
-  return { products, loading, acceptPrice };
+  return { products, loading, acceptPrice, networkError, reconnecting };
 };
 
 export default useProducts;

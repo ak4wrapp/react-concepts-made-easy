@@ -1,12 +1,13 @@
-/* Product.css */
+/* Base Product styles with dark theme */
 .product {
   width: 250px;
   height: 100px;
   padding: 10px;
   border: 2px solid #4a90e2;
   border-radius: 10px;
-  background-color: #ffffff;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  background-color: #333333; /* Dark background */
+  color: #f1f1f1; /* Light text */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Darker shadow for better contrast */
   transition: background-color 0.3s, transform 0.2s;
   text-align: center;
   display: flex;
@@ -15,22 +16,73 @@
   align-items: center;
   cursor: pointer;
   user-select: none;
+  position: relative; /* Ensure the product card can have positioned children */
 }
 
+/* Hover effect with lighter background */
 .product:hover {
-  background-color: #e7f3ff;
+  background-color: #444444; /* Slightly lighter dark color */
   transform: translateY(-3px);
 }
 
+/* Position the name in the top-left */
 .product .name {
   font-size: 1.2em;
   font-weight: bold;
   margin-bottom: 5px;
+  position: absolute; /* Fix the name in top-left */
+  top: 10px;
+  left: 10px;
+  font-size: 1.1em;
+  color: #f1f1f1; /* Light text color for dark background */
 }
 
+/* Price styles */
 .product .price {
   font-size: 1.5em;
   font-weight: bold;
-  color: #4caf50;
+  color: #4caf50; /* Default price color */
   margin: 5px 0;
+  position: relative; /* Stay in the center when visible */
+}
+
+/* Green theme when double-clicked */
+.product.green-theme {
+  background-color: #4caf50; /* Green background */
+  color: #ffffff; /* White text for good contrast */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Enhanced shadow */
+}
+
+/* Optional: Adjust text color inside the green theme for different elements */
+.product.green-theme .name,
+.product.green-theme .price {
+  color: #ffffff; /* Ensure both the name and price are white in the green theme */
+}
+
+/* Styling for the price and reconnecting indicator wrapper */
+.price-and-indicator {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%); /* Center vertically */
+  width: 100%; /* Full width of the product card */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  visibility: visible; /* Ensure visibility by default */
+}
+
+/* Hide price when reconnecting */
+.price-and-indicator.hidden {
+  visibility: hidden; /* Hide the price wrapper */
+}
+
+/* Styling for the reconnecting "..." indicator */
+.reconnecting-indicator {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%); /* Center vertically */
+  font-size: 20px;
+  color: orange;
+  font-weight: bold;
+  z-index: 10; /* Ensure the "..." stays on top of other elements */
 }
