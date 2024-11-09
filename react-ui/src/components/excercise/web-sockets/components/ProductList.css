@@ -46,3 +46,29 @@
   color: #4a90e2;
   margin: 20px 0;
 }
+/* Styling for loading indicator in ProductList */
+#error-message {
+  color: red;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+}
+
+#loader {
+  font-size: 20px;
+  color: #666;
+  text-align: center;
+}
+
+#no-products {
+  font-size: 18px;
+  color: #888;
+  text-align: center;
+}
+
+/* Optional: Add styles for loading and reconnecting states */
+.loading-indicator {
+  font-size: 18px;
+  color: #fff;
+  text-align: center;
+}

@@ -86,3 +86,15 @@
   font-weight: bold;
   z-index: 10; /* Ensure the "..." stays on top of other elements */
 }
+
+/* Styling for the loading indicator */
+.loading-indicator {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 18px;
+  color: #f1f1f1;
+  font-weight: bold;
+  z-index: 10; /* Ensure it stays on top of other content */
+}

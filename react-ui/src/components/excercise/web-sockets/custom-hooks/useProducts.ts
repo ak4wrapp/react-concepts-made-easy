@@ -12,6 +12,7 @@ const useProducts = () => {
   const [loading, setLoading] = useState(true);
   const [networkError, setNetworkError] = useState<string | null>(null); // Track network errors
   const [reconnecting, setReconnecting] = useState<boolean>(false); // Track reconnection state
+  const [acceptingPrice, setAcceptingPrice] = useState<boolean>(false); // Track if a price is being accepted
 
   const handleMessage = useCallback((data) => {
     console.log("Handling message:", data);
@@ -56,14 +57,30 @@ const useProducts = () => {
     );
   };
 
-  const acceptPrice = (productId: string, price: number, guid: string) => {
-    sendMessage({
-      type: "AcceptPrice",
-      productId,
-      price,
-      guid,
-    });
-    console.log(`Accepted price for ${productId}: $${price} (GUID: ${guid})`);
+  const acceptPrice = async (
+    productId: string,
+    price: number,
+    guid: string
+  ) => {
+    // If reconnecting or already processing another price acceptance, do nothing
+    if (reconnecting || acceptingPrice) return;
+
+    setAcceptingPrice(true); // Set acceptingPrice to true to block further price acceptance
+
+    try {
+      // Send the message to accept the price
+      sendMessage({
+        type: "AcceptPrice",
+        productId,
+        price,
+        guid,
+      });
+      console.log(`Accepted price for ${productId}: $${price} (GUID: ${guid})`);
+    } catch (error) {
+      console.error("Error accepting price:", error);
+    } finally {
+      setAcceptingPrice(false); // Reset acceptingPrice once done
+    }
   };
 
   return { products, loading, acceptPrice, networkError, reconnecting };

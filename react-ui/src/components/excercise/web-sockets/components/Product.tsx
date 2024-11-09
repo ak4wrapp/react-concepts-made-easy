@@ -5,7 +5,11 @@ interface ProductProps {
   productId: string;
   price: number;
   guid: string;
-  onAcceptPrice: (productId: string, price: number, guid: string) => void;
+  onAcceptPrice: (
+    productId: string,
+    price: number,
+    guid: string
+  ) => Promise<void>; // Assuming onAcceptPrice returns a promise
   reconnecting: boolean; // New prop to handle reconnecting state
 }
 
@@ -17,20 +21,32 @@ const Product: React.FC<ProductProps> = ({
   reconnecting,
 }) => {
   const [isGreen, setIsGreen] = useState(false);
+  const [loading, setLoading] = useState(false); // State to track if a price is being accepted
 
-  const handleDoubleClick = () => {
-    // Check if reconnecting is true, if so, don't process the double-click
-    if (reconnecting) return;
+  const handleDoubleClick = async () => {
+    // If reconnecting or already in loading state, do nothing
+    if (reconnecting || loading) return;
 
-    onAcceptPrice(productId, price, guid); // Call the passed function
+    // Set loading state to true
+    setLoading(true);
 
-    // Set the green background temporarily
-    setIsGreen(true);
+    try {
+      // Wait for the price acceptance to finish
+      await onAcceptPrice(productId, price, guid);
 
-    // Revert the background to the original after 2 seconds
-    setTimeout(() => {
-      setIsGreen(false);
-    }, 1000); // 1 second
+      // Set the green background temporarily
+      setIsGreen(true);
+
+      // Revert the background to the original after 2 seconds
+      setTimeout(() => {
+        setIsGreen(false);
+      }, 1000); // 1 second
+    } catch (error) {
+      console.error("Error accepting price:", error);
+    } finally {
+      // After the process is complete, set loading state to false
+      setLoading(false);
+    }
   };
 
   return (
@@ -49,6 +65,9 @@ const Product: React.FC<ProductProps> = ({
       </div>
 
       {reconnecting && <div className="reconnecting-indicator">...</div>}
+
+      {/* Optionally, show a loading indicator when price is being accepted */}
+      {loading && <div className="loading-indicator">Processing...</div>}
     </div>
   );
 };
