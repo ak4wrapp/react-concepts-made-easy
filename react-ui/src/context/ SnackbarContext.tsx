@@ -1,18 +1,16 @@
-// src/context/SnackbarContext.tsx
-import React, { createContext, useContext, useState, useEffect } from "react";
-import { Snackbar, Alert } from "@mui/material";
+import React, { createContext, useContext, useState } from "react";
+import { toast, ToastContainer } from "react-toastify"; // Import toast and ToastContainer
+import "react-toastify/dist/ReactToastify.css"; // Import styles
 
 // Define types for the Snackbar context state and methods
 type Severity = "error" | "warning" | "info" | "success"; // Severity levels
 
 interface SnackbarContextProps {
   showSnackbar: (message: string, severity: Severity) => void;
-  closeSnackbar: () => void;
 }
 
-interface SnackbarItem {
-  message: string;
-  severity: Severity;
+interface SnackbarProviderProps {
+  children: React.ReactNode;
 }
 
 const SnackbarContext = createContext<SnackbarContextProps | undefined>(
@@ -28,55 +26,62 @@ export const useSnackbar = (): SnackbarContextProps => {
   return context;
 };
 
-// Type for SnackbarProvider props (children prop)
-interface SnackbarProviderProps {
-  children: React.ReactNode;
-}
-
 // SnackbarProvider Component
 export const SnackbarProvider: React.FC<SnackbarProviderProps> = ({
   children,
 }) => {
-  const [snackbarQueue, setSnackbarQueue] = useState<SnackbarItem[]>([]); // Queue of snackbars
-  const [currentSnackbar, setCurrentSnackbar] = useState<SnackbarItem | null>(
-    null
-  ); // Current snackbar being displayed
-
-  // Show a new snackbar
+  // Show a new snackbar based on severity
   const showSnackbar = (message: string, severity: Severity) => {
-    setSnackbarQueue((prevQueue) => [...prevQueue, { message, severity }]);
-  };
-
-  // Close the current snackbar
-  const closeSnackbar = () => {
-    setCurrentSnackbar(null); // Mark current snackbar as closed
-  };
-
-  // Effect to manage sequential snackbars
-  useEffect(() => {
-    if (currentSnackbar === null && snackbarQueue.length > 0) {
-      const [nextSnackbar, ...rest] = snackbarQueue; // Get the next snackbar
-      setCurrentSnackbar(nextSnackbar); // Show the next snackbar
-      setSnackbarQueue(rest); // Remove it from the queue
+    if (severity === "success") {
+      toast.success(message, {
+        position: "bottom-right", // Toast position
+        autoClose: 5000, // Auto close after 5 seconds
+        hideProgressBar: false, // Show progress bar
+        closeOnClick: true, // Allow closing the toast by clicking
+        pauseOnHover: true, // Pause on hover
+        draggable: true, // Allow dragging
+        theme: "colored", // Use the "colored" theme for success
+      });
+    } else if (severity === "error") {
+      toast.error(message, {
+        position: "bottom-right", // Toast position
+        autoClose: 5000, // Auto close after 5 seconds
+        hideProgressBar: false, // Show progress bar
+        closeOnClick: true, // Allow closing the toast by clicking
+        pauseOnHover: true, // Pause on hover
+        draggable: true, // Allow dragging
+        theme: "colored", // Use the "colored" theme for error
+      });
+    } else {
+      toast(message, {
+        position: "bottom-right", // Toast position
+        autoClose: 5000, // Auto close after 5 seconds
+        hideProgressBar: false, // Show progress bar
+        closeOnClick: true, // Allow closing the toast by clicking
+        pauseOnHover: true, // Pause on hover
+        draggable: true, // Allow dragging
+        theme: "dark", // Use dark theme for generic toasts
+      });
     }
-  }, [currentSnackbar, snackbarQueue]); // Dependencies are currentSnackbar and snackbarQueue
+  };
 
-  // Return the context provider with the showSnackbar function available
   return (
-    <SnackbarContext.Provider value={{ showSnackbar, closeSnackbar }}>
+    <SnackbarContext.Provider value={{ showSnackbar }}>
       {children}
-      {currentSnackbar && (
-        <Snackbar
-          open={true}
-          autoHideDuration={2000}
-          onClose={closeSnackbar}
-          anchorOrigin={{ vertical: "bottom", horizontal: "right" }} // Bottom-right position
-        >
-          <Alert onClose={closeSnackbar} severity={currentSnackbar.severity}>
-            {currentSnackbar.message}
-          </Alert>
-        </Snackbar>
-      )}
+
+      {/* ToastContainer to handle all toasts */}
+      <ToastContainer
+        position="bottom-right" // Set the position to bottom-right
+        autoClose={5000} // Toast auto close time (5 seconds)
+        hideProgressBar={false} // Show progress bar
+        newestOnTop={false} // Don't show the newest on top
+        closeOnClick={true} // Allow closing the toast by clicking
+        rtl={false} // Disable right-to-left text
+        pauseOnFocusLoss={true} // Pause toast on window focus loss
+        draggable={true} // Allow dragging
+        pauseOnHover={true} // Pause toast on hover
+        theme="dark" // Default dark theme for all toasts
+      />
     </SnackbarContext.Provider>
   );
 };

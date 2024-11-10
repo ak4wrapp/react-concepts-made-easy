@@ -1,69 +1,50 @@
-/* ProductList.css */
-
-/* Container for the entire list */
+/* Product List container */
 #product-list-container {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-wrap: wrap;
+  justify-content: space-between;
   width: 100%;
-  padding: 20px; /* Add padding around the entire container */
-  box-sizing: border-box; /* Include padding in the total width */
+  padding: 20px;
+  box-sizing: border-box;
+  gap: 20px;
+  position: relative; /* This is necessary for absolute positioning of the Reset All button */
 }
 
-/* Error message that will appear above the product list */
-.error-message {
-  color: #d9534f; /* Red color for the error message */
-  background-color: #f2dede; /* Light red background */
-  border: 1px solid #ebccd1; /* Red border */
-  padding: 15px;
-  margin-bottom: 20px; /* Space between error message and product list */
+/* Wrapper for Reset All button to align it to the right */
+.reset-all-wrapper {
+  width: 100%; /* Full width to push the button to the right */
+  display: flex;
+  justify-content: flex-end; /* Align the button to the right */
+  margin-bottom: 10px; /* Some space below the button */
+}
+
+/* Reset All Button */
+.reset-all-button {
+  background-color: #ff9800; /* Orange background */
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
   border-radius: 5px;
-  width: 100%;
-  max-width: 800px;
-  text-align: center;
-  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-/* Loader styling */
+.reset-all-button:hover {
+  background-color: #f57c00; /* Darker orange on hover */
+}
+
+/* Loader, No Products, Error Message styles remain unchanged */
 #loader {
   font-size: 18px;
   color: #007bff;
   margin: 20px;
-  text-align: center; /* Center the loader text */
+  text-align: center;
 }
 
-/* Message when no products are available */
 #no-products {
   font-size: 18px;
   color: #6c757d;
   margin: 20px;
-  text-align: center; /* Center the no-products message */
-}
-
-/* Container for the products */
-#products {
-  display: grid;
-  grid-template-columns: repeat(
-    auto-fill,
-    minmax(250px, 1fr)
-  ); /* Use larger min-width for grid items */
-  gap: 20px;
-  padding: 20px;
-  max-width: 1000px;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-/* Optional styling for individual product */
-.product {
-  padding: 15px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background-color: #fff;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.3s ease;
-}
-
-.product:hover {
-  background-color: #f8f9fa; /* Light hover effect */
+  text-align: center;
 }

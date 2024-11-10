@@ -1,13 +1,18 @@
-// src/components/ProductList.tsx
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import useProducts from "../custom-hooks/useProducts";
 import Product from "./Product";
+import "./ProductList.css";
 import { useSnackbar } from "../../../../context/ SnackbarContext";
 
 const ProductList: React.FC = () => {
   const { products, loading, acceptPrice, networkError, reconnecting } =
     useProducts();
   const { showSnackbar } = useSnackbar(); // Access Snackbar context
+
+  // Track success/error for each product using a map or object
+  const [acceptPriceStatuses, setAcceptPriceStatuses] = useState<{
+    [productId: string]: { success: boolean; error: boolean };
+  }>({});
 
   // A ref to keep track of the last seen networkError to prevent triggering the snackbar multiple times for the same error
   const previousNetworkError = useRef<string | null>(null);
@@ -18,7 +23,7 @@ const ProductList: React.FC = () => {
       showSnackbar(networkError, "error"); // Trigger snackbar for network error
       previousNetworkError.current = networkError; // Update the reference to the current error
     }
-  }, [networkError, showSnackbar]); // Only re-run if networkError changes
+  }, [networkError, showSnackbar]);
 
   // Handle success/error of price acceptance
   const handleAcceptPrice = async (
@@ -32,13 +37,58 @@ const ProductList: React.FC = () => {
         `Successfully accepted price for ${productId}: $${price}`,
         "success" // Show success message in snackbar
       );
+
+      // Update the success state for this product
+      setAcceptPriceStatuses((prev) => ({
+        ...prev,
+        [productId]: { success: true, error: false },
+      }));
     } catch (error) {
-      showSnackbar("Failed to accept price. Please try again.", "error"); // Show error message in snackbar
+      showSnackbar(
+        `Failed to accept price for ${productId}. Please try again.`,
+        "error"
+      ); // Show error message in snackbar
+
+      // Update the error state for this product
+      setAcceptPriceStatuses((prev) => ({
+        ...prev,
+        [productId]: { success: false, error: true },
+      }));
     }
   };
 
+  // Reset all price success and error states
+  const handleResetAll = () => {
+    setAcceptPriceStatuses({}); // Clear all success/error statuses
+
+    // Reset product states (if any other reset is needed, like loading state or prices)
+    showSnackbar("All products have been reset", "info");
+  };
+
+  // Reset the price success and error states for a single product
+  const handleResetPriceStatus = (productId: string) => {
+    setAcceptPriceStatuses((prev) => ({
+      ...prev,
+      [productId]: { success: false, error: false },
+    }));
+  };
+
+  // Check if at least one product needs reset
+  const isResetAllVisible = Object.values(acceptPriceStatuses).some(
+    (status) => status.success || status.error
+  );
+
   return (
     <div id="product-list-container">
+      {/* Conditionally render the Reset All button */}
+      {isResetAllVisible && (
+        <div className="reset-all-wrapper">
+          <button className="reset-all-button" onClick={handleResetAll}>
+            Reset All
+          </button>
+        </div>
+      )}
+
       {loading && !reconnecting && !networkError && (
         <div id="loader">Loading products...</div>
       )}
@@ -53,9 +103,16 @@ const ProductList: React.FC = () => {
           productId={product.productId}
           price={product.price}
           guid={product.guid}
-          onAcceptPrice={handleAcceptPrice} // Pass the modified handler to Product
+          onAcceptPrice={handleAcceptPrice}
           reconnecting={reconnecting}
           error={product.error}
+          acceptPriceSuccess={
+            acceptPriceStatuses[product.productId]?.success || false
+          }
+          acceptPriceError={
+            acceptPriceStatuses[product.productId]?.error || false
+          }
+          onResetPriceStatus={() => handleResetPriceStatus(product.productId)}
         />
       ))}
     </div>

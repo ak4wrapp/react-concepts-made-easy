@@ -1,62 +1,83 @@
-/* Base Product styles with dark theme */
+/* Apply dark theme specifically for product cards */
+
+/* Styling for individual product (dark theme) */
 .product {
-  width: 250px;
-  height: 100px;
+  width: 200px; /* Reduced width for a smaller product card */
+  height: 100px; /* Reduced height */
   padding: 10px;
-  border: 2px solid #4a90e2;
+  border: 2px solid #444; /* Dark border */
   border-radius: 10px;
-  background-color: #333333; /* Dark background */
+  background-color: #333; /* Dark background */
   color: #f1f1f1; /* Light text */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Darker shadow for better contrast */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Darker shadow for contrast */
   transition: background-color 0.3s, transform 0.2s;
   text-align: center;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between; /* Space between content and reset button */
   align-items: center;
   cursor: pointer;
   user-select: none;
   position: relative; /* Ensure the product card can have positioned children */
+  overflow: hidden; /* Ensure content stays inside card */
 }
 
-/* Hover effect with lighter background */
+/* Hover effect with slightly lighter background */
 .product:hover {
-  background-color: #444444; /* Slightly lighter dark color */
+  background-color: #444; /* Slightly lighter dark color */
   transform: translateY(-3px);
 }
 
 /* Position the name in the top-left */
 .product .name {
-  font-size: 1.2em;
+  font-size: 1.1em;
   font-weight: bold;
   margin-bottom: 5px;
   position: absolute; /* Fix the name in top-left */
   top: 10px;
   left: 10px;
-  font-size: 1.1em;
-  color: #f1f1f1; /* Light text color for dark background */
+  font-size: 1em;
+  color: #f1f1f1; /* Light text color */
+  overflow: hidden;
+  text-overflow: ellipsis; /* Ensure long names don't overflow */
+  white-space: nowrap; /* Prevent wrapping */
 }
 
 /* Price styles */
 .product .price {
-  font-size: 1.5em;
+  font-size: 1.2em; /* Smaller price font */
   font-weight: bold;
-  color: #4caf50; /* Default price color */
+  color: #4caf50; /* Green for price */
   margin: 5px 0;
   position: relative; /* Stay in the center when visible */
 }
 
-/* Green theme when double-clicked */
+/* Green theme for successful interactions (like accepted price) */
 .product.green-theme {
   background-color: #4caf50; /* Green background */
-  color: #ffffff; /* White text for good contrast */
+  color: #ffffff; /* White text for contrast */
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Enhanced shadow */
 }
 
-/* Optional: Adjust text color inside the green theme for different elements */
 .product.green-theme .name,
 .product.green-theme .price {
-  color: #ffffff; /* Ensure both the name and price are white in the green theme */
+  color: #ffffff; /* White text for name and price inside green theme */
+}
+
+/* Red theme for error - adjust price to light red */
+.product.red-theme {
+  background-color: #e74c3c; /* Red background for error */
+  color: #ffffff; /* White text */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Enhanced shadow */
+}
+
+.product.red-theme .price {
+  color: #f1a7a7; /* Light red for the price text to contrast with dark background */
+}
+
+.product.red-theme .name,
+.product.red-theme .price {
+  color: #ffffff; /* Ensure name and price text is visible inside the red theme */
 }
 
 /* Styling for the price and reconnecting indicator wrapper */
@@ -76,17 +97,6 @@
   visibility: hidden; /* Hide the price wrapper */
 }
 
-/* Styling for the reconnecting "..." indicator */
-.reconnecting-indicator {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%); /* Center vertically */
-  font-size: 20px;
-  color: orange;
-  font-weight: bold;
-  z-index: 10; /* Ensure the "..." stays on top of other elements */
-}
-
 /* Styling for the loading indicator */
 .loading-indicator {
   position: absolute;
@@ -94,42 +104,30 @@
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 18px;
-  color: #f1f1f1;
+  color: #f1f1f1; /* Light text */
   font-weight: bold;
   z-index: 10; /* Ensure it stays on top of other content */
 }
-/* Red theme for error */
-/* Red theme for error */
-.product.red-theme {
-  background-color: #e74c3c; /* Red background */
-  color: #ffffff; /* White text */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Enhanced shadow */
+
+/* Reset button - change to blue theme and make it visible */
+button.reset-button {
+  margin-top: auto; /* Push the reset button to the bottom */
+  padding: 4px 8px; /* Smaller padding for a compact button */
+  font-size: 12px; /* Smaller font size for the button */
+  border-radius: 4px;
+  background-color: #007bff; /* Blue background */
+  border: none;
+  color: #ffffff; /* White text for contrast */
+  cursor: pointer;
+  transition: background-color 0.3s;
+  align-self: center; /* Center the button horizontally */
+  position: relative; /* Ensure it stays at the bottom */
 }
 
-/* Styling for error message */
-.error-message {
-  color: #ffffff;
-  font-weight: bold;
-  background-color: rgba(231, 76, 60, 0.8);
-  padding: 10px;
-  border-radius: 5px;
-  margin-top: 10px;
-  text-align: center;
+button.reset-button:hover {
+  background-color: #0056b3; /* Darker blue on hover */
 }
 
-.product.red-theme {
-  background-color: #e74c3c; /* Red background */
-  color: #ffffff; /* White text */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Enhanced shadow */
-}
-
-/* Styling for error message */
-.error-message {
-  color: #ffffff;
-  font-weight: bold;
-  background-color: rgba(231, 76, 60, 0.8);
-  padding: 10px;
-  border-radius: 5px;
-  margin-top: 10px;
-  text-align: center;
+button.reset-button:focus {
+  outline: none;
 }

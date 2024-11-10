@@ -6,6 +6,7 @@ import Home from "./components/generic/home"; // Import Home component
 import Header from "./components/generic/header/header"; // Header component
 import "./App.css";
 import { SnackbarProvider } from "./context/ SnackbarContext";
+// import "./styles/toast.css";
 
 // Function to recursively get routes from navLinks and menuLinks
 const renderRoutes = (links) => {

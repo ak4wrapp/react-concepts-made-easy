@@ -119,24 +119,10 @@ const useProducts = () => {
     }
   };
 
-  const retryAcceptPrice = async (
-    productId: string,
-    price: number,
-    guid: string
-  ) => {
-    // Retry logic: Simply call acceptPrice again if the WebSocket is connected
-    if (connected) {
-      await acceptPrice(productId, price, guid);
-    } else {
-      setNetworkError("Unable to retry, WebSocket is disconnected.");
-    }
-  };
-
   return {
     products,
     loading,
     acceptPrice,
-    retryAcceptPrice,
     networkError,
     reconnecting,
   };
