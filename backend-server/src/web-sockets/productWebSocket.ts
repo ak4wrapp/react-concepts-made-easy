@@ -108,6 +108,8 @@ const acceptPrice = (ws: WebSocket, data: any) => {
     const errorResponse = {
       type: "AcceptPriceError",
       errorCode: "PRODUCT_NOT_CONFIGURED",
+      productId,
+      guid,
       message: "Product is not configured to create an order",
     };
     ws.send(JSON.stringify(errorResponse)); // Send error to client
