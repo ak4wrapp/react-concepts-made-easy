@@ -5,7 +5,7 @@ import { menuLinks } from "./config/menu-navigation-config"; // Menu links
 import Home from "./components/generic/home"; // Import Home component
 import Header from "./components/generic/header/header"; // Header component
 import { useNetworkStatus } from "./components/learning/custom-hooks/use-network-status";
-import { useSnackbar } from "./context/ SnackbarContext";
+import { useSnackbar } from "./context/SnackbarContext";
 
 // Function to recursively get routes from navLinks and menuLinks
 const renderRoutes = (links: any[]) => {

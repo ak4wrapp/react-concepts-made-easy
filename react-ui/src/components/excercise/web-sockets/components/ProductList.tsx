@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import useProducts from "../custom-hooks/useProducts";
 import Product from "./Product";
 import "./ProductList.css";
-import { useSnackbar } from "../../../../context/ SnackbarContext";
+import { useSnackbar } from "../../../../context/SnackbarContext";
 
 const ProductList: React.FC = () => {
   const { products, loading, acceptPrice, networkError, reconnecting } =

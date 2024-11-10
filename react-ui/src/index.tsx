@@ -4,7 +4,7 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import "prismjs/themes/prism-tomorrow.css"; // For dark theme
-import { SnackbarProvider } from "./context/ SnackbarContext";
+import { SnackbarProvider } from "./context/SnackbarContext";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
