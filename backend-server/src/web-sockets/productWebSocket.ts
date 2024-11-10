@@ -97,6 +97,8 @@ const acceptPrice = (ws: WebSocket, data: any) => {
     const errorResponse = {
       type: "AcceptPriceError",
       errorCode: "INVALID_PRODUCT_OR_GUID",
+      productId,
+      guid,
       message: "Product or GUID is invalid or not found.",
     };
     ws.send(JSON.stringify(errorResponse)); // Send error to client
