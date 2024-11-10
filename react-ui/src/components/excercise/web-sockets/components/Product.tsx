@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle"; // Import MUI check icon
 import CancelIcon from "@mui/icons-material/Cancel"; // Import MUI cancel icon
 import "./Product.css"; // Your custom styles for Product
@@ -63,10 +63,20 @@ const Product: React.FC<ProductProps> = ({
     onResetPriceStatus(); // Reset the price success and error states
     setAcceptedPrice(null); // Clear accepted price to show original price
 
-    setTimeout(() => {
-      setIsReset(false); // Reset the product card to normal state
-    }, 1000); // Reset delay (1 second)
+    setIsReset(false);
   };
+
+  // Auto-reset logic after 5 seconds if reset is not clicked
+  useEffect(() => {
+    const resetTimeout = setTimeout(() => {
+      if (showReset && !isReset) {
+        handleReset(); // Auto-reset after 5 seconds if no manual reset
+      }
+    }, 3000);
+
+    // Cleanup the timeout if the component unmounts or if reset happens
+    return () => clearTimeout(resetTimeout);
+  }, [showReset, isReset]);
 
   return (
     <div
