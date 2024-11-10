@@ -23,7 +23,6 @@ const Todos = () => {
             }
           : todo
       );
-
       return updatedTodos;
     });
   };
@@ -37,7 +36,6 @@ const Todos = () => {
 
   const onClickedAddTodo = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-
     addTodo();
   };
 
@@ -59,8 +57,10 @@ const Todos = () => {
   };
 
   return (
-    <div>
-      <div>
+    <div className="todos">
+      {" "}
+      {/* Scoped styles under this class */}
+      <div className="input-container">
         <input type="text" ref={newTodoRef} onKeyDown={onKeyDown}></input>
         <button onClick={onClickedAddTodo}>Add new Todo</button>
       </div>

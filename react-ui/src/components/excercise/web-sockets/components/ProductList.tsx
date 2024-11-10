@@ -57,14 +57,6 @@ const ProductList: React.FC = () => {
     }
   };
 
-  // Reset all price success and error states
-  const handleResetAll = () => {
-    setAcceptPriceStatuses({}); // Clear all success/error statuses
-
-    // Reset product states (if any other reset is needed, like loading state or prices)
-    showSnackbar("All products have been reset", "info");
-  };
-
   // Reset the price success and error states for a single product
   const handleResetPriceStatus = (productId: string) => {
     setAcceptPriceStatuses((prev) => ({
@@ -73,22 +65,8 @@ const ProductList: React.FC = () => {
     }));
   };
 
-  // Check if at least one product needs reset
-  const isResetAllVisible = Object.values(acceptPriceStatuses).some(
-    (status) => status.success || status.error
-  );
-
   return (
     <div id="product-list-container">
-      {/* Conditionally render the Reset All button */}
-      {isResetAllVisible && (
-        <div className="reset-all-wrapper">
-          <button className="reset-all-button" onClick={handleResetAll}>
-            Reset All
-          </button>
-        </div>
-      )}
-
       {loading && !reconnecting && !networkError && (
         <div id="loader">Loading products...</div>
       )}

@@ -27,8 +27,6 @@ const renderRoutes = (links) => {
 function App() {
   return (
     <SnackbarProvider>
-      {" "}
-      {/* Wrap the app with the SnackbarProvider */}
       <Router>
         <div>
           <Header />

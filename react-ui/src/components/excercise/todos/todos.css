@@ -1,17 +1,18 @@
 /* Todos.css */
 
-body {
+/* Scoped to the .todos container */
+.todos body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 20px;
 }
 
-h1 {
+.todos h1 {
   text-align: center;
   color: #333;
 }
 
-.todo-container {
+.todos .todo-container {
   max-width: 600px;
   margin: auto;
   background: #fff;
@@ -20,13 +21,13 @@ h1 {
   padding: 20px;
 }
 
-.input-container {
+.todos .input-container {
   display: flex;
   justify-content: space-between;
   margin-bottom: 20px;
 }
 
-input[type="text"] {
+.todos input[type="text"] {
   flex: 1;
   padding: 12px;
   border: 1px solid #ccc;
@@ -36,12 +37,12 @@ input[type="text"] {
   transition: border-color 0.3s;
 }
 
-input[type="text"]:focus {
+.todos input[type="text"]:focus {
   border-color: #007bff;
   outline: none;
 }
 
-button {
+.todos button {
   background-color: #007bff;
   color: white;
   border: none;
@@ -51,24 +52,24 @@ button {
   transition: background-color 0.3s;
 }
 
-button:hover {
+.todos button:hover {
   background-color: #0056b3;
 }
 
-button:last-of-type {
+.todos button:last-of-type {
   background-color: #dc3545;
 }
 
-button:last-of-type:hover {
+.todos button:last-of-type:hover {
   background-color: #c82333;
 }
 
-ul {
+.todos ul {
   list-style-type: none;
   padding: 0;
 }
 
-.todo-item {
+.todos .todo-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -76,29 +77,28 @@ ul {
   margin: 10px 0;
   border: 1px solid #ccc;
   border-radius: 4px;
-  /* background-color: #f9f9f9; /* Background color */
   transition: background-color 0.3s;
 }
 
-.todo-item:hover {
+.todos .todo-item:hover {
   background-color: #f1f1f1;
 }
 
-.todo-item span {
+.todos .todo-item span {
   margin-left: 10px;
   font-size: 14px;
   color: #777;
 }
 
-.todo-item .complete {
+.todos .todo-item .complete {
   color: #28a745; /* Green for complete */
 }
 
-.todo-item .pending {
+.todos .todo-item .pending {
   color: #ffc107; /* Yellow for pending */
 }
 
-.todo-item .status {
+.todos .todo-item .status {
   font-weight: bold;
   margin-left: 10px;
 }

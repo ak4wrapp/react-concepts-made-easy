@@ -65,7 +65,9 @@ const UseCallBackDetailedComponent = () => {
   );
 
   return (
-    <div className="content-wrapper">
+    <div className="use-callback-self">
+      {" "}
+      {/* Scoped styles under this class */}
       <details className="collapsible-section">
         <summary>1. Non-Memorized Components</summary>
         <div className="description">
@@ -94,7 +96,6 @@ const UseCallBackDetailedComponent = () => {
           )}
         </div>
       </details>
-
       <details className="collapsible-section">
         <summary>2. Using useCallback</summary>
         <div className="description">
@@ -105,8 +106,8 @@ const UseCallBackDetailedComponent = () => {
           <p>
             <strong>Action:</strong> Click the buttons to show/hide Filters and
             Recommendations. Notice that components are mounted only once
-            however they re-render alwways when visible even if we click on
-            other child component.
+            however they re-render always when visible even if we click on other
+            child component.
           </p>
           <div className="button-container">
             <button
@@ -135,7 +136,6 @@ const UseCallBackDetailedComponent = () => {
           )}
         </div>
       </details>
-
       <details className="collapsible-section">
         <summary>3. Using useCallback + Memorized Components</summary>
         <div className="description">
