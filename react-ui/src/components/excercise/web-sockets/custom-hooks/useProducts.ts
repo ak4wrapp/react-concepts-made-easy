@@ -5,7 +5,6 @@ interface Product {
   productId: string;
   price: number;
   guid: string;
-  error?: string; // Optional error property to store error message
 }
 
 const useProducts = () => {
@@ -13,7 +12,6 @@ const useProducts = () => {
   const [loading, setLoading] = useState(true);
   const [networkError, setNetworkError] = useState<string | null>(null); // Track network errors
   const [reconnecting, setReconnecting] = useState<boolean>(false); // Track reconnection state
-  const [acceptingPrice, setAcceptingPrice] = useState<boolean>(false); // Track if a price is being accepted
 
   const handleMessage = useCallback((data) => {
     console.log("Handling message:", data);
@@ -45,6 +43,7 @@ const useProducts = () => {
     } else if (wsReconnecting) {
       setReconnecting(true); // WebSocket is reconnecting
     } else {
+      // setNetworkError("Connection lost. Trying to reconnect...");
       setReconnecting(false);
     }
   }, [connected, sendMessage, wsReconnecting]);
@@ -57,75 +56,17 @@ const useProducts = () => {
     );
   };
 
-  const acceptPrice = async (
-    productId: string,
-    price: number,
-    guid: string
-  ) => {
-    // If reconnecting or already processing another price acceptance, do nothing
-    if (reconnecting || acceptingPrice) return;
-
-    setAcceptingPrice(true); // Set acceptingPrice to true to block further price acceptance
-
-    try {
-      if (productId === "product4") {
-        throw new Error("product4 is disabled from accepting price");
-      }
-      // Send the message to accept the price
-      await sendMessage({
-        type: "AcceptPrice",
-        productId,
-        price,
-        guid,
-      });
-      console.log(`Accepted price for ${productId}: $${price} (GUID: ${guid})`);
-
-      // Successfully accepted price, clear the error
-      setProducts((prevProducts) =>
-        prevProducts.map((product) =>
-          product.productId === productId
-            ? { ...product, error: undefined } // Clear any error for this product
-            : product
-        )
-      );
-    } catch (error: any) {
-      console.error("Error accepting price:", error);
-
-      // Set error on the specific product
-      setProducts((prevProducts) =>
-        prevProducts.map((product) =>
-          product.productId === productId
-            ? { ...product, error: error.message } // Attach the error to the product
-            : product
-        )
-      );
-
-      // Set product theme to red on error
-      setTimeout(() => {
-        setProducts((prevProducts) =>
-          prevProducts.map((product) =>
-            product.productId === productId
-              ? { ...product, error: undefined } // Reset error after 500ms
-              : product
-          )
-        );
-      }, 500); // Reset error after 500ms
-
-      setNetworkError(error.message); // Set the global network error if applicable
-
-      throw error; // Rethrow the error to propagate it up
-    } finally {
-      setAcceptingPrice(false); // Reset acceptingPrice once done
-    }
+  const acceptPrice = (productId: string, price: number, guid: string) => {
+    sendMessage({
+      type: "AcceptPrice",
+      productId,
+      price,
+      guid,
+    });
+    console.log(`Accepted price for ${productId}: $${price} (GUID: ${guid})`);
   };
 
-  return {
-    products,
-    loading,
-    acceptPrice,
-    networkError,
-    reconnecting,
-  };
+  return { products, loading, acceptPrice, networkError, reconnecting };
 };
 
 export default useProducts;

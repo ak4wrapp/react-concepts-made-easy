@@ -83,7 +83,6 @@ const ProductList: React.FC = () => {
           guid={product.guid}
           onAcceptPrice={handleAcceptPrice}
           reconnecting={reconnecting}
-          error={product.error}
           acceptPriceSuccess={
             acceptPriceStatuses[product.productId]?.success || false
           }
