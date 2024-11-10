@@ -132,6 +132,8 @@ const acceptPrice = (ws: WebSocket, data: any) => {
   // Optionally, you can send a success response here if you want to notify the client
   const successResponse = {
     type: "AcceptPriceSuccess",
+    productId,
+    guid,
     message: "Price accepted successfully.",
   };
   ws.send(JSON.stringify(successResponse)); // Send success to client
