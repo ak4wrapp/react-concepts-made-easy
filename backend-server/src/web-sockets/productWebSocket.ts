@@ -7,9 +7,16 @@ const productClients: WebSocket[] = [];
 // Function to update product prices
 const updatePriceForProduct = (productId: string) => {
   const product = products[productId];
+
+  // Calculate price change, positive or negative
   const priceChange =
     (Math.random() > 0.5 ? 1 : -1) * Math.floor(Math.random() * 10);
-  const newPrice = Math.max(product.price + priceChange, 0);
+  let newPrice = Math.max(product.price + priceChange, 0);
+
+  // Ensure price is always greater than 0
+  if (newPrice <= 0) {
+    newPrice = Math.floor(Math.random() * (100 - 10 + 1)) + 10;
+  }
 
   if (newPrice !== lastKnownPrices[productId]) {
     product.price = newPrice;
@@ -51,7 +58,7 @@ const handleProductConnection = (ws: WebSocket) => {
           sendProducts(ws);
           break;
         case "AcceptPrice":
-          acceptPrice(data);
+          acceptPrice(ws, data);
           break;
         default:
           console.log("Unknown product message type:", data.type);
@@ -82,9 +89,22 @@ const sendProducts = (ws: WebSocket) => {
 };
 
 // Accept price and create a new order
-const acceptPrice = (data: any) => {
+const acceptPrice = (ws: WebSocket, data: any) => {
   const { productId, guid } = data;
-  if (!productId || !guid || !products[productId]) return;
+
+  if (!productId || !guid || !products[productId]) {
+    return;
+  }
+
+  // Check for product5
+  if (productId === "product5") {
+    const errorResponse = {
+      type: "Error",
+      message: "Product is not configured to create an order",
+    };
+    ws.send(JSON.stringify(errorResponse)); // Send error to the client
+    return; // Return early, don't process the order
+  }
 
   const newOrder: Order = {
     productId,
@@ -92,9 +112,9 @@ const acceptPrice = (data: any) => {
     guid,
     timestamp: new Date().toISOString(),
   };
+
   orders.push(newOrder);
   console.log("New order created:", newOrder);
-  // No need to notify order clients here
 };
 
 export { handleProductConnection };
