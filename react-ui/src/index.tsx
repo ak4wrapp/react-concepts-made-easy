@@ -4,16 +4,16 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import "prismjs/themes/prism-tomorrow.css"; // For dark theme
-import Prism from "prismjs";
+import { SnackbarProvider } from "./context/ SnackbarContext";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
-  // <React.StrictMode>
-  <App />
-  //  {/* <Home /> */}
-  // </React.StrictMode>
+  // Wrap your App with SnackbarProvider so that it's available globally
+  <SnackbarProvider>
+    <App />
+  </SnackbarProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function
