@@ -92,20 +92,29 @@ const sendProducts = (ws: WebSocket) => {
 const acceptPrice = (ws: WebSocket, data: any) => {
   const { productId, guid } = data;
 
+  // Check if productId and guid are valid
   if (!productId || !guid || !products[productId]) {
+    const errorResponse = {
+      type: "AcceptPriceError",
+      errorCode: "INVALID_PRODUCT_OR_GUID",
+      message: "Product or GUID is invalid or not found.",
+    };
+    ws.send(JSON.stringify(errorResponse)); // Send error to client
     return;
   }
 
-  // Check for product5
+  // Handle specific case for product5 (assuming it's a special case)
   if (productId === "product5") {
     const errorResponse = {
       type: "AcceptPriceError",
+      errorCode: "PRODUCT_NOT_CONFIGURED",
       message: "Product is not configured to create an order",
     };
-    ws.send(JSON.stringify(errorResponse)); // Send error to the client
+    ws.send(JSON.stringify(errorResponse)); // Send error to client
     return; // Return early, don't process the order
   }
 
+  // If product exists and doesn't have any specific issue, process the order
   const newOrder: Order = {
     productId,
     price: products[productId].price,
@@ -115,6 +124,13 @@ const acceptPrice = (ws: WebSocket, data: any) => {
 
   orders.push(newOrder);
   console.log("New order created:", newOrder);
+
+  // Optionally, you can send a success response here if you want to notify the client
+  const successResponse = {
+    type: "AcceptPriceSuccess",
+    message: "Price accepted successfully.",
+  };
+  ws.send(JSON.stringify(successResponse)); // Send success to client
 };
 
 export { handleProductConnection };
