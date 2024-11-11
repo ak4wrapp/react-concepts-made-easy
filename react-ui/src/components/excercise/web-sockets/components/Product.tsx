@@ -1,22 +1,16 @@
-import React, { useState, useEffect } from "react";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle"; // Import MUI check icon
-import CancelIcon from "@mui/icons-material/Cancel"; // Import MUI cancel icon
-import "./Product.css"; // Your custom styles for Product
+import React, { useState } from "react";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle"; // MUI check icon for success
+import CancelIcon from "@mui/icons-material/Cancel"; // MUI cancel icon for error
+import "./Product.css"; // Custom styles for the Product component
 
 interface ProductProps {
   productId: string;
   price: number;
   guid: string;
-  onAcceptPrice: (
-    productId: string,
-    price: number,
-    guid: string
-  ) => Promise<void>;
+  onAcceptPrice: (productId: string, price: number, guid: string) => void;
   reconnecting: boolean;
-  error?: string;
-  acceptPriceSuccess: boolean;
-  acceptPriceError: boolean;
-  onResetPriceStatus: () => void; // New prop to handle resetting success/error states
+  acceptPriceStatus: "success" | "error" | "none"; // Unified status for price acceptance
+  onResetPriceStatus: () => void; // Reset price status after completion
 }
 
 const Product: React.FC<ProductProps> = ({
@@ -25,90 +19,54 @@ const Product: React.FC<ProductProps> = ({
   guid,
   onAcceptPrice,
   reconnecting,
-  error,
-  acceptPriceSuccess,
-  acceptPriceError,
-  onResetPriceStatus, // Add this prop to reset price success/error states
+  acceptPriceStatus,
+  onResetPriceStatus,
 }) => {
-  const [loading, setLoading] = useState(false);
-  const [showReset, setShowReset] = useState(false); // Track if reset button should be shown
-  const [isReset, setIsReset] = useState(false); // Tracks whether the product card has been reset
-  const [acceptedPrice, setAcceptedPrice] = useState<number | null>(null); // Track the accepted price
+  const [loading, setLoading] = useState(false); // Track loading state
 
-  // Disable double-click if there's a success or error
-  const isDoubleClickDisabled = acceptPriceSuccess || acceptPriceError;
-
-  // Throttled version of the handleDoubleClick function
   const handleDoubleClick = async () => {
-    if (reconnecting || loading || isReset || isDoubleClickDisabled) return;
-
-    // Start price acceptance immediately
+    if (reconnecting || loading) return; // Prevent action if reconnecting or loading
     setLoading(true);
-
     try {
       await onAcceptPrice(productId, price, guid);
-      setAcceptedPrice(price); // Store the accepted price
-      setShowReset(true); // Show the reset button
-    } catch (error) {
-      setAcceptedPrice(price); // Store the accepted price even in case of failure
-      setShowReset(true); // Show the reset button
     } finally {
       setLoading(false);
     }
   };
 
-  const handleReset = () => {
-    setShowReset(false); // Hide reset button
-    setIsReset(true); // Set to reset state
-    onResetPriceStatus(); // Reset the price success and error states
-    setAcceptedPrice(null); // Clear accepted price to show original price
-
-    setIsReset(false);
-  };
-
-  // Auto-reset logic after 5 seconds if reset is not clicked
-  useEffect(() => {
-    const resetTimeout = setTimeout(() => {
-      if (showReset && !isReset) {
-        handleReset(); // Auto-reset after 5 seconds if no manual reset
-      }
-    }, 3000);
-
-    // Cleanup the timeout if the component unmounts or if reset happens
-    return () => clearTimeout(resetTimeout);
-  }, [showReset, isReset]);
-
   return (
     <div
-      className={`product ${acceptPriceSuccess ? "green-theme" : ""} ${
-        acceptPriceError || error ? "red-theme" : ""
-      }`}
+      className={`product ${
+        acceptPriceStatus === "success" ? "green-theme" : ""
+      } ${acceptPriceStatus === "error" ? "red-theme" : ""}`}
       onDoubleClick={handleDoubleClick} // Handle double-click to accept price
     >
       <div className="name">{productId}</div>
 
-      {/* Price and icon on the right */}
       <div className="price-and-indicator">
-        {/* Show the accepted price or the original price depending on reset */}
-        <div className="price">
-          ${acceptedPrice !== null ? acceptedPrice : price}
-        </div>
-        {/* Show green check icon on success */}
-        {acceptPriceSuccess && !isReset && (
-          <CheckCircleIcon sx={{ color: "white", fontSize: "1.2rem" }} />
+        <div className="price">${price}</div>
+
+        {acceptPriceStatus === "success" && (
+          <CheckCircleIcon
+            sx={{
+              color: "lightgreen",
+              fontSize: "1.2rem",
+              paddingLeft: "8px",
+            }}
+          />
         )}
-        {/* Show red cancel icon on error */}
-        {acceptPriceError && !isReset && (
-          <CancelIcon sx={{ color: "white", fontSize: "1.2rem" }} />
+        {acceptPriceStatus === "error" && (
+          <CancelIcon
+            sx={{ color: "lightred", fontSize: "1.2rem", paddingLeft: "8px" }}
+          />
         )}
       </div>
 
-      {/* Optionally, show a loading indicator when price is being accepted */}
       {loading && <div className="loading-indicator">Processing...</div>}
 
-      {/* Show the reset button only when there's a success or error */}
-      {showReset && !isReset && (
-        <button className="reset-button" onClick={handleReset}>
+      {/* Optionally, show reset button */}
+      {(acceptPriceStatus === "success" || acceptPriceStatus === "error") && (
+        <button className="reset-button" onClick={onResetPriceStatus}>
           Reset
         </button>
       )}

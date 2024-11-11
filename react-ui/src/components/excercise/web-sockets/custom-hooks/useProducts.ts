@@ -13,13 +13,32 @@ const useProducts = () => {
   const [networkError, setNetworkError] = useState<string | null>(null); // Track network errors
   const [reconnecting, setReconnecting] = useState<boolean>(false); // Track reconnection state
 
-  const handleMessage = useCallback((data) => {
-    console.log("Handling message:", data);
+  // Track the status of each product
+  const [productStatuses, setProductStatuses] = useState<{
+    [productId: string]: "none" | "success" | "error";
+  }>({});
+
+  const handleMessage = useCallback((data: any) => {
     if (data.type === "ProductsResponse") {
       setProducts(data.products);
       setLoading(false);
     } else if (data.type === "PriceUpdate") {
       updateProductPrice(data.productId, data.guid, data.price);
+    } else if (data.type === "AcceptPriceResponse") {
+      // Handle the response for accepting a price
+      const { productId, status, message } = data;
+      const newStatus = status === "Success" ? "success" : "error";
+
+      // Only update if the status has changed
+      setProductStatuses((prevStatuses) => {
+        const updatedStatuses = { ...prevStatuses };
+        updatedStatuses[productId] = newStatus;
+        return updatedStatuses;
+      });
+
+      // Optionally show a toast notification
+      // Show toast based on the success or error of the AcceptPriceResponse
+      // We'll handle showing the toast in ProductList based on `productStatuses` changes
     }
   }, []);
 
@@ -43,7 +62,6 @@ const useProducts = () => {
     } else if (wsReconnecting) {
       setReconnecting(true); // WebSocket is reconnecting
     } else {
-      // setNetworkError("Connection lost. Trying to reconnect...");
       setReconnecting(false);
     }
   }, [connected, sendMessage, wsReconnecting]);
@@ -70,7 +88,23 @@ const useProducts = () => {
     console.log(`Accepted price for ${productId}: $${price} (GUID: ${guid})`);
   };
 
-  return { products, loading, acceptPrice, networkError, reconnecting };
+  // Add a function to reset the product status
+  const resetProductStatus = (productId: string) => {
+    setProductStatuses((prevStatuses) => ({
+      ...prevStatuses,
+      [productId]: "none", // Reset the status of the given product
+    }));
+  };
+
+  return {
+    products,
+    loading,
+    acceptPrice,
+    networkError,
+    reconnecting,
+    productStatuses, // Provide the product status here
+    resetProductStatus, // Expose the reset function here
+  };
 };
 
 export default useProducts;

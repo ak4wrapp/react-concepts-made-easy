@@ -5,65 +5,43 @@ import "./ProductList.css";
 import { useSnackbar } from "../../../../context/SnackbarContext";
 
 const ProductList: React.FC = () => {
-  const { products, loading, acceptPrice, networkError, reconnecting } =
-    useProducts();
-  const { showSnackbar } = useSnackbar(); // Access Snackbar context
+  const {
+    products,
+    loading,
+    acceptPrice,
+    networkError,
+    reconnecting,
+    productStatuses, // Now coming from useProducts
+    resetProductStatus, // Function to reset product status
+  } = useProducts();
+  const { showSnackbar } = useSnackbar();
 
-  // Track success/error for each product using a map or object
-  const [acceptPriceStatuses, setAcceptPriceStatuses] = useState<{
-    [productId: string]: { success: boolean; error: boolean };
+  // Track previous status to avoid showing the same toast multiple times
+  const previousStatusesRef = useRef<{
+    [productId: string]: "none" | "success" | "error";
   }>({});
 
-  // A ref to keep track of the last seen networkError to prevent triggering the snackbar multiple times for the same error
-  const previousNetworkError = useRef<string | null>(null);
-
-  // Show network error in a snackbar (only if networkError is new or changed)
   useEffect(() => {
-    if (networkError && networkError !== previousNetworkError.current) {
-      showSnackbar(networkError, "error"); // Trigger snackbar for network error
-      previousNetworkError.current = networkError; // Update the reference to the current error
-    }
-  }, [networkError, showSnackbar]);
+    // Show a toast notification only if the status of a product has changed
+    Object.entries(productStatuses).forEach(([productId, status]) => {
+      const previousStatus = previousStatusesRef.current[productId];
 
-  // Handle success/error of price acceptance
-  const handleAcceptPrice = async (
-    productId: string,
-    price: number,
-    guid: string
-  ) => {
-    try {
-      await acceptPrice(productId, price, guid);
-      showSnackbar(
-        `Successfully accepted price for ${productId}: $${price}`,
-        "success" // Show success message in snackbar
-      );
+      // Show toast only if the status is different from the previous one
+      if (status !== previousStatus) {
+        if (status === "error") {
+          showSnackbar(
+            `Error accepting price for product ${productId}`,
+            "error"
+          );
+        } else if (status === "success") {
+          showSnackbar(`Price accepted for product ${productId}`, "success");
+        }
 
-      // Update the success state for this product
-      setAcceptPriceStatuses((prev) => ({
-        ...prev,
-        [productId]: { success: true, error: false },
-      }));
-    } catch (error) {
-      showSnackbar(
-        `Failed to accept price for ${productId}. Please try again.`,
-        "error"
-      ); // Show error message in snackbar
-
-      // Update the error state for this product
-      setAcceptPriceStatuses((prev) => ({
-        ...prev,
-        [productId]: { success: false, error: true },
-      }));
-    }
-  };
-
-  // Reset the price success and error states for a single product
-  const handleResetPriceStatus = (productId: string) => {
-    setAcceptPriceStatuses((prev) => ({
-      ...prev,
-      [productId]: { success: false, error: false },
-    }));
-  };
+        // Update the previous status reference
+        previousStatusesRef.current[productId] = status;
+      }
+    });
+  }, [productStatuses, showSnackbar]);
 
   return (
     <div id="product-list-container">
@@ -75,23 +53,24 @@ const ProductList: React.FC = () => {
         <div id="no-products">No products available</div>
       )}
 
-      {products.map((product) => (
-        <Product
-          key={product.productId}
-          productId={product.productId}
-          price={product.price}
-          guid={product.guid}
-          onAcceptPrice={handleAcceptPrice}
-          reconnecting={reconnecting}
-          acceptPriceSuccess={
-            acceptPriceStatuses[product.productId]?.success || false
-          }
-          acceptPriceError={
-            acceptPriceStatuses[product.productId]?.error || false
-          }
-          onResetPriceStatus={() => handleResetPriceStatus(product.productId)}
-        />
-      ))}
+      {products.map((product) => {
+        const acceptPriceStatus = productStatuses[product.productId] || "none"; // Default to "none"
+
+        return (
+          <Product
+            key={product.productId}
+            productId={product.productId}
+            price={product.price}
+            guid={product.guid}
+            onAcceptPrice={acceptPrice}
+            reconnecting={reconnecting}
+            acceptPriceStatus={acceptPriceStatus} // Pass the status to Product component
+            onResetPriceStatus={() => {
+              resetProductStatus(product.productId); // Call reset function from useProducts
+            }}
+          />
+        );
+      })}
     </div>
   );
 };

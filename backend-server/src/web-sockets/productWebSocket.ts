@@ -154,10 +154,10 @@ const acceptPrice = (ws: WebSocket, data: any) => {
       status: "Error",
       productId,
       guid,
-      message: `Invalid guid for product: ${productId}. The provided guid does not match the latest price for this product.`,
+      message: `Invalid guid for ${productId}. The provided guid does not match the latest price for this product.`,
     };
     console.log(
-      `Invalid GUID for productId=${productId}: expected ${product.currentGUID}, got ${guid}`
+      `Invalid GUID for ${productId}: expected ${product.currentGUID}, got ${guid}`
     );
     ws.send(JSON.stringify(errorResponse)); // Send error response
     return; // Return early, as the GUID is not valid for this product
@@ -188,10 +188,10 @@ const acceptPrice = (ws: WebSocket, data: any) => {
       status: "Error",
       productId,
       guid,
-      message: `Product ${productId} is not configured to create an order.`,
+      message: `${productId} is not configured to create an order.`,
     };
 
-    console.log(`Product ${productId} is not configured to create an order.`);
+    console.log(`${productId} is not configured to create an order.`);
     ws.send(JSON.stringify(errorResponse)); // Send error response
     return; // Return early, as the price is expired
   }
@@ -216,6 +216,8 @@ const acceptPrice = (ws: WebSocket, data: any) => {
     type: "AcceptPriceResponse",
     status: "Success",
     message: "Order successfully created.",
+    productId,
+    guid,
     order: newOrder, // Include the newly created order in the response
   };
   ws.send(JSON.stringify(successResponse)); // Send success response
