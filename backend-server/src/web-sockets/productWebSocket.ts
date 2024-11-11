@@ -92,35 +92,33 @@ const sendProducts = (ws: WebSocket) => {
 const acceptPrice = (ws: WebSocket, data: any) => {
   const { productId, guid } = data;
 
-  // Check if productId and guid are valid
+  // Check if the productId and guid are provided, and if the product exists
   if (!productId || !guid || !products[productId]) {
     const errorResponse = {
       type: "AcceptPriceResponse",
-      status: "error",
-      errorCode: "INVALID_PRODUCT_OR_GUID",
+      status: "Error",
       productId,
       guid,
-      message: "Product or GUID is invalid or not found.",
+      message: "Invalid productId or guid, or product not found.",
     };
-    ws.send(JSON.stringify(errorResponse)); // Send error to client
-    return;
+    ws.send(JSON.stringify(errorResponse)); // Send error response
+    return; // Return early, as we cannot proceed without valid product data
   }
 
-  // Handle specific case for product5 (assuming it's a special case)
+  // Check for product5 and return error if it's the product in question
   if (productId === "product5") {
     const errorResponse = {
       type: "AcceptPriceResponse",
-      status: "error",
-      errorCode: "PRODUCT_NOT_CONFIGURED",
+      status: "Error",
       productId,
       guid,
-      message: "Product is not configured to create an order",
+      message: "Product is not configured to create an order.",
     };
-    ws.send(JSON.stringify(errorResponse)); // Send error to client
+    ws.send(JSON.stringify(errorResponse)); // Send error response
     return; // Return early, don't process the order
   }
 
-  // If product exists and doesn't have any specific issue, process the order
+  // Create a new order if all conditions are valid
   const newOrder: Order = {
     productId,
     price: products[productId].price,
@@ -128,20 +126,19 @@ const acceptPrice = (ws: WebSocket, data: any) => {
     timestamp: new Date().toISOString(),
   };
 
+  // Push the new order into the orders array
   orders.push(newOrder);
+
   console.log("New order created:", newOrder);
 
-  // Optionally, you can send a success response here if you want to notify the client
-  //  ws.send(JSON.stringify({ type: 'acceptPriceResponse', status: 'success', message: 'Price accepted' }));
-
+  // Send a success response with the order details
   const successResponse = {
     type: "AcceptPriceResponse",
-    status: "success",
-    productId,
-    guid,
-    message: "Price accepted successfully.",
+    status: "Success",
+    message: "Order successfully created.",
+    order: newOrder, // Include the newly created order in the response
   };
-  ws.send(JSON.stringify(successResponse)); // Send success to client
+  ws.send(JSON.stringify(successResponse)); // Send success response
 };
 
 export { handleProductConnection };

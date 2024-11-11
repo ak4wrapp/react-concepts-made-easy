@@ -24,7 +24,7 @@ const useProducts = () => {
   }, []);
 
   const webSocketURL =
-    window.location.hostname === "localhost1"
+    window.location.hostname === "localhost"
       ? "ws://localhost:3000" // Local development URL
       : "wss://react-concepts-made-easy.onrender.com"; // Production URL
 
