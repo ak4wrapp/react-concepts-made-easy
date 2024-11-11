@@ -1,6 +1,6 @@
 import { WebSocket } from "ws";
 import { products, lastKnownPrices, Order, orders } from "../datastore";
-import { generateGUID } from "../utils";
+import { v4 } from "uuid";
 
 const productClients: WebSocket[] = [];
 
@@ -20,7 +20,7 @@ const updatePriceForProduct = (productId: string) => {
 
   if (newPrice !== lastKnownPrices[productId]) {
     product.price = newPrice;
-    const newGUID = generateGUID();
+    const newGUID = v4();
     product.currentGUID = newGUID;
 
     const priceUpdate = {
@@ -81,7 +81,7 @@ const sendProducts = (ws: WebSocket) => {
       ([productId, { price, currentGUID }]) => ({
         productId,
         price,
-        guid: currentGUID || generateGUID(),
+        guid: currentGUID || v4(),
       })
     ),
   };
