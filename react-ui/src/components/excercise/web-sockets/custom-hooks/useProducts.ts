@@ -19,7 +19,7 @@ const useProducts = () => {
       setProducts(data.products);
       setLoading(false);
     } else if (data.type === "PriceUpdate") {
-      updateProductPrice(data.productId, data.price);
+      updateProductPrice(data.productId, data.guid, data.price);
     }
   }, []);
 
@@ -48,10 +48,14 @@ const useProducts = () => {
     }
   }, [connected, sendMessage, wsReconnecting]);
 
-  const updateProductPrice = (productId: string, price: number) => {
+  const updateProductPrice = (
+    productId: string,
+    guid: string,
+    price: number
+  ) => {
     setProducts((prevProducts) =>
       prevProducts.map((product) =>
-        product.productId === productId ? { ...product, price } : product
+        product.productId === productId ? { ...product, guid, price } : product
       )
     );
   };
@@ -60,7 +64,7 @@ const useProducts = () => {
     sendMessage({
       type: "AcceptPrice",
       productId,
-      price,
+      price, // Even if you send price: "100", it will not be used as we will pull price from backend
       guid,
     });
     console.log(`Accepted price for ${productId}: $${price} (GUID: ${guid})`);

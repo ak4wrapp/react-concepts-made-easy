@@ -18,11 +18,30 @@ const updatePriceForProduct = (productId: string) => {
     newPrice = Math.floor(Math.random() * (100 - 10 + 1)) + 10;
   }
 
-  if (newPrice !== lastKnownPrices[productId]) {
+  if (newPrice !== lastKnownPrices[productId].price) {
+    const now = Date.now();
+
+    // Expire the old price if it's not the first price update (validTillTime is not null)
+    if (
+      product.currentGUID &&
+      lastKnownPrices[productId].validTillTime !== null
+    ) {
+      lastKnownPrices[productId].validTillTime = now + 1000; // expire old price after 1 second
+      console.log(`Price for ${productId} expired at ${now + 1000}`);
+    }
+
+    // Set the new price and GUID
     product.price = newPrice;
     const newGUID = v4();
     product.currentGUID = newGUID;
+    product.validTillTime = null; // validTillTime is reset to null as the new price is active
+    product.priceGenerateTime = now; // update the time when the price was generated
 
+    console.log(
+      `Updated price for ${productId}: ${newPrice}, GUID: ${newGUID}`
+    );
+
+    // Notify only product clients
     const priceUpdate = {
       type: "PriceUpdate",
       productId,
@@ -30,14 +49,17 @@ const updatePriceForProduct = (productId: string) => {
       guid: newGUID,
     };
 
-    // Notify only product clients
     productClients.forEach((client) => {
       if (client.readyState === WebSocket.OPEN) {
         client.send(JSON.stringify(priceUpdate));
       }
     });
 
-    lastKnownPrices[productId] = newPrice;
+    lastKnownPrices[productId] = {
+      price: newPrice,
+      validTillTime: null,
+      priceGenerateTime: now,
+    };
   }
 
   setTimeout(() => updatePriceForProduct(productId), product.changeFrequency);
@@ -49,6 +71,7 @@ Object.keys(products).forEach(updatePriceForProduct);
 // Handle incoming product connections
 const handleProductConnection = (ws: WebSocket) => {
   productClients.push(ws);
+  console.log(`New client connected. Total clients: ${productClients.length}`);
 
   ws.on("message", (message: string) => {
     try {
@@ -70,6 +93,7 @@ const handleProductConnection = (ws: WebSocket) => {
 
   ws.on("close", () => {
     productClients.splice(productClients.indexOf(ws), 1);
+    console.log(`Client disconnected. Total clients: ${productClients.length}`);
   });
 };
 
@@ -78,19 +102,30 @@ const sendProducts = (ws: WebSocket) => {
   const productsResponse = {
     type: "ProductsResponse",
     products: Object.entries(products).map(
-      ([productId, { price, currentGUID }]) => ({
+      ([
+        productId,
+        { price, currentGUID, validTillTime, priceGenerateTime },
+      ]) => ({
         productId,
         price,
         guid: currentGUID || v4(),
+        validTillTime,
+        priceGenerateTime,
       })
     ),
   };
+  console.log(
+    `Sending product data to client: ${JSON.stringify(productsResponse)}`
+  );
   ws.send(JSON.stringify(productsResponse));
 };
 
 // Accept price and create a new order
 const acceptPrice = (ws: WebSocket, data: any) => {
   const { productId, guid } = data;
+  console.log(
+    `Received AcceptPrice request: productId=${productId}, guid=${guid}`
+  );
 
   // Check if the productId and guid are provided, and if the product exists
   if (!productId || !guid || !products[productId]) {
@@ -101,10 +136,51 @@ const acceptPrice = (ws: WebSocket, data: any) => {
       guid,
       message: "Invalid productId or guid, or product not found.",
     };
+    console.log(
+      `Invalid product or guid: productId=${productId}, guid=${guid}`
+    );
     ws.send(JSON.stringify(errorResponse)); // Send error response
     return; // Return early, as we cannot proceed without valid product data
   }
 
+  // Retrieve the latest price information for the given productId
+  const product = products[productId];
+  const priceInfo = lastKnownPrices[productId];
+
+  // Ensure the guid matches the one that was last generated for this product
+  if (product.currentGUID !== guid) {
+    const errorResponse = {
+      type: "AcceptPriceResponse",
+      status: "Error",
+      productId,
+      guid,
+      message: `Invalid guid for product: ${productId}. The provided guid does not match the latest price for this product.`,
+    };
+    console.log(
+      `Invalid GUID for productId=${productId}: expected ${product.currentGUID}, got ${guid}`
+    );
+    ws.send(JSON.stringify(errorResponse)); // Send error response
+    return; // Return early, as the GUID is not valid for this product
+  }
+
+  // Check if the price has expired (validTillTime is set and expired)
+  if (
+    priceInfo.validTillTime !== null &&
+    priceInfo.validTillTime < Date.now()
+  ) {
+    const errorResponse = {
+      type: "AcceptPriceResponse",
+      status: "Error",
+      productId,
+      guid,
+      message: "The price for this product has expired.",
+    };
+    console.log(`Price expired for productId=${productId}, guid=${guid}`);
+    ws.send(JSON.stringify(errorResponse)); // Send error response
+    return; // Return early, as the price is expired
+  }
+
+  // Custom Logic here to test error case
   // Check for product5 and return error if it's the product in question
   if (productId === "product5") {
     const errorResponse = {
@@ -112,24 +188,28 @@ const acceptPrice = (ws: WebSocket, data: any) => {
       status: "Error",
       productId,
       guid,
-      message: "Product is not configured to create an order.",
+      message: `Product ${productId} is not configured to create an order.`,
     };
+
+    console.log(`Product ${productId} is not configured to create an order.`);
     ws.send(JSON.stringify(errorResponse)); // Send error response
-    return; // Return early, don't process the order
+    return; // Return early, as the price is expired
   }
 
-  // Create a new order if all conditions are valid
+  // The price from the client request is ignored. Instead, use the price from the lastKnownPrices associated with the guid
+  const correctPrice = priceInfo.price; // Get the correct price from the backend (lastKnownPrices)
+
+  // Create a new order using the correct price and guid
   const newOrder: Order = {
     productId,
-    price: products[productId].price,
+    price: correctPrice, // Use the correct price (associated with the guid)
     guid,
     timestamp: new Date().toISOString(),
   };
 
   // Push the new order into the orders array
   orders.push(newOrder);
-
-  console.log("New order created:", newOrder);
+  console.log(`New order created: ${JSON.stringify(newOrder)}`);
 
   // Send a success response with the order details
   const successResponse = {
