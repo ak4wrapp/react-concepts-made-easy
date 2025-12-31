@@ -37,9 +37,9 @@ const updatePriceForProduct = (productId: string) => {
     product.validTillTime = null; // validTillTime is reset to null as the new price is active
     product.priceGenerateTime = now; // update the time when the price was generated
 
-    console.log(
-      `Updated price for ${productId}: ${newPrice}, GUID: ${newGUID}`
-    );
+    // console.log(
+    //   `Updated price for ${productId}: ${newPrice}, GUID: ${newGUID}`
+    // );
 
     // Notify only product clients
     const priceUpdate = {
@@ -51,6 +51,9 @@ const updatePriceForProduct = (productId: string) => {
 
     productClients.forEach((client) => {
       if (client.readyState === WebSocket.OPEN) {
+        console.info(
+          `Sending price update to client: ${JSON.stringify(priceUpdate)}`
+        );
         client.send(JSON.stringify(priceUpdate));
       }
     });
