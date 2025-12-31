@@ -46,12 +46,14 @@ const useWebSocket = (
 
     ws.current.onerror = (error) => {
       console.error("WebSocket error observed:", error);
-      // Optionally handle error events differently
-      // Try to reconnect on error as well
-      if (!reconnecting) {
-        setReconnecting(true);
-        reconnect();
-      }
+      ws.current?.close(); // Close the connection on error to trigger reconnection
+
+      // Notify all clients about the error
+      setConnected(false);
+      // if (!reconnecting) {
+      //   setReconnecting(true);
+      //   reconnect(); // Attempt reconnection
+      // }
     };
   }, [url, onMessage, reconnecting]);
 
