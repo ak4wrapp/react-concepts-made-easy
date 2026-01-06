@@ -28,16 +28,16 @@ The `backend-server` folder contains a Node.js application that serves as the ba
    ```
 3. Start the server:
    ```bash
-   npm run start
+   npm run start-local
    ```
-4. The server will run on http://localhost:3000
+4. The server will run on http://localhost:5001
 
 #### HTTP Endpoints
 
 - Hello World: Simple endpoint to verify the server is running.
   - Request:
     ```http
-    GET http://localhost:3000/
+    GET http://localhost:5001/
     ```
   - Response:
     ```json
@@ -48,7 +48,7 @@ The `backend-server` folder contains a Node.js application that serves as the ba
 - Get Random Data: Returns a random value with a timestamp.
   - Request:
     ```http
-    GET http://localhost:3000/api/random
+    GET http://localhost:5001/api/random
     ```
   - Response:
     ```json
@@ -62,7 +62,7 @@ The `backend-server` folder contains a Node.js application that serves as the ba
 
 - Get random data:
   ```javascript
-  fetch("http://localhost:3000/api/random")
+  fetch("http://localhost:5001/api/random")
     .then((response) => response.json())
     .then((data) => console.log(data));
   ```
@@ -75,7 +75,7 @@ To test the WebSocket connection:
 
 2. Connect to the WebSocket server:
    ```bash
-   const socket = new WebSocket('ws://localhost:3000');
+   const socket = new WebSocket('ws://localhost:5001');
    ```
 3. Listen for messages:
    ```bash
@@ -102,7 +102,7 @@ To test the WebSocket connection:
 - Get random data:
 
   ```javascript
-  const socket = new WebSocket("ws://localhost:3000");
+  const socket = new WebSocket("ws://localhost:5001");
   socket.onopen = () => {
     socket.send(JSON.stringify({ type: "GetPrice" }));
   };
@@ -150,7 +150,9 @@ The application will typically run on http://localhost:3000 if the backend is no
 ## Deployments
 
 ### React frontend
+
 https://react-concepts-made-easy.vercel.app/
 
 ### Node.js backend
+
 https://react-concepts-made-easy.onrender.com/api/random-quote

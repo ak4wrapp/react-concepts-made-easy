@@ -1,9 +1,8 @@
 // import * as http from "http";
-// import { setupWebSocketServer } from "./web-sockets/webSocketServer"; // New module for handling WebSocket connections
+// import { setupWebSocketServer } from "./web-sockets/webSocketServer";
 // import { requestHandler } from "./http/http-endpoints";
 
 // const server = http.createServer(requestHandler);
-
 // // Set up a single WebSocket server for both products and orders
 // setupWebSocketServer(server);
 
@@ -13,8 +12,8 @@
 //   console.log(`Server running on port ${PORT}`);
 // });
 
-import http from "http";
-import { setupWebSocketServer } from "./ws/wsServer";
+import * as http from "http";
+import { setupWebSocketServer } from "./ws/wsServer"; // New module for handling WebSocket connections
 import { productService } from "./services/product.service";
 
 const server = http.createServer();

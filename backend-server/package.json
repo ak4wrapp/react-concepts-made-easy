@@ -5,8 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "PORT=5001 ts-node src/server.ts",
-    "dev": "PORT=5001 nodemon --exec ts-node src/server.ts"
+    "start-local": "PORT=5001 ts-node src/server.ts",
+    "start": "ts-node src/server.ts",
+    "dev-local": "PORT=5001 nodemon --exec ts-node src/server.ts",
+    "dev": "nodemon --exec ts-node src/server.ts"
   },
   "keywords": [],
   "author": "",
