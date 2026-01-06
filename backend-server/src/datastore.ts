@@ -28,6 +28,20 @@ export const products: Record<string, Product> = {
     validTillTime: null,
     priceGenerateTime: null,
   },
+  product3: {
+    price: 300,
+    changeFrequency: 3500,
+    currentGUID: null,
+    validTillTime: null,
+    priceGenerateTime: null,
+  },
+  product4: {
+    price: 400,
+    changeFrequency: 4500,
+    currentGUID: null,
+    validTillTime: null,
+    priceGenerateTime: null,
+  },
   product5: {
     price: 500,
     changeFrequency: 5000,

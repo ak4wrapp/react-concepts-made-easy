@@ -47,7 +47,7 @@
 .product .price {
   font-size: 1.2em; /* Smaller price font */
   font-weight: bold;
-  color: #4caf50; /* Green for price */
+  color: #4ee543; /* Green for price */
   margin: 5px 0;
   position: relative; /* Stay in the center when visible */
 }
@@ -136,20 +136,21 @@ button.reset-button:focus {
   0% {
     opacity: 1;
     color: yellow;
-    scale: 1;
+    transform: scale(1);
   }
   30% {
     opacity: 0.4;
     color: yellow;
-    scale: 0.9;
+    transform: scale(0.9);
   }
   60% {
     opacity: 0.6;
     color: yellow;
-    scale: 1.1;
+    transform: scale(1.1);
   }
   100% {
     opacity: 1;
+    transform: scale(1);
   }
 }
 
