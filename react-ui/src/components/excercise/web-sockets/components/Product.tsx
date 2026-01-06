@@ -1,17 +1,8 @@
-import React, { useState } from "react";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle"; // MUI check icon for success
-import CancelIcon from "@mui/icons-material/Cancel"; // MUI cancel icon for error
-import "./Product.css"; // Custom styles for the Product component
-
-interface ProductProps {
-  productId: string;
-  price: number;
-  guid: string;
-  onAcceptPrice: (productId: string, price: number, guid: string) => void;
-  reconnecting: boolean;
-  acceptPriceStatus: "success" | "error" | "none"; // Unified status for price acceptance
-  onResetPriceStatus: () => void; // Reset price status after completion
-}
+import React, { useEffect, useRef, useState } from "react";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import CancelIcon from "@mui/icons-material/Cancel";
+import "./Product.css";
+import { ProductProps } from "./types";
 
 const Product: React.FC<ProductProps> = ({
   productId,
@@ -22,10 +13,25 @@ const Product: React.FC<ProductProps> = ({
   acceptPriceStatus,
   onResetPriceStatus,
 }) => {
-  const [loading, setLoading] = useState(false); // Track loading state
+  const [loading, setLoading] = useState(false);
+  const [blink, setBlink] = useState(false);
+
+  const prevPriceRef = useRef<number | null>(null);
+
+  // Detect price change
+  useEffect(() => {
+    if (prevPriceRef.current !== null && prevPriceRef.current !== price) {
+      setBlink(true);
+
+      const timer = setTimeout(() => setBlink(false), 1200);
+      return () => clearTimeout(timer);
+    }
+
+    prevPriceRef.current = price;
+  }, [price]);
 
   const handleDoubleClick = async () => {
-    if (reconnecting || loading) return; // Prevent action if reconnecting or loading
+    if (reconnecting || loading) return;
     setLoading(true);
     try {
       await onAcceptPrice(productId, price, guid);
@@ -36,23 +42,22 @@ const Product: React.FC<ProductProps> = ({
 
   return (
     <div
-      className={`product ${
-        acceptPriceStatus === "success" ? "green-theme" : ""
-      } ${acceptPriceStatus === "error" ? "red-theme" : ""}`}
-      onDoubleClick={handleDoubleClick} // Handle double-click to accept price
+      className={`product
+        ${acceptPriceStatus === "success" ? "green-theme" : ""}
+        ${acceptPriceStatus === "error" ? "red-theme" : ""}
+      `}
+      onDoubleClick={handleDoubleClick}
     >
       <div className="name">{productId}</div>
 
       <div className="price-and-indicator">
-        <div className="price">${price}</div>
+        <div className={`price ${blink ? "price-text-blink" : ""}`}>
+          ${price}
+        </div>
 
         {acceptPriceStatus === "success" && (
           <CheckCircleIcon
-            sx={{
-              color: "lightgreen",
-              fontSize: "1.2rem",
-              paddingLeft: "8px",
-            }}
+            sx={{ color: "lightgreen", fontSize: "1.2rem", paddingLeft: "8px" }}
           />
         )}
         {acceptPriceStatus === "error" && (
@@ -64,7 +69,6 @@ const Product: React.FC<ProductProps> = ({
 
       {loading && <div className="loading-indicator">Processing...</div>}
 
-      {/* Optionally, show reset button */}
       {(acceptPriceStatus === "success" || acceptPriceStatus === "error") && (
         <button className="reset-button" onClick={onResetPriceStatus}>
           Reset

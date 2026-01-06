@@ -131,3 +131,28 @@ button.reset-button:hover {
 button.reset-button:focus {
   outline: none;
 }
+
+@keyframes priceTextBlink {
+  0% {
+    opacity: 1;
+    color: yellow;
+    scale: 1;
+  }
+  30% {
+    opacity: 0.4;
+    color: yellow;
+    scale: 0.9;
+  }
+  60% {
+    opacity: 0.6;
+    color: yellow;
+    scale: 1.1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.price-text-blink {
+  animation: priceTextBlink 0.9s ease-in-out;
+}
