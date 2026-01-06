@@ -1,13 +1,13 @@
 import * as http from "http";
 
 const allowedOrigins = [
-  "http://localhost:3000",  // Change Port as needed
-  "https://vercel.app",      // vercel.app is where UI is hosted, replace as needed
+  "http://localhost:3000", // Change Port as needed
+  "https://vercel.app", // vercel.app is where UI is hosted, replace as needed
 ];
 
 // Example pattern to allow any subdomain of vercel.app or localhost for development
-const allowedOriginsPattern = /^(https?:\/\/(.*\.)?vercel\.app|http:\/\/localhost:\d+)$/;
-
+const allowedOriginsPattern =
+  /^(https?:\/\/(.*\.)?vercel\.app|http:\/\/localhost:\d+)$/;
 
 export const requestHandler = (
   req: http.IncomingMessage,
@@ -16,13 +16,20 @@ export const requestHandler = (
   const origin = req.headers.origin as string;
 
   // For now using both REGEX and Array of Origins
-  const isCORSEnabled = allowedOriginsPattern.test(origin) || allowedOrigins.includes(origin);
-  
+  const isCORSEnabled =
+    allowedOriginsPattern.test(origin) || allowedOrigins.includes(origin);
+
   // Handle CORS: Allow only requests from localhost and verex
   if (isCORSEnabled) {
     res.setHeader("Access-Control-Allow-Origin", origin);
-    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+    res.setHeader(
+      "Access-Control-Allow-Methods",
+      "GET, POST, PUT, DELETE, OPTIONS"
+    );
+    res.setHeader(
+      "Access-Control-Allow-Headers",
+      "Content-Type, Authorization"
+    );
     res.setHeader("Access-Control-Allow-Credentials", "true"); // If you need credentials (cookies, HTTP authentication)
   }
 
@@ -36,10 +43,10 @@ export const requestHandler = (
   // Log the incoming request
   console.log(`Received ${req.method} request for ${req.url}`);
 
-  if (req.method === "GET" && req.url === "/") {
-    res.statusCode = 200;
-    res.setHeader("Content-Type", "application/json");
-    res.end(JSON.stringify({ message: "Hello, World!" }));
+  if (req.method === "GET" && (req.url === "/" || req.url === "/health")) {
+    res.writeHead(200, { "Content-Type": "text/plain" });
+    res.end("OK");
+    return;
   } else if (req.method === "GET" && req.url === "/api/random") {
     const randomData = {
       timestamp: new Date().toISOString(),
