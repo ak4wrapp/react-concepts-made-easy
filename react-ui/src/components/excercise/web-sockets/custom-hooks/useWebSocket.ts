@@ -9,99 +9,107 @@ interface WebSocketMessage {
 const useWebSocket = (
   url: string,
   onMessage: (data: WebSocketMessage) => void,
-  reconnectInterval: number = 5000 // Interval to attempt reconnection (in ms)
+  reconnectInterval = 5000
 ) => {
-  const [connected, setConnected] = useState(false);
-  const [reconnecting, setReconnecting] = useState(false); // Track if we're reconnecting
-  const ws = useRef<WebSocket | null>(null);
-  const reconnectTimeout = useRef<NodeJS.Timeout | null>(null);
+  const wsRef = useRef<WebSocket | null>(null);
+  const reconnectTimeoutRef = useRef<number | null>(null);
+  const isReconnectingRef = useRef(false);
+  const onMessageRef = useRef(onMessage);
 
-  // Get the current network status
+  const [connected, setConnected] = useState(false);
+  const [reconnecting, setReconnecting] = useState(false);
+  const [networkError, setNetworkError] = useState<string | null>(null); // <-- New state
+
   const isOnline = useNetworkStatus();
 
-  const connectWebSocket = useCallback(() => {
-    console.log("Establishing WebSocket connection...");
-    ws.current = new WebSocket(url);
+  // Keep latest handler without reconnecting
+  useEffect(() => {
+    onMessageRef.current = onMessage;
+  }, [onMessage]);
 
-    ws.current.onopen = () => {
-      console.log(`Connected to WebSocket server at ${url}`);
+  const clearReconnectTimer = () => {
+    if (reconnectTimeoutRef.current !== null) {
+      clearTimeout(reconnectTimeoutRef.current);
+      reconnectTimeoutRef.current = null;
+    }
+  };
+
+  const connect = useCallback(() => {
+    if (wsRef.current) return;
+
+    console.log("Connecting WebSocket:", url);
+    wsRef.current = new WebSocket(url);
+
+    wsRef.current.onopen = () => {
+      console.log("WebSocket connected");
       setConnected(true);
-      setReconnecting(false); // Stop reconnecting if connection is established
+      setReconnecting(false);
+      setNetworkError(null); // <-- Reset network error on successful connection
+      isReconnectingRef.current = false;
+      clearReconnectTimer();
     };
 
-    ws.current.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      console.log("Message received:", data);
-      onMessage(data);
-    };
-
-    ws.current.onclose = () => {
-      console.log("WebSocket connection closed");
-      setConnected(false);
-      if (!reconnecting) {
-        setReconnecting(true);
-        reconnect(); // Attempt reconnection
+    wsRef.current.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
+        onMessageRef.current(data);
+      } catch (e) {
+        console.error("Invalid WebSocket message:", e);
       }
     };
 
-    ws.current.onerror = (error) => {
-      console.error("WebSocket error observed:", error);
-      ws.current?.close(); // Close the connection on error to trigger reconnection
-
-      // Notify all clients about the error
+    wsRef.current.onclose = () => {
+      console.warn("WebSocket closed");
+      wsRef.current = null;
       setConnected(false);
-      // if (!reconnecting) {
-      //   setReconnecting(true);
-      //   reconnect(); // Attempt reconnection
-      // }
-    };
-  }, [url, onMessage, reconnecting]);
 
-  const reconnect = useCallback(() => {
-    console.log(
-      `Attempting to reconnect in ${reconnectInterval / 1000} seconds...`
-    );
-    reconnectTimeout.current = setTimeout(() => {
-      connectWebSocket(); // Try to reconnect after the specified interval
+      if (!isReconnectingRef.current && isOnline) {
+        isReconnectingRef.current = true;
+        setReconnecting(true);
+        scheduleReconnect();
+      }
+    };
+
+    wsRef.current.onerror = (err) => {
+      console.error("WebSocket error:", err);
+      setNetworkError("WebSocket connection error"); // <-- Set network error
+      wsRef.current?.close();
+    };
+  }, [url, isOnline]);
+
+  const scheduleReconnect = () => {
+    clearReconnectTimer();
+    reconnectTimeoutRef.current = window.setTimeout(() => {
+      connect();
     }, reconnectInterval);
-  }, [connectWebSocket, reconnectInterval]);
+  };
 
   const sendMessage = useCallback((message: WebSocketMessage) => {
-    if (ws.current && ws.current.readyState === WebSocket.OPEN) {
-      ws.current.send(JSON.stringify(message));
-      console.log("Message sent:", message);
+    if (wsRef.current?.readyState === WebSocket.OPEN) {
+      wsRef.current.send(JSON.stringify(message));
     } else {
-      console.error(
-        "WebSocket is not open. Current state:",
-        ws.current?.readyState
-      );
+      console.warn("WebSocket not connected, cannot send");
     }
   }, []);
 
-  // Effect to connect WebSocket only when online
   useEffect(() => {
     if (isOnline) {
-      if (!ws.current || ws.current.readyState !== WebSocket.OPEN) {
-        connectWebSocket(); // Connect when online
-      }
+      connect();
     } else {
-      if (ws.current) {
-        ws.current.close(); // Close WebSocket when offline
-        setConnected(false);
-      }
+      wsRef.current?.close();
+      wsRef.current = null;
+      setConnected(false);
+      setNetworkError("No network connection"); // <-- Network offline
     }
 
-    // Cleanup on unmount
     return () => {
-      if (reconnectTimeout.current) {
-        clearTimeout(reconnectTimeout.current); // Clear reconnection timeout if component unmounts
-      }
-      ws.current?.close();
-      ws.current = null;
+      clearReconnectTimer();
+      wsRef.current?.close();
+      wsRef.current = null;
     };
-  }, [isOnline, connectWebSocket]);
+  }, [isOnline, connect]);
 
-  return { connected, sendMessage, reconnecting };
+  return { connected, reconnecting, networkError, sendMessage }; // <-- Export networkError
 };
 
 export default useWebSocket;

@@ -1,43 +1,53 @@
-import { useState, useEffect, useCallback } from "react";
-import useWebSocket from "./useWebSocket"; // Import your WebSocket hook
+import { useEffect, useState, useCallback } from "react";
+import useWebSocket from "./useWebSocket";
 
-interface OrderData {
+interface Order {
   timestamp: string;
   productId: string;
   price: number;
 }
 
-const useOrders = () => {
-  const [orders, setOrders] = useState<OrderData[]>([]);
-  const [newOrders, setNewOrders] = useState<OrderData[]>([]); // Track newly added orders
+// Determine WS URL dynamically
+const WS_BASE_URL =
+  window.location.hostname === "localhost"
+    ? "ws://localhost:5001"
+    : "wss://react-concepts-made-easy.onrender.com";
 
-  const handleMessage = useCallback((data) => {
-    if (data.type === "OrderAdded") {
-      setNewOrders((prevNewOrders) => [...data.orders, ...prevNewOrders]); // Store newly added orders
-      setOrders((prevOrders) => [...data.orders, ...prevOrders]); // Add new orders at the top
-    } else if (data.type === "OrdersResponse") {
-      setOrders(data.orders); // Set initial orders
+const useOrders = () => {
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [newOrders, setNewOrders] = useState<Order[]>([]); // Track newly added orders
+
+  const handleMessage = useCallback((data: any) => {
+    switch (data.type) {
+      case "OrdersResponse":
+        setOrders(data.orders);
+        break;
+
+      case "OrderAdded":
+        setNewOrders((prev) => [data.order, ...prev]);
+        setOrders((prev) => [...data.orders, ...prev]);
+        break;
     }
   }, []);
 
-  const webSocketURL =
-    window.location.hostname === "localhost"
-      ? "ws://localhost:5001" // Local development URL
-      : "wss://react-concepts-made-easy.onrender.com"; // Production URL
-
-  const { connected, sendMessage } = useWebSocket(
-    webSocketURL + "/orders",
+  const { connected, reconnecting, sendMessage, networkError } = useWebSocket(
+    `${WS_BASE_URL}/orders`,
     handleMessage
   );
 
   useEffect(() => {
     if (connected) {
-      console.log("Sending GetOrders message");
-      sendMessage({ type: "GetOrders" }); // Request initial orders
+      sendMessage({ type: "GetOrders" });
     }
   }, [connected, sendMessage]);
 
-  return { orders, newOrders }; // Return orders and new orders
+  return {
+    orders,
+    connected,
+    reconnecting,
+    networkError,
+    newOrders,
+  };
 };
 
 export default useOrders;
