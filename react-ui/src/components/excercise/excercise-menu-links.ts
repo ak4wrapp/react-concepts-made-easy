@@ -1,5 +1,6 @@
 import { NavItem } from "../../types/nav-item";
 import RandomQuoteGenerator from "./random-quote-generator/random-quote-generator";
+import RandomStory from "./random-story-generator/random-story-generator";
 import SimpleCounter from "./simple-counter/simple-counter";
 import Todos from "./todos/todos";
 import WebSocketComponent from "./web-sockets/WebSocketComponent";
@@ -22,6 +23,11 @@ export const excerciseMenuLinks: NavItem[] = [
         label: "Random Quote Generator",
         path: "/learning/excercise/random-quote-generator",
         component: RandomQuoteGenerator,
+      },
+      {
+        label: "Random Story Generator",
+        path: "/learning/excercise/random-story-generator",
+        component: RandomStory,
       },
       {
         label: "Web Sockets",

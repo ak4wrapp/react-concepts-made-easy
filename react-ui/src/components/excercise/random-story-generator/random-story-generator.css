@@ -1,0 +1,70 @@
+.story-container {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+  background: #f0f4f8;
+  min-height: 100vh;
+}
+
+.story-card {
+  max-width: 700px;
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.story-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #3b82f6; /* indigo-500 */
+}
+
+.story-author {
+  font-size: 1rem;
+  font-style: italic;
+  color: #6b7280; /* gray-500 */
+}
+
+.story-content {
+  font-size: 1.125rem;
+  line-height: 1.6;
+  color: #111827; /* gray-900 */
+  white-space: pre-line; /* preserve line breaks */
+}
+
+.story-moral {
+  font-size: 1rem;
+  background: #e0f2fe; /* light blue */
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  color: #0369a1; /* blue-700 */
+}
+
+.next-story-btn {
+  align-self: flex-end;
+  padding: 0.5rem 1rem;
+  background: #3b82f6;
+  color: white;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.next-story-btn:hover {
+  background: #2563eb;
+}
+
+.loading,
+.error {
+  display: block; /* Makes the <p> fill the container width */
+  width: 100%; /* Ensures it spans the card */
+  text-align: center; /* Optional: center the text */
+  font-size: 1rem;
+  color: #374151; /* gray-700 */
+}
