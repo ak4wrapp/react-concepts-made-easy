@@ -94,6 +94,9 @@ const sendOrders = (ws: WebSocket) => {
 };
 
 // Call startOrderPolling when the module is loaded
-startOrderPolling();
+// startOrderPolling();
+
+// Call checkForNewOrders immediately to initialize lastOrderCount
+checkForNewOrders();
 
 export { handleOrderConnection };
