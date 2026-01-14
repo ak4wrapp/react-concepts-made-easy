@@ -1,70 +1,87 @@
+/* Page background */
 .story-container {
-  display: flex;
-  justify-content: center;
-  padding: 2rem;
-  background: #f0f4f8;
   min-height: 100vh;
-}
-
-.story-card {
-  max-width: 700px;
-  background: white;
-  padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  background-color: #0f172a; /* deep navy */
   display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  color: #e5e7eb;
+  font-family: "Inter", system-ui, sans-serif;
 }
 
+/* Card */
+.story-card {
+  background-color: #020617;
+  border-radius: 12px;
+  max-width: 700px;
+  width: 100%;
+  padding: 24px 28px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  border: 1px solid #1e293b;
+}
+
+/* Title */
 .story-title {
   font-size: 1.75rem;
-  font-weight: 700;
-  color: #3b82f6; /* indigo-500 */
+  margin-bottom: 6px;
+  color: #f8fafc;
 }
 
+/* Author */
 .story-author {
-  font-size: 1rem;
-  font-style: italic;
-  color: #6b7280; /* gray-500 */
+  font-size: 0.9rem;
+  color: #94a3b8;
+  margin-bottom: 16px;
 }
 
+/* Story content */
 .story-content {
-  font-size: 1.125rem;
-  line-height: 1.6;
-  color: #111827; /* gray-900 */
-  white-space: pre-line; /* preserve line breaks */
-}
-
-.story-moral {
   font-size: 1rem;
-  background: #e0f2fe; /* light blue */
-  padding: 0.75rem 1rem;
-  border-radius: 8px;
-  color: #0369a1; /* blue-700 */
+  line-height: 1.7;
+  color: #e5e7eb;
+  margin-bottom: 18px;
+  white-space: pre-line;
 }
 
+/* Moral */
+.story-moral {
+  background-color: #020617;
+  border-left: 4px solid #6366f1;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  color: #c7d2fe;
+}
+
+/* Button */
 .next-story-btn {
-  align-self: flex-end;
-  padding: 0.5rem 1rem;
-  background: #3b82f6;
-  color: white;
-  font-weight: 600;
+  background: linear-gradient(135deg, #6366f1, #818cf8);
+  color: #020617;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-size: 0.95rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .next-story-btn:hover {
-  background: #2563eb;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(99, 102, 241, 0.35);
 }
 
-.loading,
+.next-story-btn:active {
+  transform: translateY(0);
+}
+
+/* Loading & error states */
+.loading {
+  color: #38bdf8;
+  font-style: italic;
+}
+
 .error {
-  display: block; /* Makes the <p> fill the container width */
-  width: 100%; /* Ensures it spans the card */
-  text-align: center; /* Optional: center the text */
-  font-size: 1rem;
-  color: #374151; /* gray-700 */
+  color: #f87171;
+  font-weight: 500;
 }
