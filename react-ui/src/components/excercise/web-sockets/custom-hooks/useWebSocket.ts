@@ -18,29 +18,29 @@ const useWebSocket = (
 
   const [connected, setConnected] = useState(false);
   const [reconnecting, setReconnecting] = useState(false);
-  const [networkError, setNetworkError] = useState<string | null>(null); // <-- New state
+  const [networkError, setNetworkError] = useState<string | null>(null);
 
   const isOnline = useNetworkStatus();
 
-  // Keep latest handler without reconnecting
   useEffect(() => {
     onMessageRef.current = onMessage;
   }, [onMessage]);
 
-  const clearReconnectTimer = () => {
+  const clearReconnectTimer = useCallback(() => {
     if (reconnectTimeoutRef.current !== null) {
       clearTimeout(reconnectTimeoutRef.current);
       reconnectTimeoutRef.current = null;
     }
-  };
-  const scheduleReconnect = () => {
-    clearReconnectTimer();
-    reconnectTimeoutRef.current = window.setTimeout(() => {
-      connect();
-    }, reconnectInterval);
-  };
+  }, []);
 
   const connect = useCallback(() => {
+    const scheduleReconnect = () => {
+      clearReconnectTimer();
+      reconnectTimeoutRef.current = window.setTimeout(() => {
+        connect();
+      }, reconnectInterval);
+    };
+
     if (wsRef.current) return;
 
     console.log("Connecting WebSocket:", url);
@@ -50,7 +50,7 @@ const useWebSocket = (
       console.log("WebSocket connected");
       setConnected(true);
       setReconnecting(false);
-      setNetworkError(null); // <-- Reset network error on successful connection
+      setNetworkError(null);
       isReconnectingRef.current = false;
       clearReconnectTimer();
     };
@@ -78,10 +78,10 @@ const useWebSocket = (
 
     wsRef.current.onerror = (err) => {
       console.error("WebSocket error:", err);
-      setNetworkError("WebSocket connection error"); // <-- Set network error
+      setNetworkError("WebSocket connection error");
       wsRef.current?.close();
     };
-  }, [url, isOnline, reconnectInterval, scheduleReconnect]);
+  }, [url, isOnline, reconnectInterval, clearReconnectTimer]);
 
   const sendMessage = useCallback((message: WebSocketMessage) => {
     if (wsRef.current?.readyState === WebSocket.OPEN) {
@@ -98,7 +98,7 @@ const useWebSocket = (
       wsRef.current?.close();
       wsRef.current = null;
       setConnected(false);
-      setNetworkError("No network connection"); // <-- Network offline
+      setNetworkError("No network connection");
     }
 
     return () => {
@@ -106,9 +106,9 @@ const useWebSocket = (
       wsRef.current?.close();
       wsRef.current = null;
     };
-  }, [isOnline, connect]);
+  }, [isOnline, connect, clearReconnectTimer]);
 
-  return { connected, reconnecting, networkError, sendMessage }; // <-- Export networkError
+  return { connected, reconnecting, networkError, sendMessage };
 };
 
 export default useWebSocket;

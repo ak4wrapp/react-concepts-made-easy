@@ -1,8 +1,7 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import throttle from "lodash/throttle";
-import "./random-story-generator.css"; // you can reuse or adjust styles
+import "./random-story-generator.css";
 
-// Define the structure of the story data
 interface Story {
   _id: string;
   title: string;
@@ -16,7 +15,7 @@ const RandomStory: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchStory = async () => {
+  const fetchStory = useCallback(async () => {
     const url =
       "https://react-concepts-made-easy.onrender.com/api/random-story";
 
@@ -24,8 +23,11 @@ const RandomStory: React.FC = () => {
 
     try {
       const response = await fetch(url);
-      if (!response.ok)
+
+      if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
       const result = await response.json();
       setStory(result);
       setError(null);
@@ -35,19 +37,25 @@ const RandomStory: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
-
-  useEffect(() => {
-    fetchStory(); // Fetch story on mount
   }, []);
 
-  // Throttle the fetchStory function to prevent spamming the backend
-  const throttledFetchStory = useCallback(
-    throttle(() => {
-      fetchStory();
-    }, 2000),
-    []
+  useEffect(() => {
+    void fetchStory();
+  }, [fetchStory]);
+
+  const throttledFetchStory = useMemo(
+    () =>
+      throttle(() => {
+        void fetchStory();
+      }, 2000),
+    [fetchStory]
   );
+
+  useEffect(() => {
+    return () => {
+      throttledFetchStory.cancel();
+    };
+  }, [throttledFetchStory]);
 
   return (
     <div className="story-container">
@@ -55,6 +63,7 @@ const RandomStory: React.FC = () => {
         {loading && !story && (
           <p className="loading">Fetching a new story...</p>
         )}
+
         {error && !loading && (
           <p className="error">Error fetching story: {error}</p>
         )}
@@ -70,8 +79,13 @@ const RandomStory: React.FC = () => {
           </>
         )}
 
-        {/* Fetch next story button */}
-        <button className="next-story-btn" onClick={throttledFetchStory}>
+        <button
+          className="next-story-btn"
+          onClick={() => {
+            void throttledFetchStory();
+          }}
+          disabled={loading}
+        >
           Next Story
         </button>
       </div>
