@@ -11,13 +11,17 @@ function fetchImages(numberOfImages = 10) {
     () => `https://robohash.org/${Math.random().toString(36).slice(2)}`
   );
 
-  avatars.forEach((avatar) => {
+  avatars.forEach((avatar, index) => {
     const img = document.createElement("img");
     img.src = avatar;
     img.alt = "Avatar";
     img.width = 300;
     img.height = 300;
     container.appendChild(img);
+
+    if (index < avatars.length - 1) {
+      isFetching = false; // Reset fetching state after adding images
+    }
   });
   container.innerHTML += avatars
     .map(
