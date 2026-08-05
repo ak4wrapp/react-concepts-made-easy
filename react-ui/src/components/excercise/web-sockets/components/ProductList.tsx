@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import useProducts from "../custom-hooks/useProducts";
 import Product from "./Product";
 import "./ProductList.css";

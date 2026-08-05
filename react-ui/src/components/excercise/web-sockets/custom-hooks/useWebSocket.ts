@@ -33,6 +33,12 @@ const useWebSocket = (
       reconnectTimeoutRef.current = null;
     }
   };
+  const scheduleReconnect = () => {
+    clearReconnectTimer();
+    reconnectTimeoutRef.current = window.setTimeout(() => {
+      connect();
+    }, reconnectInterval);
+  };
 
   const connect = useCallback(() => {
     if (wsRef.current) return;
@@ -75,14 +81,7 @@ const useWebSocket = (
       setNetworkError("WebSocket connection error"); // <-- Set network error
       wsRef.current?.close();
     };
-  }, [url, isOnline]);
-
-  const scheduleReconnect = () => {
-    clearReconnectTimer();
-    reconnectTimeoutRef.current = window.setTimeout(() => {
-      connect();
-    }, reconnectInterval);
-  };
+  }, [url, isOnline, reconnectInterval, scheduleReconnect]);
 
   const sendMessage = useCallback((message: WebSocketMessage) => {
     if (wsRef.current?.readyState === WebSocket.OPEN) {

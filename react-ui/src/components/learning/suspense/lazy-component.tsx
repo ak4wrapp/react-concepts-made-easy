@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 // The actual lazy-loaded component
 const LazyComponent: React.FC = () => {
