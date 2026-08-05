@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import throttle from "lodash/throttle";
 import "./random-quote-generator.css";
 
@@ -15,7 +15,7 @@ const RandomQuoteGenerator: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchQuote = async () => {
+  const fetchQuote = useCallback(async () => {
     const url =
       "https://react-concepts-made-easy.onrender.com/api/random-quote";
 
@@ -34,19 +34,25 @@ const RandomQuoteGenerator: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     fetchQuote(); // Fetch quote on mount
-  }, []); // Run only once when the component mounts
+  }, [fetchQuote]); // Run only once when the component mounts
 
-  // Throttle the fetchQuote function to prevent too frequent requests
-  const throttledFetchNewQuote = useCallback(
-    throttle(() => {
-      fetchQuote(); // Call the fetchQuote function
-    }, 2000), // Throttle to allow fetching every 2 seconds
-    []
+  const throttledFetchNewQuote = useMemo(
+    () =>
+      throttle(() => {
+        fetchQuote();
+      }, 2000),
+    [fetchQuote]
   );
+
+  useEffect(() => {
+    return () => {
+      throttledFetchNewQuote.cancel();
+    };
+  }, [throttledFetchNewQuote]);
 
   return (
     <div className="container">

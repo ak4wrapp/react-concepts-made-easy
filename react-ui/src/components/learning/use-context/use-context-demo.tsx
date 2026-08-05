@@ -6,7 +6,7 @@ import Prism from "prismjs";
 const UserContext = createContext("");
 
 const UseContextDemo = () => {
-  const [user, setUser] = useState("Kirar");
+  const [user] = useState("Kirar");
 
   const defineContextCode = `const UserContext = createContext("");`;
   const setContextCode = `const [user, setUser] = useState("Kirar");
