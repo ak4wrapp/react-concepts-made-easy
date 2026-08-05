@@ -1,27 +1,65 @@
 /* styles.css */
 
 .parent {
-  background-color: #e0f7fa;
-  border: 1px solid black;
+  background-color: var(--bg);
+  color: var(--text);
+
+  border: 1px solid var(--border);
+
   padding: 20px;
   border-radius: 5px;
   margin-bottom: 10px;
+
+  transition: background-color 0.35s ease, color 0.35s ease,
+    border-color 0.35s ease;
 }
 
 .child-container {
-  background-color: #ffffe0;
+  background-color: var(--card-bg);
+  color: var(--text);
+
   margin: 10px;
   border-radius: 5px;
+
+  border: 1px solid var(--border);
+
+  transition: background-color 0.35s ease, border-color 0.35s ease;
 }
 
 .child {
   display: flex;
   flex-direction: column;
-  border: 1px solid black;
+
+  background-color: var(--bg);
+  color: var(--text);
+
+  border: 1px solid var(--border);
+
   padding: 10px;
   border-radius: 5px;
 }
 
 .child-button {
   margin-top: 8px;
+
+  background-color: var(--accent);
+  color: #fff;
+
+  border: none;
+  padding: 8px 14px;
+  border-radius: 5px;
+
+  cursor: pointer;
+
+  transition: opacity 0.25s ease, background-color 0.25s ease;
+}
+
+.child-button:hover {
+  opacity: 0.85;
+}
+
+.child-button:disabled {
+  background-color: var(--border);
+  color: var(--muted);
+  cursor: not-allowed;
 }

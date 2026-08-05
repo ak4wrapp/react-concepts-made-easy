@@ -18,15 +18,27 @@ const UseContextDemo = () => {
 
   return (
     <>
-      <b>First Define UserContext On Global Scope</b>
-      <pre>
+      <p style={{ margin: "20px" }}>First Define UserContext On Global Scope</p>
+      <pre
+        style={{
+          backgroundColor: "#2d2d2d",
+          margin: "20px",
+          borderRadius: "5px",
+        }}
+      >
         <code className="language-javascript">{defineContextCode}</code>
       </pre>
       <UserContext.Provider value={user}>
         <div className="parent-container">
           <h1>Parent Component</h1>
           <h2>Setting User Here</h2>
-          <pre>
+          <pre
+            style={{
+              backgroundColor: "#2d2d2d",
+              margin: "20px",
+              borderRadius: "5px",
+            }}
+          >
             <code className="language-javascript">{setContextCode}</code>
           </pre>
           <ChildComponent />
@@ -63,7 +75,13 @@ const GreatGrandChildComponent = () => {
     <div className="great-grandchild-container">
       <h4>Great Grand Child Component</h4>
       <h5>Reading User Here</h5>
-      <pre>
+      <pre
+        style={{
+          backgroundColor: "#2d2d2d",
+          margin: "20px",
+          borderRadius: "5px",
+        }}
+      >
         <code className="language-javascript">{readingContextCode}</code>
         <br />
         <code className="language-javascript">{displayingUserFromContext}</code>

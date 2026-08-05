@@ -1,148 +1,200 @@
 .header-container {
   position: relative;
   width: 100%;
-  background-color: #212121; /* Slightly lighter dark background */
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); /* Softer shadow for the header */
-  z-index: 1000; /* Ensure header is above other content */
+  background: #212121;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
 }
 
 .navbar {
   display: flex;
-  justify-content: space-between; /* Space between hamburger and menu */
+  justify-content: space-between;
   align-items: center;
-  padding: 15px 30px; /* Increased padding for a more spacious feel */
+  padding: 15px 30px;
 }
+
+/* Hamburger */
 
 .hamburger {
   cursor: pointer;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 30px; /* Width of the hamburger icon */
-  height: 20px; /* Height of the hamburger icon */
+  width: 30px;
+  height: 20px;
 }
 
 .hamburger span {
   display: block;
-  height: 4px; /* Slightly thicker hamburger lines */
-  background-color: #fff; /* White color for hamburger lines */
-  margin: 3px 0; /* Space between lines */
-  transition: all 0.3s; /* Smooth transition */
+  height: 4px;
+  margin: 3px 0;
+  background: #fff;
+  transition: all 0.3s ease;
 }
 
 .hamburger.open span:nth-child(1) {
-  transform: translateY(10px) rotate(45deg); /* First line transforms to X */
+  transform: translateY(10px) rotate(45deg);
 }
 
 .hamburger.open span:nth-child(2) {
-  opacity: 0; /* Second line fades out */
+  opacity: 0;
 }
 
 .hamburger.open span:nth-child(3) {
-  transform: translateY(-10px) rotate(-45deg); /* Third line transforms to X */
+  transform: translateY(-10px) rotate(-45deg);
 }
 
+/* Left menu */
+
 .menu {
-  display: none; /* Hide by default */
-  position: absolute; /* Position the menu below the header */
-  top: 65px; /* Adjust based on header height */
+  display: none;
+  position: absolute;
+  top: 65px;
   left: 0;
-  background-color: #212121; /* Dark background for menu */
-  border-radius: 8px; /* Rounded corners for the menu */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Softer shadow for the dropdown */
-  min-width: 150px; /* Minimum width for the menu */
+  min-width: 180px;
+  background: #212121;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .menu.show {
-  display: block; /* Show when toggled */
+  display: block;
 }
 
-ul {
-  list-style: none; /* Remove bullet points */
-  margin: 0; /* Reset margin */
-  padding: 0; /* Reset padding */
+.menu ul,
+.submenu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
-ul > li {
-  position: relative; /* Position relative for submenus */
+.menu li {
+  position: relative;
+  white-space: nowrap;
 }
 
 .menu > ul > li {
-  padding: 12px 20px; /* Increased padding for menu items */
-  color: #fff; /* White text for menu items */
-  transition: background-color 0.3s, font-weight 0.3s; /* Smooth background and font weight transition */
-  white-space: nowrap; /* Prevent text wrapping */
+  padding: 12px 20px;
 }
 
-.menu > ul > li:hover {
-  background-color: #3a3a3a; /* Darker gray on hover */
-  border-radius: 8px; /* Rounded corners on hover */
-  font-weight: bold; /* Make text bold on hover */
+.menu a,
+.menu span {
+  display: flex;
+  align-items: center;
+  color: #fff;
+  text-decoration: none;
+}
+
+.menu > ul > li:hover,
+.submenu li:hover {
+  background: #3a3a3a;
 }
 
 .indicator {
-  margin-left: 5px; /* Space between label and indicator */
-  color: #fff; /* White color for indicator */
+  display: inline-flex;
+  align-items: center;
+  margin-left: 6px;
+  line-height: 1;
 }
+
+/* Submenus */
 
 .submenu {
-  display: none; /* Hide by default */
-  position: absolute; /* Position relative to parent li */
-  top: 0; /* Align submenu with the top of the parent item */
-  left: 100%; /* Position to the right of the parent item */
-  background-color: #212121; /* Same background for submenu */
-  border-radius: 8px; /* Rounded corners for submenu */
-  z-index: 1001; /* Ensure submenu is above other content */
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 100%;
+  min-width: 180px;
+  background: #212121;
+  border-radius: 8px;
 }
 
-ul > li:hover > .submenu {
-  display: block; /* Show submenu on hover */
+.menu li:hover > .submenu {
+  display: block;
 }
 
 .submenu li {
-  padding: 8px 30px; /* Indent submenu items */
-  color: #fff; /* White text for submenu items */
-  font-weight: normal; /* Normal weight for submenu items by default */
-  transition: font-weight 0.3s; /* Smooth font weight transition */
-  white-space: nowrap; /* Prevent text wrapping for submenu items */
+  padding: 10px 20px;
 }
 
-.submenu li:hover {
-  background-color: #3a3a3a; /* Darker gray on hover for submenu */
-  border-radius: 8px; /* Rounded corners on hover */
-  font-weight: bold; /* Make submenu items bold on hover */
-}
+/* Right navigation */
 
 .right-menu {
-  display: flex; /* Use flex for right-side menu */
+  display: flex;
+  align-items: center;
+  gap: 20px;
+
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 .right-menu li {
-  margin-left: 20px; /* Space between items */
-  padding: 10px 0; /* Padding for right menu items */
-  color: #fff; /* White text for right menu items */
-  transition: color 0.3s, font-weight 0.3s; /* Smooth color and font weight transition */
+  display: flex;
+  align-items: center;
 }
 
-.right-menu li:hover {
-  text-decoration: underline; /* Underline on hover */
-  color: #ddd; /* Lighter color on hover for right menu */
-  font-weight: bold; /* Make text bold on hover */
+.right-menu a,
+.right-menu span {
+  display: flex;
+  align-items: center;
+  height: 40px;
+
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.25s ease;
 }
 
-/* Ensure links appear as text */
-a {
-  color: #fff; /* White color for links */
-  text-decoration: none; /* Remove underline */
-  transition: color 0.3s; /* Smooth color transition */
+.right-menu a:hover {
+  color: #ddd;
 }
 
-a:hover {
-  color: #ddd; /* Lighter color on hover */
+.right-menu a.active {
+  color: #60a5fa;
+  font-weight: 600;
 }
+
+/* Theme button */
+
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 40px;
+  height: 40px;
+
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 50%;
+
+  background: transparent;
+  color: #fff;
+
+  cursor: pointer;
+  font-size: 20px;
+  transition: all 0.25s ease;
+}
+
+.theme-toggle:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: #fff;
+}
+
+/* Global link styling inside header */
+
+.header-container a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.header-container a:hover {
+  color: #ddd;
+}
+
+/* Mobile */
 
 @media (max-width: 768px) {
   .right-menu {
-    display: none; /* Hide right menu on smaller screens */
+    display: none;
   }
 }

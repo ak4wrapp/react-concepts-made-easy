@@ -27,6 +27,14 @@ function App() {
   const isOnline = useNetworkStatus(); // Track network status
   const { showSnackbar } = useSnackbar(); // Access showSnackbar method from context
   const [prevIsOnline, setPrevIsOnline] = useState<boolean>(isOnline); // Track previous network status
+  const [theme, setTheme] = useState<"light" | "dark">(
+    () => (localStorage.getItem("theme") as "light" | "dark") || "dark"
+  );
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+  }, [theme]);
 
   useEffect(() => {
     if (isOnline !== prevIsOnline) {
@@ -46,8 +54,11 @@ function App() {
 
   return (
     <Router>
-      <div>
-        <Header />
+      <div className={`app-container ${theme}`}>
+        <Header
+          theme={theme}
+          toggleTheme={() => setTheme(theme === "dark" ? "light" : "dark")}
+        />
         <div className="content">
           <Routes>
             <Route path="/" element={<Home />} /> {/* Default route to Home */}
