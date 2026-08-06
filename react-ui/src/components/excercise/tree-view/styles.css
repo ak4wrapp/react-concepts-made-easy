@@ -1,0 +1,35 @@
+.tree-view-container {
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--card-bg);
+  color: var(--text);
+  margin: 1em 0;
+}
+
+.tree-view-list {
+  list-style-type: none;
+  padding-left: 1em;
+  margin: 0;
+}
+
+.tree-view-item {
+  margin: 0.5em 0;
+  padding: 0.25em;
+  border-radius: 4px;
+  list-style-type: none;
+  cursor: pointer;
+}
+
+.tree-view-button {
+  background: transparent;
+  border: none;
+  color: var(--text);
+  cursor: pointer;
+  padding: 0.25rem 0;
+  font: inherit;
+}
+
+.tree-view-button:hover {
+  color: var(--accent);
+}

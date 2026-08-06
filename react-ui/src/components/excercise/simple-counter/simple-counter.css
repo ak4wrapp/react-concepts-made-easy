@@ -1,13 +1,30 @@
 .container {
   display: flex;
   flex-direction: row;
+  align-items: center;
+  gap: 10px;
 
   > button {
-    margin: 0 10px;
+    background: var(--accent);
+    color: #fff;
+    border: 1px solid var(--border);
+
+    padding: 8px 14px;
+    border-radius: 6px;
+
+    cursor: pointer;
+    transition: background-color 0.25s ease, opacity 0.25s ease,
+      border-color 0.25s ease;
+  }
+
+  > button:hover {
+    opacity: 0.85;
   }
 
   > button:disabled {
-    opacity: 0.5; /* Makes the button look faded */
-    cursor: not-allowed; /* Changes the cursor to indicate it's not clickable */
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: var(--border);
+    color: var(--muted);
   }
 }

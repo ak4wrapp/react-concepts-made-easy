@@ -1,6 +1,8 @@
 /* Todos.css */
+
 .todos {
-  background-color: #f9f9f9;
+  background-color: var(--bg);
+  color: var(--text);
   margin-top: 20px;
   padding: 20px;
   border-radius: 8px;
@@ -16,15 +18,17 @@
 
 .todos h1 {
   text-align: center;
-  color: #333;
+  color: var(--text);
 }
 
 .todos .todo-container {
   max-width: 600px;
   margin: auto;
-  background: #fff;
+  background: var(--card-bg);
+  color: var(--text);
+  border: 1px solid var(--border);
   border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
   padding: 20px;
 }
 
@@ -37,40 +41,55 @@
 .todos input[type="text"] {
   flex: 1;
   padding: 12px;
-  border: 1px solid #ccc;
+
+  background: var(--bg);
+  color: var(--text);
+
+  border: 1px solid var(--border);
   border-radius: 4px;
+
   margin-right: 10px;
   font-size: 16px;
-  transition: border-color 0.3s;
+
+  transition: border-color 0.3s, background-color 0.3s;
+}
+
+.todos input[type="text"]::placeholder {
+  color: var(--muted);
 }
 
 .todos input[type="text"]:focus {
-  border-color: #007bff;
+  border-color: var(--accent);
   outline: none;
 }
 
+/* Buttons */
 .todos button {
-  background-color: #007bff;
-  color: white;
+  background-color: var(--accent);
+  color: #fff;
+
   border: none;
   padding: 10px 15px;
   border-radius: 4px;
+
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: opacity 0.3s ease;
 }
 
 .todos button:hover {
-  background-color: #0056b3;
+  opacity: 0.85;
 }
 
+/* Delete button */
 .todos button:last-of-type {
   background-color: #dc3545;
 }
 
 .todos button:last-of-type:hover {
-  background-color: #c82333;
+  background-color: #b91c1c;
 }
 
+/* List */
 .todos ul {
   list-style-type: none;
   padding: 0;
@@ -80,29 +99,37 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+
   padding: 10px;
   margin: 10px 0;
-  border: 1px solid #ccc;
+
+  background: var(--card-bg);
+  color: var(--text);
+
+  border: 1px solid var(--border);
   border-radius: 4px;
-  transition: background-color 0.3s;
+
+  transition: background-color 0.3s, border-color 0.3s;
 }
 
 .todos .todo-item:hover {
-  background-color: #f1f1f1;
+  background-color: var(--bg);
 }
 
+/* Todo metadata */
 .todos .todo-item span {
   margin-left: 10px;
   font-size: 14px;
-  color: #777;
+  color: var(--muted);
 }
 
+/* Status colors */
 .todos .todo-item .complete {
-  color: #28a745; /* Green for complete */
+  color: #22c55e;
 }
 
 .todos .todo-item .pending {
-  color: #ffc107; /* Yellow for pending */
+  color: #eab308;
 }
 
 .todos .todo-item .status {

@@ -4,6 +4,7 @@ import RandomStory from "./random-story-generator/random-story-generator";
 import SimpleCounter from "./simple-counter/simple-counter";
 import Todos from "./todos/todos";
 import TodoList from "./todo-new/todo-list";
+import TreeView from "./tree-view";
 import WebSocketComponent from "./web-sockets/WebSocketComponent";
 
 export const excerciseMenuLinks: NavItem[] = [
@@ -39,6 +40,11 @@ export const excerciseMenuLinks: NavItem[] = [
         label: "Web Sockets",
         path: "/learning/excercise/web-sockets",
         component: WebSocketComponent,
+      },
+      {
+        label: "Tree View",
+        path: "/learning/excercise/tree-view",
+        component: TreeView,
       },
     ],
   },

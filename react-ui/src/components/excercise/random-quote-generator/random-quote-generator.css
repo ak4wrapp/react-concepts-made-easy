@@ -1,56 +1,84 @@
 .container {
   display: flex;
-  justify-content: center; /* Center the quote box */
-  padding: 20px; /* Adds some padding around the container */
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
 }
+
+/* Quote box */
 
 .quote-box {
-  position: relative; /* Allows positioning of the icon */
-  border: 2px solid #4a90e2; /* Border color */
-  border-radius: 8px; /* Rounded corners */
-  width: 400px; /* Fixed width for the quote box */
-  padding: 40px 20px 20px; /* Inner padding (top, right/left, bottom) */
-  text-align: center; /* Center the text */
-  font-family: "Georgia", serif; /* Nice font style */
-  background-color: #f7f9fc; /* Light background for contrast */
+  position: relative;
+
+  width: 400px;
+  padding: 40px 20px 20px;
+
+  text-align: center;
+  font-family: "Georgia", serif;
+
+  background-color: var(--card-bg);
+  color: var(--text);
+
+  border: 2px solid var(--accent);
+  border-radius: 8px;
+
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+
+  transition: background-color 0.35s ease, border-color 0.35s ease,
+    color 0.35s ease;
 }
 
+/* Refresh icon */
+
 .refresh-icon {
-  position: absolute; /* Position the icon absolutely */
-  top: 10px; /* Position from the top */
-  right: 10px; /* Position from the right */
-  cursor: pointer; /* Pointer cursor on hover */
-  color: #4a90e2; /* Color for the icon */
-  font-size: 24px; /* Size of the icon */
-  transition: color 0.3s, opacity 0.3s; /* Smooth transition for hover and disabled effects */
+  position: absolute;
+  top: 10px;
+  right: 10px;
+
+  cursor: pointer;
+
+  color: var(--accent);
+  font-size: 24px;
+
+  transition: color 0.3s ease, opacity 0.3s ease;
 }
 
 .refresh-icon:hover {
-  color: #357ab8; /* Darker shade on hover */
+  color: var(--text);
 }
 
 .refresh-icon.disabled {
-  color: #b0c4de; /* Light color to indicate disabled state */
-  cursor: not-allowed; /* Not-allowed cursor when disabled */
-  opacity: 0.5; /* Slightly faded appearance */
+  color: var(--muted);
+  cursor: not-allowed;
+  opacity: 0.5;
 }
+
+/* Quote text */
 
 .quote-text {
-  font-size: 1.5rem; /* Increase the font size for the quote */
-  font-weight: 400; /* Set normal font weight */
-  font-style: italic; /* Italic style for the quote */
-  margin-top: 30px; /* Add space between icon and quote text */
-  color: #333; /* Dark color for the quote text */
+  font-size: 1.5rem;
+  font-weight: 400;
+  font-style: italic;
+
+  margin-top: 30px;
+
+  color: var(--text);
 }
+
+/* Author */
 
 .originator {
-  font-size: 1.2rem; /* Slightly smaller font size for the author */
-  margin-top: 10px; /* Add space above the author's name */
-  color: #555; /* Lighter color for the author's name */
+  font-size: 1.2rem;
+
+  margin-top: 10px;
+
+  color: var(--muted);
 }
 
+/* Error */
+
 .error {
-  color: red; /* Red color for error messages */
-  text-align: center; /* Center error message */
-  font-weight: bold; /* Bold error message */
+  color: #ef4444;
+  text-align: center;
+  font-weight: bold;
 }

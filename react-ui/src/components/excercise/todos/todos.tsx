@@ -7,7 +7,7 @@ const Todos = () => {
   const newTodoRef = useRef<HTMLInputElement>(null);
 
   const removeTodo = (item: ITodo) => {
-    setTodos(todos.filter((todo: ITodo) => todo.id != item.id));
+    setTodos(todos.filter((todo: ITodo) => todo.id !== item.id));
   };
 
   const toggleToStatus = (selectedTodo: ITodo) => {

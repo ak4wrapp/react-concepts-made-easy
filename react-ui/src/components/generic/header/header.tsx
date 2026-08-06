@@ -5,7 +5,10 @@ import { menuLinks } from "../../../config/menu-navigation-config";
 import { navLinks } from "../../../config/top-navigation-config";
 import { NavItem } from "../../../types/nav-item";
 
-const Header: React.FC = () => {
+const Header: React.FC<{
+  theme: string;
+  toggleTheme: () => void;
+}> = ({ theme, toggleTheme }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeSubmenu, setActiveSubmenu] = useState<number | null>(null);
   const headerRef = useRef<HTMLDivElement>(null);
@@ -122,6 +125,21 @@ const Header: React.FC = () => {
           </ul>
         </div>
         <ul className="right-menu">
+          <li>
+            <button
+              className="theme-toggle"
+              onClick={toggleTheme}
+              aria-label="Toggle theme"
+              title={
+                theme === "dark"
+                  ? "Switch to light mode"
+                  : "Switch to dark mode"
+              }
+            >
+              {theme === "dark" ? "☀️" : "🌙"}
+            </button>
+          </li>
+
           {navLinks.map((link: NavItem, index: number) => (
             <li key={index}>
               {link.path ? (
