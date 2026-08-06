@@ -1,61 +1,99 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import throttle from "lodash/throttle";
+import "./random-quote-generator.css";
 
-const RandomStoryGenerator: React.FC = () => {
-  const [story, setStory] = useState<string>("");
+// Define the structure of the quote data
+interface Quote {
+  content: string; // Adjust based on actual API response
+  originator: {
+    name: string; // Adjust based on actual API response
+  };
+}
+
+const RandomQuoteGenerator: React.FC = () => {
+  const [quote, setQuote] = useState<Quote | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [canFetch, setCanFetch] = useState(true); // State to manage fetch permissions
 
-  const fetchStory = useCallback(async () => {
-    setLoading(true);
+  const fetchQuote = async () => {
+    const url = "https://react-concepts-made-easy.onrender.com/api/random-quote";
+
+    setLoading(true); // Set loading to true while fetching
 
     try {
-      const response = await fetch(
-        "https://react-concepts-made-easy.onrender.com/api/random-story"
-      );
-
+      const response = await fetch(url);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
+      const result = await response.json();
 
-      const data = await response.json();
-      setStory(data.story ?? "");
+      setQuote(result); // Set the fetched quote
       setError(null);
-    } catch (err: any) {
-      setError(err?.message ?? "Failed to fetch story");
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+      setCanFetch(false); // Disable fetching new quotes
 
-  const throttledFetchStory = useMemo(
-    () =>
-      throttle(() => {
-        void fetchStory();
-      }, 2000),
-    [fetchStory]
+      // Re-enable fetching after 1 second
+      setTimeout(() => {
+        setCanFetch(true);
+      }, 1000);
+    } catch (err: any) {
+      setError(err.toString());
+      setQuote(null);
+    } finally {
+      setLoading(false); // Set loading to false after fetching
+    }
+  };
+
+  useEffect(() => {
+    fetchQuote(); // Fetch quote on mount
+  }, []); // Run only once when the component mounts
+
+  // Throttle the fetchNewQuote function
+  const throttledFetchNewQuote = useCallback(
+    () => {
+      const throttled = throttle(() => {
+        if (canFetch) {
+          void fetchQuote();
+        }
+      }, 500);
+
+      throttled();
+    },
+    [canFetch]
   );
 
-  useEffect(() => {
-    void fetchStory();
-  }, [fetchStory]);
-
-  useEffect(() => {
-    return () => {
-      throttledFetchStory.cancel();
-    };
-  }, [throttledFetchStory]);
+  const fetchNewQuote = () => {
+    throttledFetchNewQuote(); // Call the throttled function
+  };
 
   return (
-    <div>
-      <button onClick={() => throttledFetchStory()} disabled={loading}>
-        {loading ? "Loading..." : "New Story"}
-      </button>
-
-      {error && <div>Error: {error}</div>}
-      {!loading && !error && <p>{story}</p>}
+    <div className="container">
+      <div className="quote-box">
+        {loading && <div>Fetching new Quote...</div>}
+        {!loading && (
+          <span
+            className={`material-icons refresh-icon ${canFetch ? "" : "disabled"
+              }`}
+            onClick={fetchNewQuote}
+            style={{ cursor: canFetch ? "pointer" : "not-allowed" }}
+          >
+            {canFetch ? "sync" : "sync_disabled"}{" "}
+            {/* Change icon based on state */}
+          </span>
+        )}
+        {!!error ? (
+          <div className="error">Error fetching quote: {error}</div>
+        ) : (
+          !loading && (
+            <>
+              <p>{quote?.content}</p>
+              <p>- {quote?.originator.name}</p>
+            </>
+          )
+        )}
+      </div>
     </div>
   );
-};
+}
 
-export default RandomStoryGenerator;
+export default RandomQuoteGenerator;

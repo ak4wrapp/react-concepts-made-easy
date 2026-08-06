@@ -37,25 +37,47 @@
 }
 
 #orders tr:nth-child(even) {
-  background-color: #f2f2f2;
+  background-color: color-mix(in srgb, var(--card-bg) 85%, var(--bg) 15%);
 }
 
 #orders tr:hover {
-  background-color: #e7f3ff;
+  background-color: color-mix(in srgb, var(--accent) 12%, var(--card-bg));
+  color: var(--text, #020617);
+}
+
+#orders tr:hover td {
+  color: var(--text, #020617);
 }
 
 .new-order {
   animation: newOrderEffect 1s forwards;
 }
 
+.new-order,
+.new-order td {
+  color: var(--text, #020617);
+}
+
+.new-order td {
+  animation: newOrderTextEffect 1s forwards;
+}
+
 @keyframes newOrderEffect {
-  0% {
-    background-color: #ffeb3b;
-  }
+  0%,
   50% {
-    background-color: #ffe57f;
+    background-color: #fdd835;
   }
   100% {
     background-color: transparent;
+  }
+}
+
+@keyframes newOrderTextEffect {
+  0%,
+  50% {
+    color: #000000;
+  }
+  100% {
+    color: var(--text, #020617);
   }
 }

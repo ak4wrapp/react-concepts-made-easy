@@ -4,38 +4,61 @@
 #orders {
   margin-top: 30px;
   width: 100%;
-  border: 2px solid #4a90e2; /* Border color */
-  border-collapse: collapse; /* Collapse borders */
-  border-radius: 10px; /* Rounded corners */
-  overflow: hidden; /* Prevent overflow for rounded corners */
+  border: 2px solid var(--accent, #4a90e2);
+  border-collapse: collapse;
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: var(--card-bg, #ffffff);
+  color: var(--text, #020617);
 }
 
 #orders thead {
-  background-color: #4a90e2; /* Header background color */
-  color: white; /* Header text color */
-  font-size: 0.9em; /* Header font size */
+  background-color: var(--accent, #4a90e2);
+  color: var(--card-bg, #ffffff);
+  font-size: 0.9em;
 }
 
 #orders th,
 #orders td {
-  border: 1px solid #ddd; /* Cell borders */
-  padding: 8px; /* Cell padding */
-  text-align: left; /* Text alignment */
+  border: 1px solid var(--border, #ddd);
+  padding: 8px;
+  text-align: left;
+}
+
+#orders tbody tr:nth-child(even) {
+  background-color: color-mix(in srgb, var(--card-bg) 85%, var(--bg) 15%);
 }
 
 /* Flashing effect for new orders */
 .new-order {
-  animation: newOrderEffect 1s forwards; /* Keep the effect for 1 second */
+  animation: newOrderEffect 1s forwards;
+}
+
+.new-order,
+.new-order td {
+  color: var(--text, #020617);
+}
+
+.new-order td {
+  animation: newOrderTextEffect 1s forwards;
 }
 
 @keyframes newOrderEffect {
-  0% {
-    background-color: #ffeb3b;
-  }
+  0%,
   50% {
-    background-color: #ffe57f;
+    background-color: #fdd835;
   }
   100% {
-    background-color: transparent; /* Revert back to transparent */
+    background-color: transparent;
+  }
+}
+
+@keyframes newOrderTextEffect {
+  0%,
+  50% {
+    color: #000000;
+  }
+  100% {
+    color: var(--text, #020617);
   }
 }

@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start-local": "PORT=5001 ts-node src/server.ts",
+    "start-local": "cross-env PORT=5001 ts-node src/server.ts",
     "start": "ts-node src/server.ts",
-    "dev-local": "PORT=5001 nodemon --exec ts-node src/server.ts",
+    "dev-local": "cross-env PORT=5001 nodemon --exec ts-node src/server.ts",
     "dev": "nodemon --exec ts-node src/server.ts"
   },
   "keywords": [],
@@ -16,6 +16,7 @@
   "devDependencies": {
     "@types/node": "^22.8.1",
     "@types/ws": "^8.5.12",
+    "cross-env": "10.1.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.6.3",
     "nodemon": "^3.0.3"
