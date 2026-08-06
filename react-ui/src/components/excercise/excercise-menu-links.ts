@@ -3,6 +3,7 @@ import RandomQuoteGenerator from "./random-quote-generator/random-quote-generato
 import RandomStory from "./random-story-generator/random-story-generator";
 import SimpleCounter from "./simple-counter/simple-counter";
 import Todos from "./todos/todos";
+import TodoList from "./todo-new/todo-list";
 import WebSocketComponent from "./web-sockets/WebSocketComponent";
 
 export const excerciseMenuLinks: NavItem[] = [
@@ -13,6 +14,11 @@ export const excerciseMenuLinks: NavItem[] = [
         label: "Create a Todos",
         path: "/learning/excercise/todos",
         component: Todos,
+      },
+      {
+        label: "Create a Todos (New)",
+        path: "/learning/excercise/todos1",
+        component: TodoList,
       },
       {
         label: "A Simple Counter",

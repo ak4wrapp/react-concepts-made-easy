@@ -1,0 +1,74 @@
+.todo-container {
+  max-width: 400px;
+  margin: 2rem auto;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.todo-form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.todo-form input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.todo-form button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.todo-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.todo-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 10px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.todo-item:hover {
+  background-color: #91fffa;
+}
+
+/* Checked state styles */
+.todo-item.checked .todo-text {
+  text-decoration: line-through;
+  color: #888;
+}
+
+/* Stretch Goal: Hidden X that appears on hover */
+.delete-btn {
+  background: none;
+  border: none;
+  color: #ff4444;
+  font-size: 1.2rem;
+  cursor: pointer;
+  opacity: 0;                 /* Hidden by default */
+  pointer-events: none;       /* Unclickable when hidden */
+  transition: opacity 0.2s;
+}
+
+.todo-item:hover .delete-btn {
+  opacity: 1;                 /* Visible on hover */
+  pointer-events: auto;       /* Clickable when visible */
+}
+
+.delete-btn:hover {
+  color: #cc0000;
+}
