@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import "./App.css";
 import { navLinks } from "./config/top-navigation-config"; // Navigation links
 import { menuLinks } from "./config/menu-navigation-config"; // Menu links
 import Home from "./components/generic/home"; // Import Home component
