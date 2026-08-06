@@ -6,6 +6,9 @@ import Todos from "./todos/todos";
 import TodoList from "./todo-new/todo-list";
 import TreeView from "./tree-view";
 import WebSocketComponent from "./web-sockets/WebSocketComponent";
+import SearchableList from "./searchable-list";
+import DataTable from "./data-table";
+import Autocomplete from "./autocomplete";
 
 export const excerciseMenuLinks: NavItem[] = [
   {
@@ -45,6 +48,21 @@ export const excerciseMenuLinks: NavItem[] = [
         label: "Tree View",
         path: "/learning/excercise/tree-view",
         component: TreeView,
+      },
+      {
+        label: "Searchable List",
+        path: "/learning/excercise/searchable-list",
+        component: SearchableList,
+      },
+      {
+        label: "Data Table",
+        path: "/learning/excercise/data-table",
+        component: DataTable,
+      },
+      {
+        label: "Autocomplete",
+        path: "/learning/excercise/autocomplete",
+        component: Autocomplete,
       },
     ],
   },
